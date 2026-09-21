@@ -1,6 +1,6 @@
 {
   "name": "JP's Classification of Drugs",
-  "short_name": "JP's Calssification of Drugs",
+  "short_name": "JP's Classification of Drugs",
   "description": "Global pharmacological drug reference with 1,995+ drugs across 24 chapters. Covers FDA, EMA, MHRA, PMDA, MFDS and NMPA approved drugs. Search by drug name, synonym, class or brand name. Works fully offline.",
   "start_url": "/index.html",
   "display": "standalone",
