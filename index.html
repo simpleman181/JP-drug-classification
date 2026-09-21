@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#006B6B">
+  <meta name="description" content="Global pharmacological drug reference — 1,995+ drugs, 24 chapters. FDA, EMA, MHRA, PMDA, MFDS, NMPA coverage. Search offline.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="JP Drug Ref">
+  <meta name="application-name" content="JP's Classification of Drugs">
+  <meta name="msapplication-TileColor" content="#006B6B">
+  <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
+  <meta name="msapplication-square70x70logo" content="icons/Square71x71Logo.png">
+  <meta name="msapplication-square150x150logo" content="icons/Square150x150Logo.png">
+  <meta name="msapplication-wide310x150logo" content="icons/Wide310x150Logo.png">
+  <meta name="msapplication-square310x310logo" content="icons/Square310x310Logo.png">
+
+  <title>JP's Classification of Drugs</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #006B6B;
+      --teal-light: #008A8A;
+      --teal-dark: #004F4F;
+      --gold: #C49A00;
+      --gold-light: #F0C400;
+      --cream: #FDFAF4;
+      --gray-50: #F8F9FA;
+      --gray-100: #F0F2F4;
+      --gray-200: #E2E6EA;
+      --gray-400: #98A4B0;
+      --gray-600: #546574;
+      --gray-800: #2C3E50;
+      --text: #1A2B38;
+      --shadow: 0 2px 12px rgba(0,107,107,0.1);
+      --shadow-lg: 0 4px 20px rgba(0,107,107,0.15);
+      --radius: 10px;
+      --radius-sm: 6px;
+      --header-h: 120px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--gray-50);
+      overflow: hidden;
+    }
+
+    /* ── LAYOUT ── */
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, var(--teal-light) 100%);
+      padding: 14px 20px 12px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .logo {
+      width: 48px; height: 48px;
+      background: white;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 16px;
+      color: var(--teal);
+      letter-spacing: -0.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      flex-shrink: 0;
+    }
+    .header-text h1 {
+      font-size: 17px; font-weight: 700;
+      color: white; line-height: 1.2;
+    }
+    .header-text p {
+      font-size: 11px; color: rgba(255,255,255,0.65);
+      margin-top: 2px;
+    }
+    .header-stats {
+      display: flex; gap: 10px;
+      flex-wrap: wrap;
+    }
+    .stat-badge {
+      font-size: 10px; font-weight: 600;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      padding: 3px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* ── SEARCH ── */
+    .search-wrap { position: relative; }
+    .search-icon {
+      position: absolute; left: 12px; top: 50%;
+      transform: translateY(-50%);
+      width: 16px; height: 16px;
+      color: rgba(255,255,255,0.6);
+    }
+    #searchInput {
+      width: 100%;
+      padding: 10px 14px 10px 36px;
+      background: rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(255,255,255,0.3);
+      border-radius: var(--radius-sm);
+      color: white; font-size: 13px;
+      outline: none; transition: all 0.2s;
+    }
+    #searchInput::placeholder { color: rgba(255,255,255,0.5); }
+    #searchInput:focus {
+      background: rgba(255,255,255,0.22);
+      border-color: rgba(255,255,255,0.55);
+    }
+
+    /* ── MAIN CONTENT AREA ── */
+    .main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* ── SIDEBAR (chapters) ── */
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: white;
+      border-right: 1.5px solid var(--gray-200);
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
+
+    .sidebar-heading {
+      padding: 12px 16px 8px;
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      color: var(--gray-600);
+      border-bottom: 1px solid var(--gray-100);
+      background: var(--gray-50);
+      position: sticky; top: 0; z-index: 1;
+    }
+    .chapter-item {
+      display: flex; align-items: center;
+      padding: 10px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--gray-100);
+      transition: background 0.12s;
+      gap: 10px;
+    }
+    .chapter-item:hover { background: #F0F9F9; }
+    .chapter-item.active {
+      background: #E6F4F4;
+      border-left: 3px solid var(--teal);
+    }
+    .chapter-num {
+      font-size: 10px; font-weight: 700;
+      color: var(--teal);
+      background: #E6F4F4;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .chapter-item.active .chapter-num {
+      background: var(--teal); color: white;
+    }
+    .chapter-title-text {
+      font-size: 12px; font-weight: 500;
+      color: var(--text); line-height: 1.35;
+    }
+
+    /* ── CONTENT PANEL ── */
+    .content-panel {
+      flex: 1;
+      overflow-y: auto;
+      min-width: 0;
+      background: var(--gray-50);
+    }
+    .content-panel::-webkit-scrollbar { width: 5px; }
+    .content-panel::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
+
+    .content-inner { padding: 16px 20px 24px; }
+
+    /* ── HOME SCREEN ── */
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      padding: 16px 20px;
+    }
+    .home-card {
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .home-card:hover {
+      border-color: var(--teal);
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+    .home-card h3 {
+      font-size: 13px; font-weight: 700;
+      color: var(--teal-dark); margin-bottom: 4px;
+    }
+    .home-card p {
+      font-size: 11px; color: var(--gray-600);
+      line-height: 1.4; margin-bottom: 8px;
+    }
+    .home-card .chip-row { display: flex; flex-wrap: wrap; gap: 4px; }
+    .chip-sm {
+      font-size: 9.5px; padding: 2px 7px;
+      background: #E6F4F4; color: var(--teal-dark);
+      border-radius: 8px; font-weight: 500;
+      border: 1px solid #B3DEDE;
+    }
+
+    /* ── CHAPTER OVERVIEW ── */
+    .chapter-overview {
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+    .chapter-overview h2 {
+      font-size: 15px; font-weight: 700;
+      color: var(--teal-dark); margin-bottom: 6px;
+    }
+    .chapter-overview p {
+      font-size: 12px; color: var(--gray-600);
+      line-height: 1.6; margin-bottom: 10px;
+    }
+    .subclass-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .chip {
+      font-size: 11px; padding: 4px 10px;
+      background: #E6F4F4; color: var(--teal-dark);
+      border-radius: 12px; font-weight: 500;
+      border: 1px solid #B3DEDE;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .chip:hover { background: var(--teal); color: white; border-color: var(--teal); }
+    .chip.active { background: var(--teal); color: white; border-color: var(--teal); }
+
+    /* ── SUBCLASS HEADER ── */
+    .subclass-header {
+      background: linear-gradient(135deg, #E6F4F4, #F0FAF8);
+      border: 1.5px solid #B3DEDE;
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+    .subclass-header h3 {
+      font-size: 14px; font-weight: 700;
+      color: var(--teal-dark); margin-bottom: 3px;
+    }
+    .subclass-header .synonyms {
+      font-size: 11px; color: var(--gray-600); margin-bottom: 6px;
+    }
+    .subclass-header p {
+      font-size: 12px; color: var(--gray-800); line-height: 1.55;
+    }
+
+    /* ── SUBGROUP ── */
+    .subgroup {
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .subgroup-header {
+      background: var(--gray-50);
+      padding: 10px 16px;
+      font-size: 12px; font-weight: 700;
+      color: var(--gray-800);
+      border-bottom: 1px solid var(--gray-200);
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer; user-select: none;
+      transition: background 0.15s;
+    }
+    .subgroup-header:hover { background: #EFF2F5; }
+    .count-badge {
+      font-size: 9.5px;
+      background: var(--teal); color: white;
+      padding: 1px 7px; border-radius: 8px;
+      font-weight: 600; margin-left: auto;
+    }
+    .chevron {
+      width: 16px; height: 16px;
+      transition: transform 0.2s; flex-shrink: 0;
+    }
+    .subgroup-header.open .chevron { transform: rotate(180deg); }
+    .subgroup-body { display: none; }
+    .subgroup-body.open { display: block; }
+
+    /* ── DRUG ITEM ── */
+    .drug-item {
+      padding: 9px 16px;
+      border-bottom: 1px solid var(--gray-100);
+      cursor: pointer; transition: background 0.12s;
+    }
+    .drug-item:last-child { border-bottom: none; }
+    .drug-item:hover { background: #F5FAFA; }
+    .drug-item.expanded { background: #EDF7F7; }
+    .drug-name {
+      font-size: 13px; font-weight: 600;
+      color: var(--text); display: flex;
+      align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+    .syn-badge {
+      font-size: 10px; font-weight: 500;
+      color: var(--teal); background: #E6F4F4;
+      padding: 1px 6px; border-radius: 4px;
+    }
+    .no-dose-badge {
+      font-size: 9.5px; font-weight: 500;
+      color: #999; background: #F5F5F5;
+      padding: 1px 6px; border-radius: 4px;
+      border: 1px solid #E0E0E0;
+    }
+    .drug-detail { display: none; margin-top: 6px; }
+    .drug-detail.open { display: block; }
+    .dose-row {
+      font-size: 11.5px; color: var(--gray-600);
+      margin-bottom: 4px; line-height: 1.5;
+    }
+    .dose-row strong { color: var(--teal-dark); font-weight: 600; }
+    .syn-row { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+    .brands-row { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+    .brand-tag {
+      font-size: 10px; padding: 2px 8px;
+      background: #FFF8E1; border: 1px solid #F0C400;
+      border-radius: 4px; color: #7A6000; font-weight: 500;
+    }
+
+    /* ── SEARCH RESULTS ── */
+    .search-results-header {
+      font-size: 12px; font-weight: 600;
+      color: var(--gray-600);
+      padding: 4px 0 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .results-count {
+      font-size: 10.5px;
+      background: var(--teal); color: white;
+      padding: 1px 8px; border-radius: 10px;
+    }
+    .search-result-item {
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
+      margin-bottom: 8px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .search-result-item:hover {
+      border-color: var(--teal);
+      box-shadow: var(--shadow);
+    }
+    .sr-drug { font-size: 13px; font-weight: 700; color: var(--text); }
+    .sr-drug mark {
+      background: #FFF176; color: inherit;
+      border-radius: 2px; padding: 0 1px;
+    }
+    .sr-path { font-size: 11px; color: var(--gray-600); margin-top: 3px; }
+    .sr-path span { color: var(--teal); font-weight: 500; }
+    .sr-dose { font-size: 11.5px; color: var(--gray-800); margin-top: 4px; line-height: 1.4; }
+    .sr-brands { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 5px; }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      display: flex; align-items: center;
+      gap: 5px; flex-wrap: wrap;
+      font-size: 11px; color: var(--gray-400);
+      margin-bottom: 12px;
+    }
+    .bc-item {
+      cursor: pointer; color: var(--teal);
+      font-weight: 500; transition: opacity 0.15s;
+    }
+    .bc-item:hover { opacity: 0.7; }
+    .bc-sep { color: var(--gray-400); }
+
+    /* ── NO RESULTS ── */
+    .no-results {
+      text-align: center; padding: 32px;
+      color: var(--gray-400); font-size: 13px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      padding: 8px 20px;
+      background: var(--gray-50);
+      border-top: 1px solid var(--gray-200);
+      font-size: 10px; color: var(--gray-400);
+      text-align: center; flex-shrink: 0;
+      padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    }
+    .footer strong { color: var(--teal-dark); }
+
+    /* ── OFFLINE BANNER ── */
+    .offline-banner {
+      display: none;
+      background: #FFF8E1; color: #7A6000;
+      font-size: 11px; font-weight: 500;
+      padding: 6px 16px; text-align: center;
+      border-bottom: 1px solid #F0C400;
+    }
+    .offline-banner.show { display: block; }
+
+    /* ── INSTALL PROMPT ── */
+    .install-prompt {
+      display: none;
+      background: var(--teal-dark); color: white;
+      padding: 10px 16px; font-size: 12px;
+      align-items: center; gap: 10px;
+    }
+    .install-prompt.show { display: flex; }
+    .install-btn {
+      background: var(--gold-light); color: var(--teal-dark);
+      border: none; padding: 5px 14px;
+      border-radius: 5px; font-size: 11px;
+      font-weight: 700; cursor: pointer;
+      white-space: nowrap; margin-left: auto;
+    }
+    .install-dismiss {
+      background: none; border: none;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer; font-size: 16px; padding: 0 4px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .sidebar { display: none; }
+      .header-text h1 { font-size: 15px; }
+      .header-stats { display: none; }
+      .home-grid { grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; }
+      .content-inner { padding: 10px 12px 20px; }
+    }
+    @media (max-width: 420px) {
+      .home-grid { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 1024px) {
+      .sidebar { width: 300px; min-width: 300px; }
+      .header-text h1 { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- Offline banner -->
+  <div class="offline-banner" id="offlineBanner">
+    📶 You are offline — all drug data is available locally
+  </div>
+
+  <!-- Install prompt -->
+  <div class="install-prompt" id="installPrompt">
+    <span>Install JP's Drug Reference for faster access</span>
+    <button class="install-btn" id="installBtn">Install</button>
+    <button class="install-dismiss" id="installDismiss">✕</button>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo">JP</div>
+      <div class="header-text">
+        <h1>JP's Classification of Drugs</h1>
+        <p>Global Drug Reference · FDA · EMA · MHRA · PMDA · MFDS · NMPA</p>
+      </div>
+    </div>
+    <div class="header-stats">
+      <span class="stat-badge">1,995+ Drugs</span>
+      <span class="stat-badge">24 Chapters</span>
+      <span class="stat-badge">FDA 100% 2024–2026</span>
+      <span class="stat-badge">Works Offline</span>
+    </div>
+    <div class="search-wrap" style="margin-top:10px">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <input id="searchInput" type="text"
+             placeholder="Search drug name, class, synonym, brand…"
+             autocomplete="off" autocorrect="off" spellcheck="false"/>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-heading">Chapters</div>
+      <div id="chapterList"><!-- rendered by JS --></div>
+    </div>
+
+    <!-- Content panel -->
+    <div class="content-panel" id="contentPanel">
+      <div class="content-inner" id="mainContent">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <strong>JP's Drug Classification v5.1</strong> &nbsp;·&nbsp;
+    Developed by Jayaprakash Lokhande &nbsp;·&nbsp;
+    For educational/reference use only &nbsp;·&nbsp;
+    FDA · EMA · MHRA · PMDA · MFDS · NMPA
+  </div>
+
+</div>
+
+<script src="drugdata.js"></script>
+<script src="app.js"></script>
+<script>
+// ── PWA: Register service worker ───────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('[PWA] SW registered:', reg.scope))
+      .catch(err => console.warn('[PWA] SW registration failed:', err));
+  });
+}
+
+// ── PWA: Offline detection ─────────────────────────────────────────────────
+const offlineBanner = document.getElementById('offlineBanner');
+window.addEventListener('online',  () => offlineBanner.classList.remove('show'));
+window.addEventListener('offline', () => offlineBanner.classList.add('show'));
+if (!navigator.onLine) offlineBanner.classList.add('show');
+
+// ── PWA: Install prompt ────────────────────────────────────────────────────
+let deferredPrompt;
+const installPrompt = document.getElementById('installPrompt');
+const installBtn    = document.getElementById('installBtn');
+const installDismiss = document.getElementById('installDismiss');
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Only show if not already installed
+  if (!window.matchMedia('(display-mode: standalone)').matches) {
+    installPrompt.classList.add('show');
+  }
+});
+installBtn.addEventListener('click', async () => {
+  installPrompt.classList.remove('show');
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+  }
+});
+installDismiss.addEventListener('click', () => {
+  installPrompt.classList.remove('show');
+});
+</script>
+</body>
+</html>
