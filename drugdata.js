@@ -1,0 +1,5663 @@
+const DRUG_DATA = [
+  {
+    id: 1,
+    title: "Autonomic Nervous System Pharmacology",
+    description: "Drugs in this section exert their effects through autonomic pathways, influencing visceral organs, glands, and vascular smooth muscle. The classification follows receptor pharmacology: cholinergic, adrenergic, ganglionic, and topical ocular agents.",
+    subclasses: [
+      {
+        id: "1a",
+        name: "Cholinergic Drugs",
+        synonyms: ["Parasympathomimetic Drugs", "Muscarinic Agonists", "Acetylcholine Agonists"],
+        description: "Cholinergic agents augment parasympathetic activity either by directly activating muscarinic or nicotinic receptors (choline esters and alkaloids) or by inhibiting acetylcholinesterase to prolong the action of endogenous acetylcholine. Reversible anticholinesterases have roles in myasthenia gravis, glaucoma, and reversal of neuromuscular blockade; irreversible organophosphates are significant in toxicology.",
+        subgroups: [
+          {
+            name: "Direct Acting — Choline Esters",
+            drugs: [
+              { name: "Acetylcholine", synonyms: ["ACh"], dose: "Not used clinically due to rapid hydrolysis", brands: [] },
+              { name: "Methacholine", synonyms: ["Methacholine chloride"], dose: "Bronchoprovocation test", brands: [] },
+              { name: "Carbachol", synonyms: ["Carbamylcholine"], dose: "0.01–0.02 mg intracameral; 0.75–3% topically in eye", brands: ["MIOSTAT"] },
+              { name: "Bethanechol", synonyms: ["Urecholine"], dose: "10–40 mg oral, 2.5–5 mg s.c.", brands: ["UROTONIN", "BETHACOL 25 mg tab"] }
+            ]
+          },
+          {
+            name: "Direct Acting — Alkaloids",
+            drugs: [
+              { name: "Muscarine", synonyms: [], dose: "Not used therapeutically", brands: [] },
+              { name: "Pilocarpine", synonyms: ["Pilocar", "Carpine"], dose: "0.5–4% topically in eye", brands: ["PILOCAR 1%, 2%, 4% eye drops", "CARPINE 0.5% eye drops", "PILODROPS 2% eye drops"] },
+              { name: "Arecoline", synonyms: [], dose: "Not used therapeutically", brands: [] }
+            ]
+          },
+          {
+            name: "Indirect Acting — Anticholinesterases (Reversible)",
+            drugs: [
+              { name: "Physostigmine", synonyms: ["Eserine"], dose: "0.5–1.0 mg oral/i.m., 0.25–0.5% topically in eye", brands: ["BI-MIOTIC (physostigmine 0.25% + pilocarpine 2% eye drops)"] },
+              { name: "Neostigmine", synonyms: ["Prostigmin"], dose: "15–30 mg oral, 0.5–2.5 mg s.c./i.m.", brands: ["PROSTIGMIN", "MYOSTIGMIN", "TILSTIGMIN 15 mg tab, 0.5 mg/ml inj"] },
+              { name: "Pyridostigmine", synonyms: ["Mestinon"], dose: "60–180 mg oral 2–3 times a day", brands: ["DISTINON", "MYESTIN 60 mg tab"] },
+              { name: "Edrophonium", synonyms: ["Tensilon"], dose: "10 mg i.v. (diagnosis of myasthenia gravis)", brands: [] },
+              { name: "Ambenonium", synonyms: [], dose: "5–25 mg oral", brands: [] },
+              { name: "Demecarium", synonyms: [], dose: "Ophthalmic", brands: [] },
+              { name: "Rivastigmine", synonyms: ["Exelon"], dose: "Initially 1.5 mg BD, increase every 2 weeks by 1.5 mg/day up to 6 mg BD", brands: ["EXELON", "RIVAMER 1.5, 3, 4.5, 6.0 mg caps"] },
+              { name: "Donepezil", synonyms: ["Aricept"], dose: "5 mg at bed time once daily (max 10 mg/day)", brands: ["DONECEPT", "DOPEZIL", "DORENT 5, 10 mg tabs"] },
+              { name: "Galantamine", synonyms: ["Reminyl"], dose: "4 mg BD (max 12 mg BD)", brands: ["GALAMER 4, 8, 12 mg tabs"] },
+              { name: "Tacrine", synonyms: ["Cognex"], dose: "40–160 mg/day (withdrawn due to hepatotoxicity)", brands: [] }
+            ]
+          },
+          {
+            name: "Indirect Acting — Anticholinesterases (Irreversible/Organophosphates)",
+            drugs: [
+              { name: "DFP (Diisopropyl fluorophosphate)", synonyms: ["Isoflurophate"], dose: "Ophthalmic use (rarely)", brands: [] },
+              { name: "Ecothiophate", synonyms: [], dose: "Ophthalmic", brands: [] },
+              { name: "Malathion", synonyms: [], dose: "Topical antiparasitic", brands: [] },
+              { name: "Parathion", synonyms: [], dose: "Insecticide (toxic)", brands: [] },
+              { name: "Tabun, Sarin, Soman", synonyms: ["Nerve Agents"], dose: "Chemical warfare agents (toxic)", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "1b",
+        name: "Anticholinergic Drugs",
+        synonyms: ["Antimuscarinic Drugs", "Parasympatholytic Drugs", "Muscarinic Antagonists"],
+        description: "Antimuscarinic agents competitively block acetylcholine at M1–M5 receptors. Natural belladonna alkaloids (atropine, hyoscine) have broad systemic effects; synthetic agents are designed for organ-selective activity in COPD, overactive bladder, gastrointestinal spasm, and parkinsonism.",
+        subgroups: [
+          {
+            name: "Belladonna Alkaloids",
+            drugs: [
+              { name: "Atropine", synonyms: ["Atropa belladonna"], dose: "0.6–2.0 mg i.m./i.v. (child 10 µg/kg), 1–2% topically in eye", brands: ["ATROPINE SULPHATE 0.6 mg/ml inj", "ATROSULPH 1% eye drop"] },
+              { name: "Hyoscine hydrobromide", synonyms: ["Scopolamine", "Hyoscine"], dose: "0.3–0.5 mg oral/i.m. (child 10 µg/kg)", brands: [] },
+              { name: "Hyoscine butyl bromide", synonyms: ["Buscopan", "Scopolamine butylbromide"], dose: "20–40 mg oral/i.m./s.c./i.v.", brands: ["BUSCOPAN 10 mg tab, 20 mg/ml amp"] }
+            ]
+          },
+          {
+            name: "Synthetic Antimuscarinics — Mydriatics/Cycloplegics",
+            drugs: [
+              { name: "Atropine methonitrate", synonyms: [], dose: "2.5–10 mg oral/i.m.", brands: ["MYDRINDON 1 mg (adult), 0.1 mg (child) tab"] },
+              { name: "Homatropine", synonyms: [], dose: "1–2% topically in eye", brands: ["HOMATROPINE EYE", "HOMIDE 1%, 2% eye drops"] },
+              { name: "Cyclopentolate", synonyms: [], dose: "0.5–1.0% topically in eye", brands: ["CYCLOMID EYE 0.5%, 1.0%", "CYCLOGYL", "CYCLOPENT 1% eye drops"] },
+              { name: "Tropicamide", synonyms: [], dose: "0.5–1.0% topically in eye", brands: ["OPTIMIDE", "TROPICAMET", "TROMIDE 0.5%, 1% eye drops"] }
+            ]
+          },
+          {
+            name: "Synthetic Antimuscarinics — Antispasmodics",
+            drugs: [
+              { name: "Propantheline", synonyms: ["Pro-Banthine"], dose: "15–30 mg oral", brands: ["PROBANTHINE 15 mg tab"] },
+              { name: "Oxyphenonium", synonyms: ["Antrenyl"], dose: "5–10 mg (child 3–5 mg) oral", brands: ["ANTRENYL 5, 10 mg tab"] },
+              { name: "Clidinium", synonyms: ["Librax"], dose: "2.5–5 mg oral", brands: ["SPASRIL", "ARWIN 2.5 mg tab with chlordiazepoxide 5 mg"] },
+              { name: "Cimetropium bromide", synonyms: [], dose: "50 mg 2–3 times a day", brands: ["IBSCIM 50 mg tab"] },
+              { name: "Isopropamide", synonyms: [], dose: "5 mg oral", brands: ["STELABID", "GASTABID 5 mg tab"] },
+              { name: "Dicyclomine", synonyms: ["Dicycloverine"], dose: "20 mg oral", brands: ["CYCLOPAM INJ 10 mg/ml", "COLIMEX", "COLIRID 20 mg tab"] },
+              { name: "Valethamate", synonyms: ["Epidosin"], dose: "8 mg i.m., 10 mg oral", brands: ["VALAMATE 8 mg inj", "EPIDOSIN 10 mg tab"] }
+            ]
+          },
+          {
+            name: "Synthetic Antimuscarinics — For COPD/Asthma",
+            drugs: [
+              { name: "Glycopyrrolate", synonyms: ["Glycopyrronium"], dose: "0.2–0.4 mg i.m./i.v., 1–2 mg oral, 50 µg inhalational powder OD", brands: ["GLYCO-P 0.2 mg/ml amp", "PYROLATE 0.2 mg/ml"] },
+              { name: "Ipratropium bromide", synonyms: ["Atrovent", "Ipravent"], dose: "40–80 µg by inhalation/nasal spray", brands: ["IPRAVENT 20 µg/puff MDI", "IPRANASE-AQ 0.084% nasal spray"] },
+              { name: "Tiotropium bromide", synonyms: ["Spiriva", "Tiova"], dose: "18 µg by inhalation OD", brands: ["TIOVA 18 µg rotacaps"] }
+            ]
+          },
+          {
+            name: "Synthetic Antimuscarinics — For Urinary Bladder",
+            drugs: [
+              { name: "Oxybutynin", synonyms: ["Ditropan", "Oxytrol"], dose: "5 mg BD/TDS oral; children above 5 yr 2.5 mg BD", brands: ["OXYBUTIN", "CYSTRAN", "OXISPAS 2.5 mg and 5 mg tabs"] },
+              { name: "Flavoxate", synonyms: ["Urispas"], dose: "200 mg TDS", brands: ["URISPAS", "FLAVATE", "FLAVOSPAS 200 mg tab"] },
+              { name: "Tolterodine", synonyms: ["Detrol"], dose: "1–2 mg BD or 2–4 mg OD SR tab oral", brands: ["ROLITEN", "TOLTER 1, 2 mg tabs", "TORQ 2, 4 mg SR tab"] },
+              { name: "Darifenacin", synonyms: ["Enablex"], dose: "7.5–15 mg once daily", brands: ["DARILONG", "ESIGARD 7.5 mg, 15 mg ER tab"] },
+              { name: "Solifenacin", synonyms: ["Vesicare"], dose: "5–10 mg once daily", brands: ["SOLICEPT", "BISPEC 5, 10 mg tabs"] }
+            ]
+          },
+          {
+            name: "Antiparkinson Antimuscarinics",
+            drugs: [
+              { name: "Trihexyphenidyl", synonyms: ["Benzhexol", "Artane"], dose: "2–10 mg/day", brands: ["PACITANE", "PARBENZ 2 mg tab"] },
+              { name: "Procyclidine", synonyms: ["Kemadrin"], dose: "5–20 mg/day", brands: ["KEMADRIN 2.5, 5 mg tab"] },
+              { name: "Biperiden", synonyms: ["Akineton"], dose: "2–10 mg/day oral, i.m. or i.v.", brands: ["DYSKINON 2 mg tab", "5 mg/ml inj"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "1c",
+        name: "Ganglionic Stimulants",
+        synonyms: ["Nicotinic Agonists at Ganglia", "Gangliostimulants"],
+        description: "Ganglionic stimulants activate nicotinic (Nn) receptors at sympathetic and parasympathetic ganglia simultaneously. Clinically, nicotinic receptor agonists are most relevant in smoking cessation pharmacology.",
+        subgroups: [
+          {
+            name: "Ganglionic Stimulants",
+            drugs: [
+              { name: "Nicotine transdermal", synonyms: ["Nicotinell TTS", "NRT"], dose: "10, 20, 30 cm² patches releasing 7, 14, 21 mg nicotine per 24 hr respectively", brands: ["NICOTINELL-TTS 10, 20, 30 cm² patches"] },
+              { name: "Nicotine chewing gum", synonyms: ["Nicorette"], dose: "1–4 mg gum; start with higher dose in heavy smokers", brands: ["NULIFE 1, 2, 4 mg chewing gum"] },
+              { name: "Varenicline", synonyms: ["Champix", "Chantix"], dose: "Start 0.25 mg BD, gradually increase up to 1 mg BD for not more than 12 weeks", brands: ["CHAMPIX 0.5, 1.0 mg tabs"] },
+              { name: "Dimethylphenylpiperazinium", synonyms: ["DMPP"], dose: "Research/experimental use", brands: [] },
+              { name: "Tetramethylammonium", synonyms: ["TMA"], dose: "Research/experimental use", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "1d",
+        name: "Ganglionic Blocking Agents",
+        synonyms: ["Ganglion Blockers", "Nicotinic Antagonists at Ganglia"],
+        description: "Ganglionic blockers interrupt transmission at both sympathetic and parasympathetic ganglia. Once used in hypertensive emergencies, they have largely been superseded by more selective agents; trimethaphan retains limited use for controlled hypotension during surgery.",
+        subgroups: [
+          {
+            name: "Ganglionic Blockers",
+            drugs: [
+              { name: "Hexamethonium", synonyms: ["C6"], dose: "Historical use only", brands: [] },
+              { name: "Pentolinium", synonyms: [], dose: "Historical use only", brands: [] },
+              { name: "Mecamylamine", synonyms: ["Inversine"], dose: "2.5–25 mg oral (rare use)", brands: [] },
+              { name: "Trimethaphan", synonyms: ["Arfonad"], dose: "3–4 mg/min i.v. infusion (controlled hypotension)", brands: [] },
+              { name: "Pempidine", synonyms: [], dose: "Historical use", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "1e",
+        name: "Adrenergic Drugs",
+        synonyms: ["Sympathomimetic Drugs", "Adrenoceptor Agonists", "Catecholamines"],
+        description: "Sympathomimetic agents reproduce adrenergic responses by direct receptor activation, indirect catecholamine release, or mixed mechanisms. They span a wide clinical range — from emergency vasopressors and cardiac stimulants to nasal decongestants and tocolytics — with selectivity for α1, α2, β1, or β2 subtypes determining therapeutic application.",
+        subgroups: [
+          {
+            name: "Catecholamines (Direct Acting)",
+            drugs: [
+              { name: "Adrenaline", synonyms: ["Epinephrine", "Adrena"], dose: "0.2–0.5 mg s.c./i.m.", brands: ["ADRENALINE 1 mg/ml inj", "ADRENA 4 mg per 2 ml inj"] },
+              { name: "Noradrenaline", synonyms: ["Norepinephrine", "Levarterenol"], dose: "2–4 µg/min i.v. infusion", brands: ["ADRENOR", "VASCUE", "NORAD", "NORDRIN 2 mg (base)/2 ml amp"] },
+              { name: "Isoprenaline", synonyms: ["Isoproterenol", "Isuprel"], dose: "20 mg s.l., 1–2 mg i.m., 5–10 µg/min i.v. infusion", brands: ["NEOEPININE 20 mg sublingual tab", "ISOPRIN", "ISOSOL 4 mg/2 ml inj"] },
+              { name: "Dopamine", synonyms: ["Intropin", "Dopacard"], dose: "0.2–1.0 mg/min i.v. infusion", brands: ["DOPAMINE", "INTROPIN", "DOPACARD 200 mg/5 ml amp"] },
+              { name: "Dobutamine", synonyms: ["Dobutrex", "Dobustat"], dose: "2–8 µg/kg/min i.v. infusion", brands: ["CARDIJECT 50 mg/4 ml inj", "DOBUTREX", "DOBUSTAT 250 mg inj"] }
+            ]
+          },
+          {
+            name: "Non-Catecholamines — Mixed Acting",
+            drugs: [
+              { name: "Ephedrine", synonyms: ["Sudafed", "Ephedrine HCl"], dose: "15–60 mg oral, 15–30 mg i.m./i.v.; 0.5–0.75% topically in nose", brands: ["EPHEDRINE HCL 15, 30 mg tabs", "SULFIDRIN 50 mg inj"] },
+              { name: "Pseudoephedrine", synonyms: ["Sudafed"], dose: "30–60 mg oral TDS", brands: [] }
+            ]
+          },
+          {
+            name: "Non-Catecholamines — Selective α Agonists",
+            drugs: [
+              { name: "Phenylephrine", synonyms: ["Neo-synephrine", "Frenin"], dose: "5–10 mg oral, 2–5 mg i.m., 0.25% topically in nose, 5–10% topically in eye", brands: ["FRENIN 10 mg/ml inj", "FENOX 0.25% nasal drops"] },
+              { name: "Methoxamine", synonyms: ["Vasoxine"], dose: "10–20 mg i.m., 3–5 mg slow i.v. inj", brands: ["VASOXINE 20 mg/ml inj"] },
+              { name: "Mephentermine", synonyms: ["Mephentine"], dose: "10–20 mg oral/i.m.", brands: ["MEPHENTINE 10 mg tab", "TERMIN 30 mg/ml vial"] },
+              { name: "Metaraminol", synonyms: [], dose: "2–10 mg i.m./s.c.", brands: [] },
+              { name: "Xylometazoline", synonyms: ["Otrivin", "Otrinoz"], dose: "0.05–0.1% topically in nose", brands: ["OTRIVIN 0.05% pediatric, 0.1% adult nasal drops", "OTRINOZ 0.025%, 0.05%, 0.1% nasal drops"] },
+              { name: "Oxymetazoline", synonyms: ["Nasivion", "Sinarest"], dose: "0.025–0.05% topically in nose", brands: ["NASIVION", "SINAREST 0.025% (pediatric), 0.05% (adult) nasal drops"] },
+              { name: "Naphazoline", synonyms: ["Privine"], dose: "0.1% topically in nose", brands: ["PRIVINE 0.1% nasal drops"] }
+            ]
+          },
+          {
+            name: "Non-Catecholamines — Selective β Agonists",
+            drugs: [
+              { name: "Ritodrine", synonyms: ["Yutopar"], dose: "50–200 µg/min i.v. infusion, 10 mg i.m./oral 4–6 hourly", brands: ["YUTOPAR", "RITROD 10 mg/ml inj, 10 mg tab"] },
+              { name: "Isoxsuprine", synonyms: ["Duvadilan"], dose: "5–10 mg oral, i.m. 4–6 hourly", brands: ["DUVADILAN 10 mg tab, 40 mg SR cap, 10 mg/2 ml inj"] }
+            ]
+          },
+          {
+            name: "CNS Stimulant Amines",
+            drugs: [
+              { name: "Amphetamine", synonyms: ["Benzedrine"], dose: "5–15 mg oral", brands: [] },
+              { name: "Dexamphetamine", synonyms: ["Dexedrine"], dose: "5–10 mg (children 2.5–5 mg) oral", brands: [] },
+              { name: "Methamphetamine", synonyms: ["Desoxyn"], dose: "5–10 mg oral", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "1f",
+        name: "α-Adrenergic Blocking Drugs",
+        synonyms: ["Alpha Blockers", "Alpha Adrenoceptor Antagonists", "Antiadrenergic Drugs"],
+        description: "Alpha-adrenoceptor antagonists reduce sympathetic vasoconstriction. Non-selective agents (phenoxybenzamine, phentolamine) manage phaeochromocytoma; selective α1-blockers (prazosin, tamsulosin, doxazosin) are used in hypertension and lower urinary tract symptoms. Ergot derivatives have additional uses in migraine management.",
+        subgroups: [
+          {
+            name: "Non-selective α Blockers",
+            drugs: [
+              { name: "Phenoxybenzamine", synonyms: ["Dibenzyline", "Fenoxene"], dose: "20–60 mg/day oral, 1 mg/kg slow i.v. infusion over 1 hour", brands: ["FENOXENE 10 mg cap", "BIOPHENOX 50 mg/ml inj"] },
+              { name: "Phentolamine", synonyms: ["Regitine"], dose: "5 mg i.v. repeated as required", brands: ["REGITINE", "FENTANOR 10 mg/ml inj"] },
+              { name: "Ergotamine", synonyms: ["Ergotamine tartrate"], dose: "1–3 mg oral/sublingual for migraine (max 6 mg/day)", brands: ["ERGOTAMINE 1 mg tab", "MIGRIL (ergotamine 2 mg + caffeine 100 mg + cyclizine 50 mg)"] },
+              { name: "Dihydroergotamine", synonyms: ["DHE", "Migranil"], dose: "2–6 mg oral (max 10 mg/day), 0.5–1 mg i.m., s.c.", brands: ["DIHYDERGOT", "DHE 1 mg tab", "MIGRANIL 1 mg/ml inj"] },
+              { name: "Dihydroergotoxine", synonyms: ["Codergocrine", "Hydergine"], dose: "1–1.5 mg oral or sublingual, 0.15–0.6 mg i.m.", brands: ["HYDERGINE 1.5 mg tab", "CERELOID 1 mg tab"] }
+            ]
+          },
+          {
+            name: "Selective α1 Blockers",
+            drugs: [
+              { name: "Prazosin", synonyms: ["Minipress", "Prazopres"], dose: "Start 0.5–1 mg at bedtime; usual dose 1–4 mg BD or TDS", brands: ["PRAZOPRES 0.5, 1.0, 2.0 mg tabs", "MINIPRESS XL 2.5, 5 mg GITS tabs"] },
+              { name: "Terazosin", synonyms: ["Hytrin", "Teralfa"], dose: "Usual maintenance 2–10 mg OD", brands: ["HYTRIN", "TERALFA", "OLYSTER 1, 2, 5 mg tab"] },
+              { name: "Doxazosin", synonyms: ["Cardura", "Doxacard"], dose: "1 mg OD initially, increase up to 8 mg BD", brands: ["DOXACARD", "DURACARD", "DOXAPRESS 1, 2, 4 mg tabs"] },
+              { name: "Alfuzosin", synonyms: ["Alfusin", "Alfoo"], dose: "2.5 mg BD-QID or 10 mg OD as ER tab", brands: ["ALFUSIN", "ALFOO 10 mg ER tab"] },
+              { name: "Tamsulosin", synonyms: ["Urimax", "Flomax"], dose: "0.2–0.4 mg MR cap in the morning with meals", brands: ["URIMAX", "DYNAPRES 0.2, 0.4 mg MR cap", "CONTIFLO-OD 0.4 mg cap"] },
+              { name: "Silodosin", synonyms: ["Rapilif", "Silodal"], dose: "4–8 mg OD", brands: ["RAPILIF", "SILODAL 4, 8 mg cap"] },
+              { name: "Yohimbine", synonyms: [], dose: "2 mg oral", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "1g",
+        name: "β-Adrenergic Blocking Drugs",
+        synonyms: ["Beta Blockers", "Beta Adrenoceptor Antagonists", "Beta Adrenergic Blockers"],
+        description: "Beta-adrenoceptor antagonists reduce sympathetic drive to the heart, vasculature, and bronchi. Cardioselective agents (metoprolol, atenolol, bisoprolol) act preferentially at β1 receptors; non-selective agents (propranolol, sotalol) also block β2. Some carry additional properties — intrinsic sympathomimetic activity, membrane stabilisation, or α1-blockade.",
+        subgroups: [
+          {
+            name: "Non-selective β Blockers (β1 + β2)",
+            drugs: [
+              { name: "Propranolol", synonyms: ["Inderal", "Ciplar"], dose: "10 mg BD to 160 mg QID oral; 2–5 mg i.v. over 10 min", brands: ["INDERAL", "CIPLAR 10, 40, 80 mg tab", "BETABLOC 10, 40 mg tab"] },
+              { name: "Sotalol", synonyms: ["Sotacor", "Sotagard"], dose: "80 mg BD–160 mg TDS oral", brands: ["SOTAGARD 40, 80 mg tabs"] },
+              { name: "Pindolol", synonyms: ["Visken", "Pinadol"], dose: "5–15 mg BD", brands: ["PINADOL 5 mg tab", "VISKEN 10, 15 mg tab"] },
+              { name: "Nadolol", synonyms: ["Corgard"], dose: "40–80 mg OD", brands: [] },
+              { name: "Timolol", synonyms: ["Blocadren"], dose: "10–20 mg BD oral; 0.25–0.5% eye drops for glaucoma", brands: ["GLUCOMOL", "OCUPRES", "IOTIM 0.25% and 0.5% eye drops"] }
+            ]
+          },
+          {
+            name: "Cardioselective β1 Blockers",
+            drugs: [
+              { name: "Metoprolol", synonyms: ["Betaloc", "Lopressor"], dose: "25 mg BD–100 mg QID oral, 5–15 mg slow i.v. inj", brands: ["BETALOC 25, 50, 100 mg tab", "LOPRESSOR", "METOLAR 50, 100 mg tab"] },
+              { name: "S(-) Metoprolol", synonyms: ["Metpure XL"], dose: "12.5–50 mg BD", brands: ["METPURE-XL 12.5, 25, 50 mg ER tabs"] },
+              { name: "Atenolol", synonyms: ["Tenormin", "Betacard"], dose: "25 mg OD–50 mg BD", brands: ["BETACARD", "ATEN", "TENORMIN 25, 50, 100 mg tabs"] },
+              { name: "S(-) Atenolol", synonyms: ["Atpure", "Adbeta"], dose: "12.5–50 mg OD", brands: ["ATPURE", "ADBETA 12.5, 25, 50 mg tabs"] },
+              { name: "Acebutolol", synonyms: ["Sectral"], dose: "200 mg BD–400 mg TDS oral; 20–40 mg slow i.v.", brands: ["SECTRAL 200, 400 mg tabs"] },
+              { name: "Bisoprolol", synonyms: ["Concor", "Corbis"], dose: "2.5–10 mg OD", brands: ["CONCOR", "CORBIS 5 mg tab"] },
+              { name: "Esmolol", synonyms: ["Brevibloc", "Miniblock"], dose: "0.5 mg/kg i.v. followed by 0.05–0.2 mg/kg/min i.v. infusion", brands: ["MINIBLOCK 100 mg/10 ml, 250 mg/10 ml inj"] },
+              { name: "Celiprolol", synonyms: ["Celipres"], dose: "100 mg OD–300 mg BD", brands: ["CELIPRES 100, 200 mg tab"] },
+              { name: "Nebivolol", synonyms: ["Nebicard", "Nodon"], dose: "5 mg OD (start with 2.5 mg OD in elderly)", brands: ["NODON 5 mg tab", "NEBICARD 2.5, 5 mg tabs"] }
+            ]
+          },
+          {
+            name: "Non-selective β Blockers with α1 Blocking Activity",
+            drugs: [
+              { name: "Labetalol", synonyms: ["Trandate", "Normadate"], dose: "Start 50 mg BD, increase to 100–200 mg TDS oral; 20–40 mg slow i.v. in hypertensive emergencies", brands: ["NORMADATE 50, 100, 200 mg tab", "LABESOL", "LABETA 50 mg tab, 20 mg/4 ml inj"] },
+              { name: "Carvedilol", synonyms: ["Carvil", "Carloc", "Coreg"], dose: "For CHF: start 3.125 mg BD; for HTN/angina: 6.25 mg BD (max 25 mg BD)", brands: ["CARVIL", "CARLOC", "CARVAS 3.125, 6.25, 12.5, 25 mg tabs"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "1h",
+        name: "Topical Drugs for Glaucoma",
+        synonyms: ["Antiglaucoma Drugs", "Intraocular Pressure Reducers", "Ocular Hypotensives"],
+        description: "Ocular hypotensive agents lower intraocular pressure through distinct mechanisms: β-blockers reduce aqueous humour production; prostaglandin analogues enhance uveoscleral outflow; α2-agonists reduce production and increase outflow; carbonic anhydrase inhibitors suppress aqueous secretion; and miotics (pilocarpine) mechanically open the trabecular meshwork.",
+        subgroups: [
+          {
+            name: "β-Blockers (Topical)",
+            drugs: [
+              { name: "Timolol", synonyms: ["Timoptic", "Glucomol"], dose: "0.25% BD, change to 0.5% if inadequate; 0.5% OD as gel", brands: ["GLUCOMOL", "OCUPRES", "IOTIM", "LOPRES 0.25% and 0.5% eye drops", "TIMOLAST 0.5% gel"] },
+              { name: "Betaxolol", synonyms: ["Betoptic", "Optipres"], dose: "0.5% topically in eye BD", brands: ["OPTIPRES", "IOBET", "OCUBETA 0.5% eye drops"] },
+              { name: "Levobunolol", synonyms: ["Betagan"], dose: "0.5% topically in eye OD", brands: ["BETAGAN 0.5% ophthalmic solution"] }
+            ]
+          },
+          {
+            name: "α2-Agonists (Topical)",
+            drugs: [
+              { name: "Dipivefrine", synonyms: ["Propine"], dose: "0.1% topically in eye BD", brands: ["PROPINE 0.1% eye drops"] },
+              { name: "Apraclonidine", synonyms: ["Iopidine", "Alfadrops"], dose: "0.5–1.0% topically in eye", brands: ["ALFADROPS-DS 1% eye drops"] },
+              { name: "Brimonidine", synonyms: ["Alphagan", "Brimodin"], dose: "0.15%, 0.2% topically in eye TDS", brands: ["ALPHAGAN-P", "BRIMODIN-P 0.15% eye drops", "IOIBRIM 0.2% eye drops"] }
+            ]
+          },
+          {
+            name: "Prostaglandin Analogues (Topical)",
+            drugs: [
+              { name: "Latanoprost", synonyms: ["Xalatan", "Lacoma"], dose: "0.005% topically in eye OD in evening", brands: ["LACOMA", "XALATAN", "LATOPROST", "9 PM 50 µg/ml eye drops"] },
+              { name: "Travoprost", synonyms: ["Travatan", "Travacom"], dose: "0.004% topically in eye OD in evening", brands: ["TRAVATAN 0.004% eye drops", "TRAVACOM 0.004% with timolol 0.5% eye drops"] },
+              { name: "Bimatoprost", synonyms: ["Lumigan", "Careprost"], dose: "0.03% as eye drops OD in evening", brands: ["LUMIGAN", "CAREPROST 0.03% eye drops", "GANFORT with timolol 0.5% eye drop"] }
+            ]
+          },
+          {
+            name: "Miotics",
+            drugs: [
+              { name: "Pilocarpine", synonyms: ["Pilocar", "Carpine"], dose: "0.5%–4% topically in eye", brands: ["CARPINE", "PILOCAR 0.5%, 1%, 2%, 4% eye drops"] }
+            ]
+          },
+          {
+            name: "Carbonic Anhydrase Inhibitors (Topical)",
+            drugs: [
+              { name: "Dorzolamide", synonyms: ["Dortas", "Dorzox"], dose: "2% topically in eye BD–TDS", brands: ["DORTAS", "DORZOX 2% eye drops"] },
+              { name: "Brinzolamide", synonyms: ["Azopt"], dose: "1% topically in eye BD–TDS", brands: [] }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "Autacoids, Eicosanoids and Anti-inflammatory Agents",
+    description: "This section encompasses drugs that interact with endogenous local mediators — histamine, serotonin, prostaglandins, leukotrienes, and kinins — as well as anti-inflammatory analgesics and disease-modifying antirheumatic agents.",
+    subclasses: [
+      {
+        id: "2a",
+        name: "Histaminergic Agonists",
+        synonyms: ["H1 Agonists", "Histamine Analogues"],
+        description: "Histamine receptor agonists have limited therapeutic application. Betahistine acts as a weak H1 agonist and H3 antagonist in the inner ear vasculature, reducing endolymphatic pressure and ameliorating vertigo in Menière's disease.",
+        subgroups: [
+          {
+            name: "Histaminergic Agonists",
+            drugs: [
+              { name: "Betahistine", synonyms: ["Vertin", "Betaserc"], dose: "4–8 mg 6–8 hourly", brands: ["VERTIN 8 mg tab"] },
+              { name: "Histamine", synonyms: [], dose: "Diagnostic use only", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "2b",
+        name: "H1-Antihistaminics",
+        synonyms: ["Antihistamines", "H1 Antagonists", "Histamine H1 Blockers"],
+        description: "H1-antihistamines competitively antagonise histamine at H1 receptors. First-generation agents penetrate the blood-brain barrier, producing sedation and anticholinergic effects useful in motion sickness and pruritus. Second-generation agents are peripherally selective, minimising CNS effects while retaining efficacy in allergic rhinitis, urticaria, and atopic conditions.",
+        subgroups: [
+          {
+            name: "First Generation (Sedating) Antihistamines",
+            drugs: [
+              { name: "Diphenhydramine", synonyms: ["Benadryl"], dose: "25–50 mg oral", brands: ["BENADRYL 25 mg cap, 12.5 mg/5 ml syr"] },
+              { name: "Dimenhydrinate", synonyms: ["Dramamine", "Gravol"], dose: "25–50 mg oral, i.m.", brands: ["DRAMAMINE 16 mg/5 ml syr, 50 mg tab", "GRAVOL 50 mg tab"] },
+              { name: "Promethazine", synonyms: ["Phenergan"], dose: "25–50 mg oral, i.m. (1 mg/kg)", brands: ["PHENERGAN 10, 25 mg tab, 5 mg/ml elixir, 25 mg/ml inj"] },
+              { name: "Hydroxyzine", synonyms: ["Atarax", "Vistaril"], dose: "25–50 mg oral, i.m.", brands: ["ATARAX 10, 25 mg tab, 10 mg/5 ml syr, 25 mg/ml inj"] },
+              { name: "Pheniramine", synonyms: ["Avil"], dose: "20–50 mg oral, i.m.", brands: ["AVIL 25 mg, 50 mg tab, 15 mg/5 ml syr, 22.5 mg/ml inj"] },
+              { name: "Cyproheptadine", synonyms: ["Practin"], dose: "4 mg oral", brands: ["PRACTIN", "CIPLACTIN 4 mg tab, 2 mg/5 ml syrup"] },
+              { name: "Meclozine", synonyms: ["Meclizine", "Diligan"], dose: "25–50 mg oral", brands: ["DILIGAN 12.5 mg + niacin 50 mg tab", "PREGNIDOXIN 25 mg + Caffeine 20 mg tab"] },
+              { name: "Cinnarizine", synonyms: ["Stugeron", "Vertigon"], dose: "25–50 mg oral", brands: ["STUGERON", "VERTIGON 25 mg and 75 mg tab"] },
+              { name: "Chlorpheniramine", synonyms: ["Piriton", "Cadistin"], dose: "2–4 mg (0.1 mg/kg) oral, i.m.", brands: ["PIRITON", "CADISTIN 4 mg tab"] },
+              { name: "Dexchlorpheniramine", synonyms: ["Polaramine"], dose: "2 mg oral", brands: ["POLARAMINE 2 mg tab, 0.5 mg/5 ml syrup"] },
+              { name: "Triprolidine", synonyms: ["Actidil"], dose: "2.5–5 mg oral", brands: ["ACTIDIL 2.5 mg tab"] },
+              { name: "Clemastine", synonyms: ["Tavegyl"], dose: "1–2 mg oral", brands: ["TAVEGYL 1 mg tab, 0.5 mg/5 ml syr"] }
+            ]
+          },
+          {
+            name: "Second Generation (Non-sedating) Antihistamines",
+            drugs: [
+              { name: "Fexofenadine", synonyms: ["Allegra", "Altiva"], dose: "120–180 mg oral", brands: ["ALLEGRA", "ALTIVA", "FEXO 120 mg, 180 mg tab"] },
+              { name: "Loratadine", synonyms: ["Claritin", "Lorfast"], dose: "10 mg oral", brands: ["LORFAST", "LORIDIN", "LORMEG 10 mg tab, 1 mg/ml susp"] },
+              { name: "Desloratadine", synonyms: ["Aerius", "Deslor"], dose: "5 mg oral", brands: ["DESLOR", "LORDAY", "NEOLORIDIN 5 mg tab"] },
+              { name: "Cetirizine", synonyms: ["Zyrtec", "Alerid"], dose: "10 mg oral", brands: ["ALERID", "CETZINE", "ZIRTIN", "SIZON 10 mg tab"] },
+              { name: "Levocetirizine", synonyms: ["Xyzal", "Levorid"], dose: "5–10 mg oral", brands: ["LEVORID", "LEVOSIZ"] },
+              { name: "Mizolastine", synonyms: ["Elina"], dose: "10 mg oral", brands: ["ELINA 10 mg tab"] },
+              { name: "Ebastine", synonyms: ["Ebast"], dose: "10 mg oral", brands: ["EBAST 10 mg tab"] },
+              { name: "Rupatadine", synonyms: ["Rupahist"], dose: "10 mg oral", brands: ["RUPAHIST 10 mg tab"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "2c",
+        name: "5-HT Antagonists",
+        synonyms: ["Serotonin Antagonists", "5-Hydroxytryptamine Antagonists"],
+        description: "Serotonin receptor antagonists encompass 5-HT2 blockers (cyproheptadine, methysergide) relevant to carcinoid and migraine, and 5-HT3 antagonists (ondansetron class) that are first-line antiemetics for chemotherapy- and radiotherapy-induced nausea and vomiting.",
+        subgroups: [
+          {
+            name: "5-HT3 Antagonists (Antiemetics)",
+            drugs: [
+              { name: "Ondansetron", synonyms: ["Zofran", "Emeset"], dose: "8 mg oral/i.v. BD–TDS", brands: ["EMESET", "ONDANSET", "ZOFRAN 4, 8 mg tab"] },
+              { name: "Granisetron", synonyms: ["Kytril"], dose: "1–2 mg oral; 10 µg/kg i.v.", brands: ["GRANICIP 1 mg tab, 1 mg/ml inj"] },
+              { name: "Tropisetron", synonyms: [], dose: "5 mg oral/i.v.", brands: [] },
+              { name: "Palonosetron", synonyms: ["Aloxi"], dose: "0.25 mg i.v.", brands: [] }
+            ]
+          },
+          {
+            name: "5-HT2 Antagonists",
+            drugs: [
+              { name: "Methysergide", synonyms: [], dose: "1–2 mg TDS (migraine prophylaxis)", brands: [] },
+              { name: "Cyproheptadine", synonyms: ["Practin"], dose: "4 mg TDS", brands: ["PRACTIN 4 mg tab"] },
+              { name: "Ketanserin", synonyms: [], dose: "20–40 mg BD", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "2d",
+        name: "Drugs for Migraine",
+        synonyms: ["Antimigraine Drugs", "Migraine Treatments"],
+        description: "Migraine pharmacology encompasses abortive agents — serotonin 5-HT1B/1D receptor agonists (triptans), ergot alkaloids, and CGRP receptor antagonists (gepants) — alongside preventive strategies using beta-blockers, anticonvulsants, antidepressants, and monoclonal antibodies targeting the CGRP pathway.",
+        subgroups: [
+          {
+            name: "Acute Treatment — Ergot Alkaloids",
+            drugs: [
+              { name: "Ergotamine", synonyms: ["Ergotamine tartrate", "Migril"], dose: "1 mg oral/sublingual, repeat as required (max 6 mg)", brands: ["ERGOTAMINE 1 mg tab", "MIGRIL (2mg+caffeine 100mg+cyclizine 50mg)"] },
+              { name: "Dihydroergotamine", synonyms: ["DHE", "Migranil"], dose: "2–6 mg oral (max 10 mg/day), 0.5–1.0 mg i.m., s.c.", brands: ["DHE 1 mg tab", "MIGRANIL 1 mg/ml inj"] }
+            ]
+          },
+          {
+            name: "Acute Treatment — Triptans (5-HT1B/1D Agonists)",
+            drugs: [
+              { name: "Sumatriptan", synonyms: ["Imigran", "Suminat"], dose: "6 mg s.c., 50–100 mg oral; may repeat once within 24 hr", brands: ["SUMINAT", "SUMITREX 25, 50, 100 mg tabs", "MIGRATAN 50, 100 mg tabs"] },
+              { name: "Rizatriptan", synonyms: ["Maxalt", "Rizact"], dose: "5–10 mg at onset, may repeat after 2 hours", brands: ["RIZACT", "RIZATAN 5, 10 mg tabs"] },
+              { name: "Naratriptan", synonyms: ["Amerge"], dose: "2.5 mg oral", brands: [] },
+              { name: "Zolmitriptan", synonyms: ["Zomig"], dose: "2.5–5 mg oral", brands: [] }
+            ]
+          },
+          {
+            name: "Prophylaxis",
+            drugs: [
+              { name: "Flunarizine", synonyms: ["Nomigrain", "Flunarin"], dose: "10–20 mg OD, children 5 mg OD", brands: ["NOMIGRAIN", "FLUNARIN 5, 10 mg caps/tab"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "2e",
+        name: "Prostaglandins",
+        synonyms: ["PGs", "Eicosanoids", "Prostanoids"],
+        description: "Eicosanoid pharmacology encompasses prostaglandin analogues with diverse clinical applications — uterotonic agents (dinoprostone, carboprost, misoprostol) for induction of labour and management of postpartum haemorrhage; misoprostol as a gastric mucosal protective agent; alprostadil for erectile dysfunction and patent ductus arteriosus; and prostacyclin analogues for pulmonary arterial hypertension.",
+        subgroups: [
+          {
+            name: "Prostaglandins",
+            drugs: [
+              { name: "Dinoprostone (PGE2)", synonyms: ["Prostin E2", "Primiprost"], dose: "Vaginal gel 1–2 mg; cervical gel 0.5 mg", brands: ["PROSTIN-E2 vaginal gel", "CERVIPRIME 0.5 mg prefilled syringe"] },
+              { name: "Gemeprost", synonyms: ["Cervagem"], dose: "1 mg vaginal pessary every 3 hours (max 5 doses)", brands: ["CERVAGEM 1 mg vaginal pessary"] },
+              { name: "Dinoprost (PGF2α)", synonyms: ["Prostin F Alpha"], dose: "5 mg/ml intraamniotic injection for midterm abortion", brands: ["PROSTIN F ALPHA 5 mg/ml inj"] },
+              { name: "Carboprost (15-methyl PGF2α)", synonyms: ["Prostodin"], dose: "0.25 mg i.m. every 30–120 min for PPH/midterm abortion", brands: ["PROSTODIN 0.25 mg/ml amp"] },
+              { name: "Misoprostol", synonyms: ["Cytolog", "Misoprost"], dose: "200 µg oral 6 hourly", brands: ["CYTOLOG 200 µg tab", "MISOPROST 100, 200 µg tab"] },
+              { name: "Alprostadil (PGE1)", synonyms: [], dose: "For impotence: 5–40 µg intracavernosal; for patent ductus arteriosus: 0.05–0.1 µg/kg/min i.v.", brands: [] },
+              { name: "Epoprostenol (PGI2)", synonyms: ["Prostacyclin", "Flolan"], dose: "2–4 ng/kg/min i.v. infusion", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "2f",
+        name: "NSAIDs / Antipyretic Analgesics",
+        synonyms: ["Nonsteroidal Anti-inflammatory Drugs", "Non-opioid Analgesics", "Antipyretics"],
+        description: "Non-steroidal anti-inflammatory drugs act by inhibiting cyclo-oxygenase isoenzymes (COX-1 and COX-2), reducing prostaglandin and thromboxane synthesis. This produces analgesic, antipyretic, and anti-inflammatory effects. Selectivity for COX-2 reduces gastric adverse effects at the cost of increased cardiovascular risk. Paracetamol is a related analgesic-antipyretic with weak, centrally mediated COX inhibition.",
+        subgroups: [
+          {
+            name: "Non-selective COX Inhibitors — Salicylates",
+            drugs: [
+              { name: "Aspirin", synonyms: ["Acetylsalicylic acid", "Ecosprin", "Colsprin"], dose: "Anti-inflammatory: 3–5 g/day; Analgesic/antipyretic: 0.3–0.6 g 6–8 hourly; Antiplatelet: 75–150 mg/day", brands: ["ASPIRIN 350 mg tab", "ECOSPRIN 75, 150, 325 mg tabs", "COLSPRIN 100, 325 mg tabs", "LOPRIN 75, 162.5 mg tabs"] }
+            ]
+          },
+          {
+            name: "Non-selective COX Inhibitors — Propionic Acid Derivatives",
+            drugs: [
+              { name: "Ibuprofen", synonyms: ["Brufen", "Emflam"], dose: "400–600 mg (5–10 mg/kg) TDS", brands: ["BRUFEN", "EMFLAM", "IBUSYNTH 200, 400, 600 mg tab"] },
+              { name: "Naproxen", synonyms: ["Naprosyn", "Naxid"], dose: "250 mg BD–TDS", brands: ["NAPROSYN", "NAXID", "ARTAGEN 250 mg tab"] },
+              { name: "Ketoprofen", synonyms: ["Ketofen", "Rhofenid"], dose: "50–100 mg BD–TDS", brands: ["KETOFEN 50, 100 mg tab", "RHOFENID 100 mg tab, 200 mg SR tab"] },
+              { name: "Flurbiprofen", synonyms: ["Arflur", "Froben"], dose: "50 mg BD–QID", brands: ["ARFLUR 50, 100 mg tab", "OCUFLUR 0.03% eye drops"] }
+            ]
+          },
+          {
+            name: "Non-selective COX Inhibitors — Anthranilic Acid Derivatives",
+            drugs: [
+              { name: "Mefenamic acid", synonyms: ["Meftal", "Ponstan"], dose: "250–500 mg TDS", brands: ["MEFTAL 250, 500 mg tab", "PONSTAN 125, 250, 500 mg tab"] }
+            ]
+          },
+          {
+            name: "Non-selective COX Inhibitors — Acetic Acid Derivatives",
+            drugs: [
+              { name: "Diclofenac", synonyms: ["Voveran", "Voltaflam"], dose: "50–75 mg TDS oral; 75 mg deep i.m.", brands: ["VOVERAN", "DICLONAC", "MOVONAC 50 mg EC tab, 100 mg SR tab"] },
+              { name: "Aceclofenac", synonyms: ["Hifenac", "Zerodol"], dose: "100 mg BD", brands: ["HIFENAC", "ZERODOL 100 mg tab"] },
+              { name: "Indomethacin", synonyms: ["Indocap", "Idicin"], dose: "25–50 mg BD–QID", brands: ["IDICIN", "INDOCAP 25 mg cap, 75 mg SR cap"] },
+              { name: "Ketorolac", synonyms: ["Ketorol", "Ketanov"], dose: "10–20 mg oral 6 hourly; 15–30 mg i.m./i.v. 6 hourly", brands: ["KETOROL", "ZOROVON", "KETANOV 10 mg tab, 30 mg/ml amp"] },
+              { name: "Etodolac", synonyms: ["Etova", "Etogesic"], dose: "200–400 mg BD-TDS", brands: ["ETOVA 200, 300, 400 mg tabs", "ETOGESIC 400 mg tab"] }
+            ]
+          },
+          {
+            name: "Non-selective COX Inhibitors — Oxicams",
+            drugs: [
+              { name: "Piroxicam", synonyms: ["Feldene", "Dolonex"], dose: "20 mg OD", brands: [] },
+              { name: "Tenoxicam", synonyms: ["Tobitil"], dose: "20 mg OD", brands: ["TOBITIL 20 mg tab"] },
+              { name: "Meloxicam", synonyms: ["Melflam", "Muvik"], dose: "7.5–15 mg OD", brands: ["MELFLAM", "MEL-OD", "MUVIK 7.5 mg, 15 mg tabs"] }
+            ]
+          },
+          {
+            name: "Preferential COX-2 Inhibitors",
+            drugs: [
+              { name: "Nimesulide", synonyms: ["Nimulid", "Nimegesic"], dose: "100 mg BD", brands: ["NIMULID", "NIMEGESIC", "NIMODOL 100 mg tab, 50 mg/5 ml susp"] },
+              { name: "Nabumetone", synonyms: ["Nabuflam"], dose: "500 mg OD (max 500 mg BD)", brands: ["NABUFLAM 500 mg tab"] }
+            ]
+          },
+          {
+            name: "Selective COX-2 Inhibitors (Coxibs)",
+            drugs: [
+              { name: "Celecoxib", synonyms: ["Celact", "Colcibra"], dose: "100–200 mg BD", brands: ["CELACT", "COLCIBRA", "REVIBRA 100, 200 mg tabs"] },
+              { name: "Etoricoxib", synonyms: ["Nucoxia", "Etoxib"], dose: "60–120 mg OD", brands: ["TOROCOXIA", "ETOXIB", "ETOSHINE", "NUCOXIA 60, 90, 120 mg tabs"] },
+              { name: "Parecoxib", synonyms: ["Paroxib", "Revaldo"], dose: "40 mg oral/i.m./i.v. (max 80 mg/day)", brands: ["PAROXIB 40 mg tab", "REVALDO", "VALTO-P 40 mg/vial inj"] }
+            ]
+          },
+          {
+            name: "Aniline Derivatives (Analgesic-Antipyretic)",
+            drugs: [
+              { name: "Paracetamol", synonyms: ["Acetaminophen", "Crocin", "Metacin"], dose: "325–650 mg (children 10–15 mg/kg) 3–5 times a day", brands: ["CROCIN 0.5 g tab", "METACIN", "PARACIN 500 mg tab", "ULTRAGIN", "CALPOL 500"] },
+              { name: "Propyphenazone", synonyms: [], dose: "300–600 mg TDS", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "2g",
+        name: "Antirheumatoid Drugs",
+        synonyms: ["DMARDs", "Disease Modifying Anti-Rheumatic Drugs", "Slow Acting Antirheumatic Drugs"],
+        description: "Disease-modifying antirheumatic drugs (DMARDs) suppress the underlying inflammatory and immunological processes of rheumatoid arthritis. Conventional DMARDs (methotrexate, sulfasalazine, hydroxychloroquine) alter immune cell proliferation; biologic DMARDs target specific cytokines or immune cells; targeted synthetic DMARDs (JAK inhibitors) interfere with intracellular signalling.",
+        subgroups: [
+          {
+            name: "Conventional DMARDs",
+            drugs: [
+              { name: "Methotrexate", synonyms: ["MTX", "Neotrexate"], dose: "7.5–15 mg weekly oral", brands: ["NEOTREXATE", "BIOTREXATE 2.5 mg tab", "FOLITREX 2.5–15 mg tabs"] },
+              { name: "Azathioprine", synonyms: ["Imuran", "Azoran"], dose: "50–150 mg/day", brands: ["IMURAN", "AZORAN", "AZOPRINE 50 mg tab"] },
+              { name: "Sulfasalazine", synonyms: ["Salazopyrin", "Sazo"], dose: "1–3 g/day in 2–3 divided doses", brands: ["SALAZOPYRIN", "SAZO-EN 0.5 g tab"] },
+              { name: "Chloroquine", synonyms: ["Lariago", "Resochin"], dose: "150 mg (base) per day", brands: ["LARIAGO", "RESOCHIN 250 mg tab"] },
+              { name: "Hydroxychloroquine", synonyms: ["HCQ", "Plaquenil", "HCQS"], dose: "Initially 200 mg BD, then 200 mg OD maintenance", brands: ["ZHQUINE", "ZYQ", "HCQS 200 mg, 400 mg tabs"] },
+              { name: "Leflunomide", synonyms: ["Lefra", "Arava"], dose: "100 mg/day for 3 days loading, then 20 mg OD", brands: ["LEFRA 10 mg, 20 mg tabs"] }
+            ]
+          },
+          {
+            name: "Biological DMARDs (TNF-alpha blockers)",
+            drugs: [
+              { name: "Etanercept", synonyms: ["Enbrel", "Enbrol"], dose: "25–50 mg s.c. once or twice weekly", brands: ["ENBREL", "ENBROL 25 mg/0.5 ml and 50 mg/1 ml inj"] },
+              { name: "Infliximab", synonyms: ["Remicade"], dose: "3–5 mg/kg i.v. infusion", brands: [] },
+              { name: "Adalimumab", synonyms: ["Humira"], dose: "40 mg s.c. every 2 weeks", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "2h",
+        name: "Drugs for Gout",
+        synonyms: ["Antigout Drugs", "Uricosuric Agents", "Xanthine Oxidase Inhibitors"],
+        description: "Gout pharmacology addresses two distinct clinical phases. Acute attacks are managed with colchicine, NSAIDs, or corticosteroids to suppress crystal-induced inflammation. Long-term urate-lowering therapy uses xanthine oxidase inhibitors (allopurinol, febuxostat) to reduce uric acid production, uricosurics to enhance renal excretion, or recombinant uricase (pegloticase) for refractory disease.",
+        subgroups: [
+          {
+            name: "Drugs for Acute Gout",
+            drugs: [
+              { name: "Colchicine", synonyms: ["Zycolchin", "Goutnil"], dose: "0.5 mg 1–3 hourly (max 4 doses/day) for acute attack; 0.5–1.5 mg/day prophylaxis", brands: ["ZYCOLCHIN", "GOUTNIL 0.5 mg tab"] }
+            ]
+          },
+          {
+            name: "Uricosuric Drugs",
+            drugs: [
+              { name: "Probenecid", synonyms: ["Benemid"], dose: "0.25–0.5 g BD", brands: ["BENEMID", "BENCID 0.5 g tab"] }
+            ]
+          },
+          {
+            name: "Xanthine Oxidase Inhibitors",
+            drugs: [
+              { name: "Allopurinol", synonyms: ["Zyloric", "Zyloprim"], dose: "Start 100 mg OD, gradually increase to 300 mg/day (max 600 mg/day)", brands: ["ZYLORIC 100, 300 mg tabs", "ZYLOPRIM", "CIPLORIC 100 mg cap"] },
+              { name: "Febuxostat", synonyms: ["Fabulas", "Fabustat", "Zurig"], dose: "40–80 mg OD (max 120 mg/day)", brands: ["FABULAS", "FABUSTAT", "ZURIG 40, 80, 120 mg tabs"] }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: "Respiratory Pharmacology",
+    description: "A comprehensive grouping of agents used across the spectrum of airway and pulmonary diseases — from symptomatic cough management and bronchospasm to fibrotic lung conditions, cystic fibrosis, and severe biologic-responsive asthma.",
+    subclasses: [
+      {
+        id: "3a",
+        name: "Drugs for Cough",
+        synonyms: ["Antitussives", "Expectorants", "Mucolytics"],
+        description: "Cough therapeutics target different points in the reflex arc or the rheological properties of airway secretions. Opioid and non-opioid antitussives elevate the threshold for cough activation; expectorants increase bronchial secretion volume; mucolytics (acetylcysteine, ambroxol) reduce mucus viscosity to facilitate airway clearance.",
+        subgroups: [
+          {
+            name: "Expectorants",
+            drugs: [
+              { name: "Guaiphenesin", synonyms: ["Glyceryl guaiacolate"], dose: "100–200 mg TDS", brands: [] },
+              { name: "Ammonium chloride", synonyms: [], dose: "50–200 mg TDS", brands: [] },
+              { name: "Potassium citrate/Sodium citrate", synonyms: [], dose: "0.3–1.0 g TDS", brands: [] },
+              { name: "Vasaka syrup", synonyms: ["Adhatoda vasica"], dose: "2–4 ml TDS", brands: [] }
+            ]
+          },
+          {
+            name: "Mucolytics",
+            drugs: [
+              { name: "Bromhexine", synonyms: [], dose: "8 mg TDS; child 1–5 yr 4 mg BD, 5–10 yr 4 mg TDS", brands: ["BROMHEXINE 8 mg tab, 4 mg/5 ml elixir"] },
+              { name: "Ambroxol", synonyms: ["Ambril", "Ambrodil", "Mucolite"], dose: "15–30 mg TDS", brands: ["AMBRIL", "AMBRODIL", "MUCOLITE 30 mg tab", "ACOCONTIN 75 mg CR tab"] },
+              { name: "Carbocisteine", synonyms: ["Mucodyne"], dose: "250–750 mg TDS", brands: ["MUCODYNE 375 mg cap, 250 mg/5 ml syr"] },
+              { name: "Acetylcysteine", synonyms: ["NAC", "Fluimucil"], dose: "200–600 mg oral TDS; also by inhalation", brands: ["FLUIMUCIL 200, 600 mg effervescent tab", "MUCOTAB 600 mg tab", "MUCOMIX 200 mg/ml inj"] }
+            ]
+          },
+          {
+            name: "Opioid Antitussives",
+            drugs: [
+              { name: "Codeine", synonyms: ["Codine"], dose: "15–30 mg TDS; children 2–6 yr 7.5 mg, 6–12 yr 15 mg", brands: ["CODINE 15 mg tab, 15 mg/5 ml linctus"] },
+              { name: "Ethylmorphine", synonyms: ["Dionindon"], dose: "10–30 mg TDS", brands: ["DIONINDON 16 mg tab"] },
+              { name: "Pholcodine", synonyms: [], dose: "10–15 mg BD–TDS", brands: [] }
+            ]
+          },
+          {
+            name: "Non-opioid Antitussives",
+            drugs: [
+              { name: "Noscapine", synonyms: ["Coscopin"], dose: "15–30 mg; children 2–6 yr 7.5 mg, 6–12 yr 15 mg", brands: ["COSCOPIN 7 mg/5 ml syrup", "COSCOTABS 25 mg tab"] },
+              { name: "Dextromethorphan", synonyms: ["DXM"], dose: "10–20 mg TDS; child 2–6 yr 2.5–5 mg, 6–10 yr 5–10 mg", brands: [] },
+              { name: "Chlophedianol", synonyms: [], dose: "20–40 mg BD–TDS", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "3b",
+        name: "Drugs for Bronchial Asthma",
+        synonyms: ["Antiasthmatic Drugs", "Bronchodilators", "Anti-asthma Drugs"],
+        description: "Asthma pharmacotherapy is guided by airway inflammation and bronchospasm as concurrent pathological processes. Short-acting β2 agonists provide rapid bronchodilation; long-acting β2 agonists and anticholinergics sustain bronchodilation; inhaled corticosteroids are the cornerstone of anti-inflammatory maintenance; and leukotriene receptor antagonists, mast cell stabilisers, and biological agents address specific inflammatory endotypes.",
+        subgroups: [
+          {
+            name: "Short-acting β2 Agonists (SABAs)",
+            drugs: [
+              { name: "Salbutamol", synonyms: ["Albuterol", "Asthalin", "Ventorlin"], dose: "2–4 mg oral; 100–200 µg by inhalation; 0.25–0.5 mg i.m./s.c.", brands: ["ASTHALIN 2, 4 mg tab", "VENTORLIN 2 mg/5 ml syr", "DERIHALER 100 µg/MDI"] },
+              { name: "Terbutaline", synonyms: ["Bricanyl", "Bricarex"], dose: "5 mg oral; 0.25 mg s.c.; 250 µg by inhalation", brands: ["TERBUTALINE", "BRICAREX 2.5, 5 mg tab", "BRICANYL 0.5 mg/ml inj"] }
+            ]
+          },
+          {
+            name: "Long-acting β2 Agonists (LABAs)",
+            drugs: [
+              { name: "Salmeterol", synonyms: ["Salmeter", "Serobid"], dose: "50–100 µg by inhalation", brands: ["SALMETER", "SEROBID 25 µg/puff MDI; SEROBID ROTACAPS 50 µg"] },
+              { name: "Formoterol", synonyms: ["Foratec", "Oxis"], dose: "12–24 µg by inhalation twice daily", brands: ["FORATEC 12 µg rotacaps"] },
+              { name: "Bambuterol", synonyms: ["Bambudil", "Betaday"], dose: "10–20 mg oral OD in the evening", brands: ["BAMBUDIL 10, 20 mg tabs", "BETADAY 10, 20 mg tabs"] }
+            ]
+          },
+          {
+            name: "Methylxanthines",
+            drugs: [
+              { name: "Theophylline", synonyms: ["Theolong", "Unicontin"], dose: "100–300 mg TDS (15 mg/kg/day)", brands: ["THEOLONG 100, 200 mg SR cap", "UNICONTIN 400, 600 mg CR tabs"] },
+              { name: "Aminophylline", synonyms: ["Theophylline-ethylenediamine"], dose: "250–500 mg slow i.v.; 100–300 mg oral TDS", brands: [] },
+              { name: "Doxophylline", synonyms: ["Doxoril", "Doxovent"], dose: "400 mg OD-BD", brands: ["DOXORIL", "DOXOBID", "DOXOVENT 400 mg tab"] }
+            ]
+          },
+          {
+            name: "Anticholinergics",
+            drugs: [
+              { name: "Ipratropium bromide", synonyms: ["Ipravent", "Atrovent"], dose: "40–80 µg by inhalation; 250 µg/ml respirator soln", brands: ["IPRAVENT 20 µg/puff MDI"] },
+              { name: "Tiotropium bromide", synonyms: ["Tiova", "Spiriva"], dose: "18 µg by inhalation OD", brands: ["TIOVA 18 µg rotacaps"] }
+            ]
+          },
+          {
+            name: "Leukotriene Antagonists",
+            drugs: [
+              { name: "Montelukast", synonyms: ["Montair", "Ventair"], dose: "10 mg OD adults; children 2–5 yr 4 mg OD, 6–14 yr 5 mg OD", brands: ["EMLUCAST", "MONTAIR", "VENTAIR 4, 5, 10 mg tabs"] },
+              { name: "Zafirlukast", synonyms: ["Zuvair"], dose: "20 mg BD adults; children 5–11 yr 10 mg BD", brands: ["ZUVAIR 10, 20 mg tabs"] }
+            ]
+          },
+          {
+            name: "Mast Cell Stabilisers",
+            drugs: [
+              { name: "Sodium cromoglycate", synonyms: ["Cromolyn", "Intal"], dose: "2–10 mg by inhalation 3–4 times a day", brands: ["FINTAL inhaler 1 mg MDI", "CROMAL-5 INHALER 5 mg MDI"] },
+              { name: "Ketotifen", synonyms: ["Asthafen", "Ketovent"], dose: "1–2 mg BD; children 0.5 mg BD", brands: ["ASTHAFEN 1 mg tab, 1 mg/5 ml syrup", "KETOVENT 1 mg tab"] }
+            ]
+          },
+          {
+            name: "Inhaled Corticosteroids (ICS)",
+            drugs: [
+              { name: "Beclomethasone dipropionate", synonyms: ["Becotide", "Becoride"], dose: "Initially 100–200 µg BD by inhalation, up to 400 µg QID", brands: ["BECORIDE 50, 100, 250 µg/puff inhaler", "AEROCORT INHALER"] },
+              { name: "Budesonide", synonyms: ["Budecort", "Rhinocort"], dose: "200–400 µg BD–QID by inhalation", brands: ["RHINOCORT", "BUDENASE AQ nasal spray", "FORCORT rotacaps"] },
+              { name: "Fluticasone propionate", synonyms: ["Flohale", "Flomist"], dose: "100–250 µg BD (max 1000 µg/day) by inhalation", brands: ["FLOHALE INHALER 25, 50, 125 µg/actuation", "FLOMIST 50 µg nasal spray"] },
+              { name: "Ciclesonide", synonyms: ["Ciclez"], dose: "80–160 µg by inhalation OD in the evening", brands: ["CICLEZ 80, 160 µg/MDI"] }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: "Endocrine Pharmacology and Hormonal Agents",
+    description: "Covers the pharmacology of endogenous hormones and their synthetic counterparts, encompassing pituitary, thyroid, adrenocortical, pancreatic (insulin and incretin), gonadal, and bone-regulating agents, alongside newer metabolic therapies for diabetes and obesity.",
+    subclasses: [
+      {
+        id: "4a",
+        name: "Anterior Pituitary Hormones",
+        synonyms: ["Adenohypophyseal Hormones", "Pituitary Trophic Hormones"],
+        description: "The anterior pituitary secretes trophic hormones that regulate peripheral endocrine glands. Recombinant preparations of growth hormone, gonadotrophins (FSH, LH, hCG), thyrotrophin, and corticotrophin are used therapeutically in deficiency states, infertility treatment, and diagnostic stimulation testing.",
+        subgroups: [
+          {
+            name: "Growth Hormone",
+            drugs: [
+              { name: "Somatropin", synonyms: ["Genotropin", "Norditropin", "Humatrope"], dose: "0.17–0.3 mg/kg/week s.c. in children", brands: ["GENOTROPIN", "NORDITROPIN"] }
+            ]
+          },
+          {
+            name: "Gonadotropins",
+            drugs: [
+              { name: "FSH (Follicle stimulating hormone)", synonyms: ["Gonal-F", "Puregon"], dose: "75–450 IU s.c./i.m. daily", brands: ["GONAL-F", "PUREGON"] },
+              { name: "LH (Luteinizing hormone)", synonyms: ["Lutropin alfa"], dose: "75 IU s.c. daily", brands: [] },
+              { name: "HCG (Human chorionic gonadotropin)", synonyms: ["Choriogonadotropin", "Profasi"], dose: "5000–10000 IU i.m.", brands: ["PROFASI"] }
+            ]
+          },
+          {
+            name: "Thyroid Stimulating Hormone",
+            drugs: [
+              { name: "TSH (Thyrotropin alfa)", synonyms: ["Thyrogen"], dose: "0.9 mg i.m. for two consecutive days", brands: ["THYROGEN"] }
+            ]
+          },
+          {
+            name: "ACTH",
+            drugs: [
+              { name: "Corticotropin", synonyms: ["ACTH", "Acthar"], dose: "25–80 units i.m./s.c.", brands: [] },
+              { name: "Tetracosactide", synonyms: ["Synacthen"], dose: "250 µg i.m./i.v.", brands: ["SYNACTHEN"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "4b",
+        name: "Thyroid Hormones and Inhibitors",
+        synonyms: ["Thyroid Drugs", "Antithyroid Drugs"],
+        description: "Thyroid pharmacology encompasses replacement therapy with levothyroxine (T4) or liothyronine (T3) for hypothyroid states, and suppressive therapy for hyperthyroidism using thionamide antithyroid drugs (carbimazole, propylthiouracil) that block organification of iodine, iodide-based preparations to reduce thyroid vascularity pre-operatively, or radioiodine (¹³¹I) for ablative treatment.",
+        subgroups: [
+          {
+            name: "Thyroid Hormones",
+            drugs: [
+              { name: "Thyroxine (T4)", synonyms: ["Levothyroxine", "Eltroxin", "Thyronorm"], dose: "50–200 µg/day oral", brands: ["ELTROXIN", "THYRONORM 25, 50, 75, 88, 100 µg tabs"] },
+              { name: "Liothyronine (T3)", synonyms: ["Triiodothyronine"], dose: "25–100 µg/day oral", brands: [] }
+            ]
+          },
+          {
+            name: "Antithyroid Drugs",
+            drugs: [
+              { name: "Propylthiouracil", synonyms: ["PTU"], dose: "200–600 mg/day in 3 divided doses", brands: ["PROPYCIL 50 mg tab"] },
+              { name: "Carbimazole", synonyms: ["Neomercazole"], dose: "15–60 mg/day initially, then 5–10 mg/day", brands: ["NEOMERCAZOLE 5, 10, 20 mg tabs"] },
+              { name: "Methimazole", synonyms: ["Thiamazole", "Thyrozol"], dose: "10–40 mg/day", brands: [] }
+            ]
+          },
+          {
+            name: "Iodine and Iodides",
+            drugs: [
+              { name: "Lugol's iodine", synonyms: ["Potassium iodide solution"], dose: "0.1–0.3 ml TDS before thyroid surgery", brands: [] },
+              { name: "Radioactive iodine (131I)", synonyms: ["Sodium iodide 131I"], dose: "4–15 mCi for hyperthyroidism", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "4c",
+        name: "Insulins and Oral Antidiabetics",
+        synonyms: ["Antidiabetic Drugs", "Hypoglycemic Agents"],
+        description: "Antidiabetic pharmacology is diverse, encompassing insulin preparations of varying pharmacokinetic profiles, sulfonylureas and meglitinides that stimulate insulin secretion, biguanides (metformin) that reduce hepatic glucose output, incretin-based agents (DPP-4 inhibitors, GLP-1 receptor agonists), SGLT-2 inhibitors that promote renal glucose excretion, thiazolidinediones that improve insulin sensitivity, and alpha-glucosidase inhibitors that retard carbohydrate absorption.",
+        subgroups: [
+          {
+            name: "Rapid/Short-acting Insulins",
+            drugs: [
+              { name: "Regular insulin", synonyms: ["Neutral insulin", "Actrapid"], dose: "Individualized; usual 20–40 units/day s.c.", brands: ["ACTRAPID", "HUMINSULIN R", "INSUMAN RAPID"] },
+              { name: "Insulin lispro", synonyms: ["Humalog"], dose: "Individualized; inject 15 min before meals", brands: ["HUMALOG"] },
+              { name: "Insulin aspart", synonyms: ["Novorapid"], dose: "Individualized; inject immediately before meals", brands: ["NOVORAPID"] }
+            ]
+          },
+          {
+            name: "Intermediate/Long-acting Insulins",
+            drugs: [
+              { name: "NPH insulin", synonyms: ["Isophane insulin", "Insulatard"], dose: "Individualized", brands: ["INSULATARD", "HUMINSULIN N"] },
+              { name: "Insulin glargine", synonyms: ["Lantus"], dose: "Once daily s.c.", brands: ["LANTUS"] },
+              { name: "Insulin detemir", synonyms: ["Levemir"], dose: "Once or twice daily s.c.", brands: ["LEVEMIR"] }
+            ]
+          },
+          {
+            name: "Sulfonylureas",
+            drugs: [
+              { name: "Tolbutamide", synonyms: [], dose: "0.5–2 g/day in divided doses", brands: [] },
+              { name: "Glibenclamide", synonyms: ["Glyburide", "Daonil"], dose: "2.5–15 mg OD-BD", brands: ["DAONIL", "GLYNASE 2.5, 5 mg tab"] },
+              { name: "Glipizide", synonyms: ["Glucotrol"], dose: "2.5–20 mg OD-BD", brands: ["GLIPIZIDE 5, 10 mg tabs"] },
+              { name: "Gliclazide", synonyms: ["Diamicron", "Glycomet-G"], dose: "40–320 mg/day", brands: ["DIAMICRON 80 mg tab"] },
+              { name: "Glimepiride", synonyms: ["Amaryl", "Glimpid"], dose: "1–6 mg OD", brands: ["AMARYL", "GLIMPID 1, 2, 3, 4 mg tabs"] }
+            ]
+          },
+          {
+            name: "Biguanides",
+            drugs: [
+              { name: "Metformin", synonyms: ["Glycomet", "Glucophage"], dose: "500–2000 mg/day in 2–3 doses with meals", brands: ["GLYCOMET", "GLUCOPHAGE 500, 850, 1000 mg tabs"] }
+            ]
+          },
+          {
+            name: "Thiazolidinediones",
+            drugs: [
+              { name: "Pioglitazone", synonyms: ["Actos", "Pioglit"], dose: "15–45 mg OD", brands: ["ACTOS", "PIOGLIT 15, 30, 45 mg tabs"] }
+            ]
+          },
+          {
+            name: "DPP-4 Inhibitors (Gliptins)",
+            drugs: [
+              { name: "Sitagliptin", synonyms: ["Januvia", "Zita"], dose: "100 mg OD", brands: ["JANUVIA", "ZITA 100 mg tab"] },
+              { name: "Vildagliptin", synonyms: ["Galvus", "Zomelis"], dose: "50 mg BD", brands: ["GALVUS", "ZOMELIS 50 mg tab"] },
+              { name: "Saxagliptin", synonyms: ["Onglyza"], dose: "5 mg OD", brands: ["ONGLYZA 5 mg tab"] }
+            ]
+          },
+          {
+            name: "GLP-1 Agonists",
+            drugs: [
+              { name: "Exenatide", synonyms: ["Byetta", "Bydureon"], dose: "5–10 µg s.c. BD", brands: ["BYETTA"] },
+              { name: "Liraglutide", synonyms: ["Victoza"], dose: "0.6–1.8 mg s.c. OD", brands: ["VICTOZA"] }
+            ]
+          },
+          {
+            name: "SGLT-2 Inhibitors",
+            drugs: [
+              { name: "Dapagliflozin", synonyms: ["Farxiga", "Forxiga"], dose: "10 mg OD", brands: ["FORXIGA 10 mg tab"] },
+              { name: "Canagliflozin", synonyms: ["Invokana"], dose: "100–300 mg OD", brands: ["INVOKANA"] },
+              { name: "Empagliflozin", synonyms: ["Jardiance"], dose: "10–25 mg OD", brands: ["JARDIANCE"] }
+            ]
+          },
+          {
+            name: "Alpha-Glucosidase Inhibitors",
+            drugs: [
+              { name: "Acarbose", synonyms: ["Glucobay"], dose: "25–100 mg TDS with meals", brands: ["GLUCOBAY 25, 50 mg tab"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "4d",
+        name: "Corticosteroids",
+        synonyms: ["Glucocorticoids", "Adrenocortical Steroids", "Steroids"],
+        description: "Glucocorticoids exert powerful anti-inflammatory and immunosuppressive effects through genomic and non-genomic mechanisms. They are classified by biological half-life — short-acting (cortisol), intermediate (prednisolone, methylprednisolone, triamcinolone), and long-acting (dexamethasone, betamethasone). Clinical applications range from physiological replacement in adrenal insufficiency to pharmacological immunosuppression in a wide range of inflammatory and autoimmune conditions.",
+        subgroups: [
+          {
+            name: "Short-acting Glucocorticoids",
+            drugs: [
+              { name: "Cortisol (Hydrocortisone)", synonyms: ["Efcortesol", "Solu-Cortef"], dose: "Physiological: 20–30 mg/day; pharmacological up to several grams/day", brands: ["EFCORTESOL 100 mg/vial inj"] }
+            ]
+          },
+          {
+            name: "Intermediate-acting Glucocorticoids",
+            drugs: [
+              { name: "Prednisolone", synonyms: ["Wysolone", "Delta-Cortef"], dose: "5–60 mg/day oral", brands: ["WYSOLONE 5, 10, 20, 40 mg tabs"] },
+              { name: "Methylprednisolone", synonyms: ["Medrol", "Solu-Medrol"], dose: "4–48 mg/day oral; 125–500 mg i.v.", brands: ["MEDROL 4, 8, 16 mg tabs", "SOLU-MEDROL inj"] },
+              { name: "Triamcinolone", synonyms: ["Kenacort"], dose: "4–48 mg/day", brands: ["KENACORT 4, 8 mg tabs"] }
+            ]
+          },
+          {
+            name: "Long-acting Glucocorticoids",
+            drugs: [
+              { name: "Dexamethasone", synonyms: ["Decadron", "Dexona"], dose: "0.75–9 mg/day oral; 4–20 mg i.v./i.m.", brands: ["DEXONA 0.5, 0.75, 4 mg tabs, 4 mg/ml inj"] },
+              { name: "Betamethasone", synonyms: ["Celestone", "Betnesol"], dose: "0.5–8 mg/day", brands: ["BETNESOL 0.5 mg tab, 4 mg/ml inj"] }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 5,
+    title: "Peripheral Nervous System and Neuromuscular Pharmacology",
+    description: "This section addresses agents that modulate transmission at the neuromuscular junction and peripheral sensory nerves — neuromuscular blockers used in surgical anaesthesia and local anaesthetic compounds that reversibly suppress nerve conduction.",
+    subclasses: [
+      {
+        id: "5a",
+        name: "Skeletal Muscle Relaxants",
+        synonyms: ["Neuromuscular Blocking Drugs", "Muscle Relaxants", "NMBAs"],
+        description: "Skeletal muscle relaxants used in anaesthesia include non-depolarising (competitive) neuromuscular blockers that antagonise acetylcholine at the motor end-plate, and the depolarising agent succinylcholine that causes transient muscle fasciculation followed by flaccid paralysis. Centrally acting spasmolytic drugs reduce spasticity through mechanisms in the spinal cord and supraspinal centres.",
+        subgroups: [
+          {
+            name: "Non-depolarizing (Competitive) Blockers",
+            drugs: [
+              { name: "d-Tubocurarine", synonyms: ["Curare", "Tubocurarine"], dose: "Historical use", brands: [] },
+              { name: "Pancuronium", synonyms: ["Pavulon"], dose: "0.06–0.1 mg/kg i.v.", brands: [] },
+              { name: "Vecuronium", synonyms: ["Norcuron"], dose: "0.08–0.1 mg/kg i.v.", brands: ["NORCURON"] },
+              { name: "Atracurium", synonyms: ["Tracrium"], dose: "0.3–0.6 mg/kg i.v.", brands: ["TRACRIUM"] },
+              { name: "Rocuronium", synonyms: ["Zemuron"], dose: "0.6–1.2 mg/kg i.v.", brands: [] },
+              { name: "Cisatracurium", synonyms: ["Nimbex"], dose: "0.15–0.2 mg/kg i.v.", brands: [] },
+              { name: "Mivacurium", synonyms: ["Mivacron"], dose: "0.15–0.25 mg/kg i.v.", brands: [] }
+            ]
+          },
+          {
+            name: "Depolarizing Blockers",
+            drugs: [
+              { name: "Succinylcholine", synonyms: ["Suxamethonium", "Scoline"], dose: "1–1.5 mg/kg i.v.", brands: ["SCOLINE", "SUCCINYLCHOLINE 50 mg/ml inj"] }
+            ]
+          },
+          {
+            name: "Centrally Acting Muscle Relaxants",
+            drugs: [
+              { name: "Methocarbamol", synonyms: ["Robaxin"], dose: "750–1500 mg QID", brands: [] },
+              { name: "Carisoprodol", synonyms: ["Soma"], dose: "350 mg QID", brands: ["SOMA 350 mg tab"] },
+              { name: "Chlorzoxazone", synonyms: ["Parafon"], dose: "250–750 mg TDS-QID", brands: ["LORZONE", "MUSCOL 250 mg tab"] },
+              { name: "Baclofen", synonyms: ["Lioresal"], dose: "5 mg TDS, up to 80 mg/day", brands: ["LIORESAL 10 mg tab"] },
+              { name: "Tizanidine", synonyms: ["Zanaflex", "Tizan"], dose: "2–4 mg TDS", brands: ["TIZAN 2, 4 mg tabs"] },
+              { name: "Dantrolene", synonyms: ["Dantrium"], dose: "25–100 mg QID (spasticity); 1 mg/kg rapidly i.v. (malignant hyperthermia)", brands: [] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "5b",
+        name: "Local Anaesthetics",
+        synonyms: ["Local Anesthetics", "Regional Anesthetics", "Nerve Block Agents"],
+        description: "Local anaesthetics stabilise the nerve membrane by occupying voltage-gated sodium channels in their inactivated state, preventing depolarisation and impulse propagation. Esters (procaine, tetracaine) are hydrolysed by plasma cholinesterases; amides (lidocaine, bupivacaine, ropivacaine) undergo hepatic metabolism. Duration, potency, and toxicity profile guide clinical selection for infiltration, regional nerve block, spinal, and epidural anaesthesia.",
+        subgroups: [
+          {
+            name: "Esters",
+            drugs: [
+              { name: "Cocaine", synonyms: [], dose: "4–10% topically", brands: [] },
+              { name: "Benzocaine", synonyms: [], dose: "Topical use only", brands: [] },
+              { name: "Procaine", synonyms: ["Novocaine"], dose: "0.5–2% infiltration", brands: [] },
+              { name: "Tetracaine", synonyms: ["Amethocaine", "Pontocaine"], dose: "0.5% eye drops; spinal 5–20 mg", brands: [] },
+              { name: "Chloroprocaine", synonyms: ["Nesacaine"], dose: "1–3% epidural", brands: [] }
+            ]
+          },
+          {
+            name: "Amides",
+            drugs: [
+              { name: "Lidocaine", synonyms: ["Lignocaine", "Xylocaine", "Xylox"], dose: "1–2% infiltration; 2–4% topical; 1.5–5% spinal", brands: ["XYLOCAINE", "XYLOX 2% inj"] },
+              { name: "Bupivacaine", synonyms: ["Marcaine", "Anawin"], dose: "0.25–0.75% (epidural/spinal); max 2 mg/kg", brands: ["MARCAINE", "ANAWIN 0.25%, 0.5% inj"] },
+              { name: "Ropivacaine", synonyms: ["Ropin", "Naropin"], dose: "0.2–1% epidural; max 3 mg/kg", brands: ["NAROPIN", "ROPIN 0.2%, 0.75%, 1% inj"] },
+              { name: "Mepivacaine", synonyms: ["Carbocaine"], dose: "1–2% infiltration", brands: [] },
+              { name: "Levobupivacaine", synonyms: ["Chirocaine"], dose: "0.25–0.75% epidural", brands: [] },
+              { name: "Prilocaine", synonyms: ["Citanest"], dose: "1–4% infiltration", brands: [] }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 6,
+    title: "Central Nervous System Pharmacology",
+    description: "Central nervous system pharmacology spans a wide therapeutic range — from general anaesthesia, sedation, and analgesia to the management of epilepsy, movement disorders, psychiatric conditions, cognitive decline, sleep disorders, and emerging neurological diseases.",
+    subclasses: [
+      { id: "6a", name: "General Anaesthetics", synonyms: ["Inhalational Anaesthetics", "Intravenous Anaesthetics"], description: "Drugs producing reversible loss of consciousness and insensibility to pain.", subgroups: [{ name: "Inhalational Agents", drugs: [{ name: "Halothane", synonyms: ["Fluothane"], dose: "0.5–2% for maintenance", brands: [] }, { name: "Isoflurane", synonyms: ["Forane"], dose: "0.5–3% for maintenance", brands: ["FORANE"] }, { name: "Sevoflurane", synonyms: ["Ultane"], dose: "1–4% for maintenance", brands: ["ULTANE"] }, { name: "Desflurane", synonyms: ["Suprane"], dose: "2–9% for maintenance", brands: [] }, { name: "Nitrous oxide", synonyms: ["Laughing gas", "N2O"], dose: "50–70% in oxygen", brands: [] }] }, { name: "Intravenous Agents", drugs: [{ name: "Thiopental sodium", synonyms: ["Pentothal", "Thiopentone"], dose: "3–5 mg/kg i.v.", brands: [] }, { name: "Propofol", synonyms: ["Diprivan", "Propofol"], dose: "1.5–2.5 mg/kg i.v. induction", brands: ["DIPRIVAN", "PROPOFAST"] }, { name: "Etomidate", synonyms: ["Amidate"], dose: "0.2–0.3 mg/kg i.v.", brands: ["ETOMIDATE-LIPURO"] }, { name: "Ketamine", synonyms: ["Ketaject", "Ketalar"], dose: "1–2 mg/kg i.v.; 6–10 mg/kg i.m.", brands: ["KETALAR"] }] }] },
+      { id: "6b", name: "Sedative-Hypnotic Drugs", synonyms: ["Hypnotics", "Sedatives", "Sleep Aids"], description: "Drugs that produce sedation in low doses and sleep in higher doses.", subgroups: [{ name: "Benzodiazepines", drugs: [{ name: "Diazepam", synonyms: ["Valium", "Calmpose"], dose: "2–10 mg oral TDS-QID; 5–20 mg i.v.", brands: ["CALMPOSE", "VALIUM 2, 5, 10 mg tab"] }, { name: "Nitrazepam", synonyms: ["Mogadon", "Nitravet"], dose: "5–10 mg at bedtime", brands: ["NITRAVET 5 mg tab"] }, { name: "Triazolam", synonyms: ["Halcion"], dose: "0.125–0.25 mg at bedtime", brands: [] }, { name: "Alprazolam", synonyms: ["Alprax", "Xanax"], dose: "0.25–1 mg TDS oral", brands: ["ALPRAX", "XANAX 0.25, 0.5, 1 mg tab"] }, { name: "Lorazepam", synonyms: ["Ativan", "Lor"], dose: "1–4 mg oral; 4 mg i.v.", brands: ["ATIVAN", "LOR 1, 2 mg tab"] }, { name: "Midazolam", synonyms: ["Dormicum", "Mizolam"], dose: "1–5 mg i.v./i.m.", brands: ["DORMICUM", "MIZOLAM 1 mg/ml, 5 mg/ml inj"] }] }, { name: "Non-benzodiazepines", drugs: [{ name: "Zolpidem", synonyms: ["Stilnox", "Zolfresh"], dose: "5–10 mg at bedtime", brands: ["STILNOX", "ZOLFRESH 5, 10 mg tab"] }, { name: "Zopiclone", synonyms: ["Zimovane", "Zopicon"], dose: "3.75–7.5 mg at bedtime", brands: ["ZIMOVANE 7.5 mg tab"] }] }] },
+      { id: "6c", name: "Antiepileptic Drugs", synonyms: ["Anticonvulsants", "Antiseizure Drugs", "AEDs"], description: "Drugs used to prevent or control seizures in epilepsy.", subgroups: [{ name: "Older Antiepileptics", drugs: [{ name: "Phenytoin", synonyms: ["Eptoin", "Dilantin"], dose: "300–400 mg/day in 2 doses; load 15–20 mg/kg i.v.", brands: ["EPTOIN 100 mg tab", "DILANTIN"] }, { name: "Phenobarbitone", synonyms: ["Phenobarbital", "Gardenal"], dose: "60–180 mg/day", brands: ["GARDENAL 30, 60 mg tab"] }, { name: "Carbamazepine", synonyms: ["Tegretol", "Mazetol"], dose: "Start 100–200 mg OD/BD, increase to 400–600 mg BD/TDS", brands: ["TEGRETOL", "MAZETOL 100, 200, 400 mg tabs"] }, { name: "Valproate", synonyms: ["Sodium valproate", "Valparin", "Depakote"], dose: "Start 400–600 mg/day, maintenance 1–2 g/day", brands: ["VALPARIN 200, 500 mg tabs", "ENCORATE 200, 500 mg tabs"] }, { name: "Ethosuximide", synonyms: ["Zarontin"], dose: "250 mg BD–500 mg TDS", brands: [] }] }, { name: "Newer Antiepileptics", drugs: [{ name: "Lamotrigine", synonyms: ["Lamictal", "Lamitor"], dose: "50–200 mg BD", brands: ["LAMICTAL", "LAMITOR 25, 50, 100 mg tabs"] }, { name: "Levetiracetam", synonyms: ["Keppra", "Levipil"], dose: "500–1500 mg BD", brands: ["KEPPRA", "LEVIPIL 250, 500, 1000 mg tabs"] }, { name: "Topiramate", synonyms: ["Topamax", "Topamac"], dose: "Start 25 mg OD, up to 100–200 mg BD", brands: ["TOPAMAX", "TOPAMAC 25, 50, 100, 200 mg tabs"] }, { name: "Oxcarbazepine", synonyms: ["Trileptal", "Oxetol"], dose: "300–600 mg BD", brands: ["TRILEPTAL", "OXETOL 150, 300, 600 mg tabs"] }] }] },
+      { id: "6d", name: "Antiparkinsonian Drugs", synonyms: ["Anti-Parkinson Drugs", "Parkinson's Disease Medications"], description: "Drugs for managing Parkinson's disease by restoring dopamine-acetylcholine balance.", subgroups: [{ name: "Dopaminergic Drugs", drugs: [{ name: "Levodopa", synonyms: ["L-DOPA"], dose: "0.5–1 g TDS, increase gradually", brands: [] }, { name: "Levodopa + Carbidopa", synonyms: ["Syndopa", "Sinemet"], dose: "25/100 mg or 25/250 mg TDS initially", brands: ["SYNDOPA 110, 125, 250 tabs"] }, { name: "Bromocriptine", synonyms: ["Parlodel"], dose: "Start 1.25 mg BD, up to 100 mg/day", brands: ["PARLODEL 2.5 mg tab"] }, { name: "Ropinirole", synonyms: ["Requip"], dose: "Start 0.25 mg TDS, up to 24 mg/day", brands: ["REQUIP 0.25, 0.5, 1, 2, 5 mg tabs"] }, { name: "Pramipexole", synonyms: ["Mirapex", "Pramipex"], dose: "Start 0.125 mg TDS, up to 4.5 mg/day", brands: ["MIRAPEX", "PRAMIPEX 0.25, 1 mg tabs"] }, { name: "Selegiline", synonyms: ["Deprenyl", "Jumex"], dose: "5 mg BD", brands: ["JUMEX 5 mg tab"] }, { name: "Rasagiline", synonyms: ["Azilect"], dose: "1 mg OD", brands: ["AZILECT 1 mg tab"] }] }, { name: "Anticholinergics", drugs: [{ name: "Trihexyphenidyl", synonyms: ["Benzhexol", "Pacitane"], dose: "1–5 mg TDS", brands: ["PACITANE 2 mg tab"] }, { name: "Procyclidine", synonyms: ["Kemadrin"], dose: "5–20 mg/day", brands: ["KEMADRIN 2.5, 5 mg tab"] }] }] },
+      { id: "6e", name: "Antipsychotic Drugs", synonyms: ["Neuroleptics", "Major Tranquilizers"], description: "Drugs used to manage psychosis, schizophrenia, and related conditions.", subgroups: [{ name: "Typical (First Generation) Antipsychotics", drugs: [{ name: "Chlorpromazine", synonyms: ["Largactil", "Emetil"], dose: "25–300 mg/day oral; 25–50 mg i.m.", brands: ["LARGACTIL 25, 50, 100 mg tab"] }, { name: "Haloperidol", synonyms: ["Serenace", "Haldol"], dose: "1–20 mg/day oral; 2–10 mg i.m.", brands: ["SERENACE 1.5, 5, 10 mg tab", "HALOPEM 5 mg/ml inj"] }, { name: "Fluphenazine", synonyms: ["Modecate"], dose: "2–20 mg/day oral; 12.5–25 mg i.m. every 2–4 weeks", brands: ["MODECATE"] }, { name: "Trifluoperazine", synonyms: ["Stelazine", "Trinicalm"], dose: "2–40 mg/day", brands: ["TRINICALM 1, 5 mg tab"] }] }, { name: "Atypical (Second Generation) Antipsychotics", drugs: [{ name: "Clozapine", synonyms: ["Clozaril", "Sizopin"], dose: "Start 12.5–25 mg BD, up to 300–450 mg/day", brands: ["CLOZARIL", "SIZOPIN 25, 100 mg tabs"] }, { name: "Risperidone", synonyms: ["Risperdal", "Risprise"], dose: "Start 1 mg BD, usual 4–6 mg/day", brands: ["RISPERDAL", "RISPRISE 1, 2, 3, 4 mg tabs"] }, { name: "Olanzapine", synonyms: ["Olanzac", "Zyprexa"], dose: "5–20 mg OD", brands: ["ZYPREXA", "OLANZAC 2.5, 5, 7.5, 10 mg tabs"] }, { name: "Quetiapine", synonyms: ["Seroquel", "Qutan"], dose: "Start 50 mg BD, up to 800 mg/day", brands: ["SEROQUEL", "QUTAN 25, 100, 200, 300 mg tabs"] }, { name: "Aripiprazole", synonyms: ["Abilify", "Arip"], dose: "10–30 mg OD", brands: ["ABILIFY", "ARIP 10, 15, 20, 30 mg tabs"] }] }] },
+      { id: "6f", name: "Antidepressants", synonyms: ["Thymoleptics", "Anti-depression Drugs"], description: "Drugs for treating depression by modulating monoamine neurotransmitters.", subgroups: [{ name: "Tricyclic Antidepressants (TCAs)", drugs: [{ name: "Imipramine", synonyms: ["Tofranil"], dose: "75–200 mg/day", brands: ["TOFRANIL 25 mg tab"] }, { name: "Amitriptyline", synonyms: ["Tryptomer", "Elavil"], dose: "25–75 mg at bedtime", brands: ["TRYPTOMER 10, 25, 75 mg tabs"] }, { name: "Clomipramine", synonyms: ["Anafranil"], dose: "25–250 mg/day", brands: ["ANAFRANIL 25, 75 mg tabs"] }] }, { name: "SSRIs (Selective Serotonin Reuptake Inhibitors)", drugs: [{ name: "Fluoxetine", synonyms: ["Prozac", "Fludac"], dose: "20–80 mg/day OD", brands: ["PROZAC", "FLUDAC 20, 40, 60 mg caps"] }, { name: "Sertraline", synonyms: ["Zoloft", "Serlift"], dose: "50–200 mg OD", brands: ["ZOLOFT", "SERLIFT 25, 50, 100 mg tabs"] }, { name: "Paroxetine", synonyms: ["Paxil", "Pexep"], dose: "20–60 mg OD", brands: ["PAXIL", "PEXEP 12.5, 25 mg tabs"] }, { name: "Escitalopram", synonyms: ["Lexapro", "Stalopam"], dose: "10–20 mg OD", brands: ["NEXITO", "STALOPAM 5, 10, 20 mg tabs"] }, { name: "Citalopram", synonyms: ["Celexa", "Citanew"], dose: "20–40 mg OD", brands: ["CITANEW 20, 40 mg tabs"] }] }, { name: "SNRIs", drugs: [{ name: "Venlafaxine", synonyms: ["Effexor", "Veniz"], dose: "75–375 mg/day", brands: ["VENIZ", "EFFEXOR 37.5, 75 mg tabs"] }, { name: "Duloxetine", synonyms: ["Cymbalta", "Duzela"], dose: "30–120 mg OD", brands: ["CYMBALTA", "DUZELA 20, 30, 40, 60 mg caps"] }] }, { name: "MAO Inhibitors", drugs: [{ name: "Phenelzine", synonyms: ["Nardil"], dose: "15–90 mg/day in divided doses", brands: [] }, { name: "Tranylcypromine", synonyms: ["Parnate"], dose: "10–60 mg/day", brands: [] }] }] },
+      { id: "6g", name: "Opioid Analgesics and Antagonists", synonyms: ["Narcotic Analgesics", "Opiates", "Narcotics"], description: "Drugs that bind to opioid receptors to produce analgesia. Used for moderate to severe pain.", subgroups: [{ name: "Strong Opioid Agonists", drugs: [{ name: "Morphine", synonyms: ["Morphine sulphate", "MS Contin"], dose: "10–30 mg oral 4 hourly; 5–15 mg s.c./i.m.", brands: ["MORPHINE SULPHATE 10 mg/ml inj"] }, { name: "Pethidine", synonyms: ["Meperidine", "Dolantin"], dose: "50–150 mg i.m./s.c.; 25–100 mg slow i.v.", brands: ["PETHIDINE 50 mg/ml inj"] }, { name: "Fentanyl", synonyms: ["Durogesic", "Fentanyl Citrate"], dose: "25–100 µg transdermal patch/72 hr; 1–2 µg/kg i.v.", brands: ["DUROGESIC 25, 50, 75, 100 µg/hr patches"] }, { name: "Methadone", synonyms: [], dose: "5–20 mg oral 8 hourly", brands: [] }] }, { name: "Moderate Opioid Agonists", drugs: [{ name: "Codeine", synonyms: ["Codeine phosphate"], dose: "15–60 mg 4 hourly", brands: ["CODEINE 30 mg tab"] }, { name: "Tramadol", synonyms: ["Tramazac", "Ultram"], dose: "50–100 mg oral/i.m./i.v. 4–6 hourly (max 400 mg/day)", brands: ["TRAMAZAC", "ULTRAM 50, 100 mg tabs"] }] }, { name: "Opioid Antagonists", drugs: [{ name: "Naloxone", synonyms: ["Narcan"], dose: "0.4–2 mg i.v. (for reversal of opioid overdose)", brands: ["NARCAN 0.4 mg/ml inj"] }, { name: "Naltrexone", synonyms: ["Revia", "Naltima"], dose: "25–50 mg OD (alcohol/opioid dependence)", brands: ["REVIA", "NALTIMA 25, 50 mg tabs"] }] }] }
+    ]
+  },
+  {
+    id: 7,
+    title: "Cardiovascular Pharmacology",
+    description: "Cardiovascular pharmacology encompasses agents for hypertension, coronary artery disease, cardiac arrhythmias, heart failure, pulmonary hypertension, dyslipidaemia, and thromboembolic conditions, including many newer mechanistic classes approved in the past decade.",
+    subclasses: [
+      { id: "7a", name: "Antihypertensive Drugs", synonyms: ["Blood Pressure Lowering Drugs", "Antihypertensives"], description: "Drugs used to reduce elevated blood pressure.", subgroups: [{ name: "ACE Inhibitors", drugs: [{ name: "Enalapril", synonyms: ["Envas", "Vasotec"], dose: "5–40 mg OD-BD", brands: ["ENVAS", "ENAM 2.5, 5, 10, 20 mg tabs"] }, { name: "Lisinopril", synonyms: ["Listril", "Zestril"], dose: "5–40 mg OD", brands: ["LISTRIL", "ZESTRIL 2.5, 5, 10, 20 mg tabs"] }, { name: "Ramipril", synonyms: ["Cardace", "Altace"], dose: "2.5–10 mg OD-BD", brands: ["CARDACE", "RAMIPRIL 1.25, 2.5, 5, 10 mg tabs"] }, { name: "Captopril", synonyms: ["Capoten", "Aceten"], dose: "12.5–50 mg BD-TDS", brands: ["ACETEN", "CAPOTEN 12.5, 25, 50 mg tabs"] }] }, { name: "ARBs (Angiotensin II Receptor Blockers)", drugs: [{ name: "Losartan", synonyms: ["Cozaar", "Losacar"], dose: "50–100 mg OD", brands: ["LOSACAR", "COZAAR 25, 50 mg tabs"] }, { name: "Valsartan", synonyms: ["Diovan", "Valzaar"], dose: "80–320 mg OD", brands: ["DIOVAN", "VALZAAR 40, 80, 160, 320 mg tabs"] }, { name: "Telmisartan", synonyms: ["Telma", "Micardis"], dose: "20–80 mg OD", brands: ["TELMA", "MICARDIS 40, 80 mg tabs"] }] }, { name: "Calcium Channel Blockers", drugs: [{ name: "Amlodipine", synonyms: ["Amlip", "Amlong", "Norvasc"], dose: "5–10 mg OD", brands: ["AMLIP", "AMLONG 5, 10 mg tabs", "NORVASC"] }, { name: "Nifedipine", synonyms: ["Nicardia", "Procardia"], dose: "10–20 mg TDS (RETARD: 20–40 mg BD)", brands: ["NICARDIA 5, 10 mg caps", "ADALAT RETARD 20 mg SR tab"] }, { name: "Diltiazem", synonyms: ["Dilzem", "Cardizem"], dose: "30–60 mg TDS/QID oral", brands: ["DILZEM 30, 60, 90 mg tabs"] }, { name: "Verapamil", synonyms: ["Calaptin", "Isoptin"], dose: "80–160 mg TDS oral", brands: ["CALAPTIN 40, 80, 120 mg tabs"] }, { name: "Felodipine", synonyms: ["Plendil", "Felogard"], dose: "5–10 mg OD", brands: ["PLENDIL", "FELOGARD 5, 10 mg tabs"] }] }, { name: "Diuretics (Antihypertensive)", drugs: [{ name: "Hydrochlorothiazide", synonyms: ["HCTZ", "Esidrex"], dose: "12.5–50 mg OD", brands: ["ESIDREX 25 mg tab"] }, { name: "Chlorthalidone", synonyms: ["Hygroton", "Thalitone"], dose: "12.5–25 mg OD", brands: ["HYGROTON 25 mg tab"] }, { name: "Indapamide", synonyms: ["Natrilix", "Indicarb"], dose: "1.25–2.5 mg OD", brands: ["NATRILIX", "INDICARB 1.25, 2.5 mg tabs"] }] }, { name: "Centrally Acting Antihypertensives", drugs: [{ name: "Methyldopa", synonyms: ["Aldomet", "Methdopa"], dose: "250–500 mg BD-TDS", brands: ["ALDOMET 250, 500 mg tabs"] }, { name: "Clonidine", synonyms: ["Catapres", "Clofelin"], dose: "0.1–0.8 mg BD-TDS", brands: ["CATAPRES 0.1, 0.2 mg tabs"] }] }] },
+      { id: "7b", name: "Antianginal Drugs", synonyms: ["Anti-ischemic Drugs", "Angina Medications"], description: "Drugs used to prevent and treat angina pectoris.", subgroups: [{ name: "Nitrates", drugs: [{ name: "Glyceryl trinitrate", synonyms: ["GTN", "Nitroglycerin", "Angised"], dose: "Sublingual: 0.5 mg; Transdermal: 5–25 mg/24 hr", brands: ["ANGISED 0.5 mg s.l. tab", "NITROGLYCERIN PATCH"] }, { name: "Isosorbide dinitrate", synonyms: ["ISDN", "Isordil", "Sorbitrate"], dose: "5–40 mg oral BD-TDS", brands: ["SORBITRATE 5, 10 mg tabs", "ISORDIL 5, 10, 20 mg tabs"] }, { name: "Isosorbide mononitrate", synonyms: ["ISMN", "Ismo"], dose: "20–40 mg oral BD", brands: ["IMDUR 30, 60 mg SR tabs"] }] }] },
+      { id: "7c", name: "Antiarrhythmic Drugs", synonyms: ["Cardiac Antiarrhythmics"], description: "Drugs used to treat or prevent abnormal heart rhythms.", subgroups: [{ name: "Class I — Sodium Channel Blockers", drugs: [{ name: "Quinidine", synonyms: ["Cardioquin"], dose: "200–600 mg TDS-QID", brands: [] }, { name: "Lidocaine (i.v.)", synonyms: ["Lignocaine"], dose: "50–100 mg i.v. bolus", brands: ["XYLOCAINE 2% inj"] }, { name: "Flecainide", synonyms: ["Tambocor"], dose: "100–200 mg BD", brands: [] }] }, { name: "Class II — Beta Blockers", drugs: [{ name: "Propranolol", synonyms: ["Inderal"], dose: "10–80 mg BD-QID", brands: ["INDERAL", "CIPLAR 10, 40, 80 mg tab"] }, { name: "Metoprolol", synonyms: ["Betaloc"], dose: "5–15 mg slow i.v.", brands: [] }, { name: "Esmolol", synonyms: ["Miniblock"], dose: "50–200 µg/kg/min i.v.", brands: ["MINIBLOCK inj"] }] }, { name: "Class III — Potassium Channel Blockers", drugs: [{ name: "Amiodarone", synonyms: ["Cordarone", "Tachyra"], dose: "Loading: 200 mg TDS for 1 week; maintenance 200 mg OD", brands: ["CORDARONE", "TACHYRA 100, 200 mg tabs"] }, { name: "Sotalol", synonyms: ["Sotagard"], dose: "80–160 mg BD-TDS", brands: ["SOTAGARD 40, 80 mg tabs"] }] }, { name: "Class IV — Calcium Channel Blockers", drugs: [{ name: "Verapamil", synonyms: ["Calaptin", "Isoptin"], dose: "80–160 mg TDS oral; 5–10 mg slow i.v.", brands: ["CALAPTIN 40, 80, 120 mg tabs"] }, { name: "Diltiazem", synonyms: ["Dilzem", "Cardizem"], dose: "30–60 mg TDS oral; 0.25 mg/kg i.v.", brands: ["DILZEM 30, 60, 90 mg tabs"] }] }] },
+      { id: "7d", name: "Drugs for Congestive Heart Failure", synonyms: ["Heart Failure Medications", "Cardiotonic Drugs"], description: "Drugs used to improve cardiac output and symptoms in heart failure.", subgroups: [{ name: "Cardiac Glycosides", drugs: [{ name: "Digoxin", synonyms: ["Lanoxin", "Lanoxicaps"], dose: "Digitalization: 0.5–1 mg; maintenance 0.125–0.25 mg OD", brands: ["LANOXIN 0.0625, 0.125, 0.25 mg tabs"] }] }] }
+    ]
+  },
+  {
+    id: 8,
+    title: "Renal Pharmacology",
+    description: "Renal pharmacology covers diuretics acting at different nephron segments, antidiuretic agents, and newer renoprotective drugs including SGLT-2 inhibitors, mineralocorticoid receptor antagonists, HIF-PH inhibitors, and phosphate binders for CKD management.",
+    subclasses: [
+      { id: "8a", name: "Diuretics", synonyms: ["Water Pills", "Saluretics"], description: "Drugs that increase urine output by inhibiting renal tubular reabsorption.", subgroups: [{ name: "High-ceiling (Loop) Diuretics", drugs: [{ name: "Furosemide", synonyms: ["Frusemide", "Lasix", "Frusenex"], dose: "20–80 mg oral OD-BD; 20–40 mg i.v./i.m.", brands: ["LASIX", "FRUSENEX 40 mg tab, 10 mg/ml inj"] }, { name: "Ethacrynic acid", synonyms: [], dose: "50–200 mg/day", brands: [] }, { name: "Torsemide", synonyms: ["Dytor"], dose: "5–20 mg OD oral/i.v.", brands: ["DYTOR 5, 10, 20, 100 mg tabs"] }] }, { name: "Thiazides", drugs: [{ name: "Hydrochlorothiazide", synonyms: ["HCTZ", "Esidrex"], dose: "12.5–50 mg OD", brands: ["ESIDREX 25 mg tab"] }, { name: "Chlorthalidone", synonyms: ["Hygroton"], dose: "12.5–25 mg OD", brands: ["HYGROTON 25 mg tab"] }] }, { name: "Potassium-sparing Diuretics", drugs: [{ name: "Spironolactone", synonyms: ["Aldactone", "Spiromide"], dose: "25–100 mg OD-BD", brands: ["ALDACTONE 25, 50, 100 mg tabs"] }, { name: "Amiloride", synonyms: ["Midamor"], dose: "5–10 mg OD", brands: [] }, { name: "Triamterene", synonyms: ["Dyrenium"], dose: "50–100 mg BD", brands: [] }] }, { name: "Carbonic Anhydrase Inhibitors", drugs: [{ name: "Acetazolamide", synonyms: ["Diamox", "Iopar-SR"], dose: "250–500 mg oral BD-QID; 500 mg i.v.", brands: ["DIAMOX 250 mg tab"] }] }, { name: "Osmotic Diuretics", drugs: [{ name: "Mannitol", synonyms: ["Osmopar", "Mannitol"], dose: "0.5–2 g/kg i.v. infusion over 30–60 min", brands: ["MANNITOL 20% inj"] }, { name: "Isosorbide", synonyms: [], dose: "1–3 g/kg oral", brands: [] }] }] },
+      { id: "8b", name: "Antidiuretics", synonyms: ["ADH", "Vasopressin Analogues"], description: "Drugs that reduce urine output, used for diabetes insipidus.", subgroups: [{ name: "Antidiuretics", drugs: [{ name: "ADH (Vasopressin)", synonyms: ["Pitressin"], dose: "5–10 units i.m./s.c. BD-TDS", brands: [] }, { name: "Desmopressin", synonyms: ["DDAVP", "Minirin"], dose: "10–40 µg intranasal OD-BD; 0.1–0.4 mg oral BD-TDS", brands: ["MINIRIN 0.1, 0.2 mg tabs"] }] }] }
+    ]
+  },
+  {
+    id: 9,
+    title: "Haematological Pharmacology",
+    description: "Haematological pharmacology covers the full range of agents acting on erythropoiesis, coagulation cascades, platelet function, and lipid metabolism — from classical anticoagulants and haematinics to gene therapies, DOAC reversal agents, and sickle cell disease treatments.",
+    subclasses: [
+      { id: "9a", name: "Haematinics", synonyms: ["Blood Formation Agents", "Anti-anaemic Drugs"], description: "Drugs that correct anaemia by supplying haematinics.", subgroups: [{ name: "Iron Preparations", drugs: [{ name: "Ferrous sulphate", synonyms: ["Fesovit", "Fersolate"], dose: "200 mg TDS (60 mg elemental iron/dose)", brands: ["FERSOLATE 200 mg tab"] }, { name: "Ferrous fumarate", synonyms: ["Fersamal"], dose: "200 mg TDS", brands: [] }, { name: "Iron sucrose", synonyms: ["Venofer", "Orofer"], dose: "100–200 mg i.v. slow infusion", brands: ["VENOFER", "OROFER S 100 mg/5 ml inj"] }] }, { name: "B12 and Folate", drugs: [{ name: "Cyanocobalamin (B12)", synonyms: ["Neurobion"], dose: "100–1000 µg i.m. daily initially; then 100 µg monthly", brands: ["NEUROBION", "TRIBIRON 1000 µg inj"] }, { name: "Folic acid", synonyms: ["Folacin", "Folicip"], dose: "5 mg/day (therapeutic); 0.5–1 mg/day (prophylactic)", brands: ["FOLICIP 5 mg tab"] }] }] },
+      { id: "9b", name: "Anticoagulants", synonyms: ["Blood Thinners", "Anticlotting Drugs"], description: "Drugs that prevent blood clotting.", subgroups: [{ name: "Parenteral Anticoagulants", drugs: [{ name: "Heparin", synonyms: ["Unfractionated heparin", "UFH"], dose: "Loading: 5000 units i.v.; maintenance: 1000–1500 units/hr infusion", brands: ["HEPARIN SODIUM 5000 units/ml inj"] }, { name: "Enoxaparin (LMWH)", synonyms: ["Clexane", "Lovenox"], dose: "1 mg/kg s.c. BD (therapeutic); 40 mg OD (prophylactic)", brands: ["CLEXANE", "ENOX 20, 40, 60, 80 mg s.c. inj"] }] }, { name: "Oral Anticoagulants", drugs: [{ name: "Warfarin", synonyms: ["Coumadin", "Warf"], dose: "2–10 mg OD (adjust by INR)", brands: ["WARF 1, 2, 5 mg tabs"] }, { name: "Dabigatran", synonyms: ["Pradaxa"], dose: "150 mg BD", brands: ["PRADAXA 75, 110, 150 mg caps"] }, { name: "Rivaroxaban", synonyms: ["Xarelto"], dose: "10–20 mg OD (15–20 mg for AF)", brands: ["XARELTO 10, 15, 20 mg tabs"] }, { name: "Apixaban", synonyms: ["Eliquis"], dose: "5 mg BD", brands: ["ELIQUIS 2.5, 5 mg tabs"] }] }] },
+      { id: "9c", name: "Antiplatelet Drugs", synonyms: ["Platelet Aggregation Inhibitors"], description: "Drugs that prevent platelet aggregation and arterial thrombosis.", subgroups: [{ name: "Antiplatelet Agents", drugs: [{ name: "Aspirin", synonyms: ["Ecosprin", "Loprin"], dose: "75–150 mg/day", brands: ["ECOSPRIN 75, 150 mg tabs", "LOPRIN 75 mg tab"] }, { name: "Clopidogrel", synonyms: ["Plavix", "Clopilet"], dose: "75 mg OD (loading 300 mg)", brands: ["PLAVIX", "CLOPILET 75 mg tab"] }, { name: "Ticagrelor", synonyms: ["Brilinta"], dose: "90 mg BD", brands: ["BRILINTA 90 mg tab"] }, { name: "Prasugrel", synonyms: ["Effient"], dose: "10 mg OD", brands: ["EFFIENT 10 mg tab"] }, { name: "Dipyridamole", synonyms: ["Persantin"], dose: "100–400 mg TDS", brands: ["PERSANTIN 25, 100 mg tabs"] }] }] },
+      { id: "9d", name: "Hypolipidaemic Drugs", synonyms: ["Lipid Lowering Drugs", "Statins", "Antilipemic Drugs"], description: "Drugs that reduce elevated blood lipid levels to prevent cardiovascular disease.", subgroups: [{ name: "Statins (HMG-CoA Reductase Inhibitors)", drugs: [{ name: "Atorvastatin", synonyms: ["Lipitor", "Atorva"], dose: "10–80 mg OD", brands: ["LIPITOR", "ATORVA 10, 20, 40, 80 mg tabs"] }, { name: "Rosuvastatin", synonyms: ["Crestor", "Rosuvas"], dose: "5–40 mg OD", brands: ["CRESTOR", "ROSUVAS 5, 10, 20, 40 mg tabs"] }, { name: "Simvastatin", synonyms: ["Zocor", "Simvotin"], dose: "10–80 mg OD at bedtime", brands: ["ZOCOR", "SIMVOTIN 10, 20, 40 mg tabs"] }, { name: "Pravastatin", synonyms: ["Pravachol", "Pravator"], dose: "10–40 mg OD", brands: ["PRAVACHOL", "PRAVATOR 10, 20, 40 mg tabs"] }] }, { name: "Fibrates", drugs: [{ name: "Gemfibrozil", synonyms: ["Lopid", "Lipozid"], dose: "600 mg BD", brands: ["LOPID", "LIPOZID 300, 600 mg tabs"] }, { name: "Fenofibrate", synonyms: ["Tricor", "Fenolip"], dose: "67–200 mg OD", brands: ["TRICOR", "FENOLIP 67, 145, 200 mg tabs"] }] }, { name: "Bile Acid Sequestrants", drugs: [{ name: "Cholestyramine", synonyms: ["Questran", "Cholestin"], dose: "4 g TDS-QID", brands: ["QUESTRAN 4 g sachet"] }, { name: "Colesevelam", synonyms: ["WelChol"], dose: "3750 mg/day in divided doses", brands: [] }] }, { name: "Nicotinic Acid Derivatives", drugs: [{ name: "Nicotinic acid (Niacin)", synonyms: ["Niacin"], dose: "1–3 g/day in divided doses", brands: [] }] }] }
+    ]
+  },
+  {
+    id: 10,
+    title: "Gastrointestinal Pharmacology",
+    description: "Gastrointestinal pharmacology addresses acid suppression, mucosal protection, motility regulation, and bowel management, as well as biologic and small-molecule therapies for inflammatory bowel disease and hepatic conditions.",
+    subclasses: [
+      { id: "10a", name: "Drugs for Peptic Ulcer", synonyms: ["Antiulcer Drugs", "Gastroprotective Drugs"], description: "Drugs used in treatment of peptic ulcer disease.", subgroups: [{ name: "Proton Pump Inhibitors (PPIs)", drugs: [{ name: "Omeprazole", synonyms: ["Omez", "Losec"], dose: "20–40 mg OD-BD", brands: ["OMEZ", "LOSEC 20, 40 mg caps"] }, { name: "Pantoprazole", synonyms: ["Pan", "Protonix"], dose: "40 mg OD-BD", brands: ["PAN", "PANTOP 40 mg tab"] }, { name: "Rabeprazole", synonyms: ["Razo", "Aciphex"], dose: "20 mg OD-BD", brands: ["RAZO", "RABEZ 20 mg tab"] }, { name: "Esomeprazole", synonyms: ["Nexium", "Neksium"], dose: "20–40 mg OD", brands: ["NEXIUM", "NEKSIUM 20, 40 mg tabs"] }, { name: "Lansoprazole", synonyms: ["Prevacid", "Lanzol"], dose: "15–30 mg OD", brands: ["LANZOL 15, 30 mg caps"] }] }, { name: "H2 Antagonists", drugs: [{ name: "Ranitidine", synonyms: ["Zantac", "Rantac"], dose: "150 mg BD or 300 mg at bedtime", brands: ["RANTAC", "ZANTAC 150 mg tab, 50 mg/ml inj"] }, { name: "Famotidine", synonyms: ["Pepcid", "Famocid"], dose: "20–40 mg at bedtime", brands: ["PEPCID", "FAMOCID 20, 40 mg tabs"] }, { name: "Cimetidine", synonyms: ["Tagamet", "Cimetag"], dose: "400 mg BD or 800 mg at bedtime", brands: ["TAGAMET", "CIMETAG 200, 400 mg tabs"] }] }, { name: "Antacids", drugs: [{ name: "Aluminium hydroxide", synonyms: [], dose: "0.6–1 g TDS-QID between meals", brands: [] }, { name: "Magnesium hydroxide", synonyms: ["Milk of Magnesia"], dose: "0.5–1.5 g TDS-QID between meals", brands: [] }, { name: "Sodium bicarbonate", synonyms: [], dose: "0.3–2 g", brands: [] }, { name: "Calcium carbonate", synonyms: ["Tums"], dose: "0.5–2 g", brands: [] }] }, { name: "Mucosal Protective Agents", drugs: [{ name: "Sucralfate", synonyms: ["Sucral", "Carafate"], dose: "1 g QID on empty stomach", brands: ["SUCRAL", "CARAFATE 1 g tab"] }, { name: "Misoprostol", synonyms: ["Cytolog"], dose: "200 µg QID (ulcer prevention)", brands: ["CYTOLOG 200 µg tab"] }] }] },
+      { id: "10b", name: "Antiemetics", synonyms: ["Anti-nausea Drugs", "Antinauseants"], description: "Drugs for prevention and treatment of nausea and vomiting.", subgroups: [{ name: "Prokinetics", drugs: [{ name: "Metoclopramide", synonyms: ["Perinorm", "Reglan"], dose: "10–20 mg oral/i.m./i.v. TDS-QID", brands: ["PERINORM", "REGLAN 5, 10 mg tab, 5 mg/ml inj"] }, { name: "Domperidone", synonyms: ["Domstal", "Motilium"], dose: "10 mg TDS oral", brands: ["DOMSTAL", "MOTILIUM 10 mg tab"] }] }] },
+      { id: "10c", name: "Laxatives", synonyms: ["Purgatives", "Cathartics", "Bowel Regulators"], description: "Drugs that facilitate or stimulate bowel evacuation.", subgroups: [{ name: "Bulk-forming Laxatives", drugs: [{ name: "Ispaghula", synonyms: ["Psyllium", "Isabgol", "Metamucil"], dose: "3.5 g in water OD-TDS", brands: ["ISAPGHOL", "METAMUCIL", "NATUROLAX 3.5 g sachet"] }] }, { name: "Osmotic Laxatives", drugs: [{ name: "Lactulose", synonyms: ["Duphalac", "Lactugal"], dose: "10–20 g (15–30 ml) BD-TDS", brands: ["DUPHALAC", "LACTUGAL 10 g/15 ml soln"] }, { name: "Polyethylene glycol", synonyms: ["Movicol", "PEG"], dose: "13.8 g BD", brands: ["MOVICOL"] }] }, { name: "Stimulant Laxatives", drugs: [{ name: "Bisacodyl", synonyms: ["Dulcolax", "Consti"], dose: "5–10 mg oral at night; 10 mg suppository", brands: ["DULCOLAX 5 mg tab, 10 mg suppository"] }, { name: "Senna", synonyms: ["Senokot"], dose: "7.5–15 mg at night", brands: ["SENOKOT 7.5 mg tab"] }] }] }
+    ]
+  },
+  {
+    id: 11,
+    title: "Antibacterial Agents",
+    description: "Antibacterial agents are classified by mechanism: cell wall synthesis inhibitors, protein synthesis inhibitors, DNA gyrase inhibitors, and membrane-active agents. Coverage extends from first-line drugs to reserve antibiotics for multidrug-resistant pathogens and newer agents for specific indications.",
+    subclasses: [
+      { id: "11a", name: "Penicillins", synonyms: ["Beta-lactam Antibiotics"], description: "Antibiotics that inhibit bacterial cell wall synthesis by binding to penicillin-binding proteins.", subgroups: [{ name: "Natural Penicillins", drugs: [{ name: "Benzylpenicillin (Penicillin G)", synonyms: ["Crystalline penicillin"], dose: "0.5–24 MU/day i.v. in divided doses", brands: [] }, { name: "Phenoxymethylpenicillin (Penicillin V)", synonyms: ["Pen V", "Pheno-pen"], dose: "250–500 mg QID oral", brands: [] }] }, { name: "Aminopenicillins", drugs: [{ name: "Ampicillin", synonyms: ["Ampilin", "Penbritin"], dose: "250–500 mg QID oral; 0.5–3 g i.v./i.m. 6 hourly", brands: ["AMPILIN 250, 500 mg caps"] }, { name: "Amoxicillin", synonyms: ["Mox", "Novamox", "Amoxil"], dose: "250–500 mg TDS oral", brands: ["MOX", "NOVAMOX", "AMOXIL 250, 500 mg caps"] }] }, { name: "Beta-lactamase Inhibitor Combinations", drugs: [{ name: "Amoxicillin + Clavulanate", synonyms: ["Augmentin", "Clavam"], dose: "375–625 mg BD-TDS oral; 1.2 g i.v. TDS", brands: ["AUGMENTIN", "CLAVAM 375, 625 mg tabs"] }, { name: "Ampicillin + Sulbactam", synonyms: ["Unasyn", "Campicillin"], dose: "1.5–3 g i.v./i.m. 6 hourly", brands: ["UNASYN"] }, { name: "Piperacillin + Tazobactam", synonyms: ["Zosyn", "Tazact"], dose: "3.375–4.5 g i.v. 6–8 hourly", brands: ["TAZACT 2.25, 4.5 g inj"] }] }, { name: "Antipseudomonal Penicillins", drugs: [{ name: "Piperacillin", synonyms: [], dose: "3–4 g i.v./i.m. 4–6 hourly", brands: [] }] }] },
+      { id: "11b", name: "Cephalosporins", synonyms: ["Cephems", "Beta-lactam Cephalosporins"], description: "Beta-lactam antibiotics with broader spectrum than penicillins, classified by generation.", subgroups: [{ name: "First Generation", drugs: [{ name: "Cephalexin", synonyms: ["Ceporex", "Ibilex"], dose: "250–500 mg QID oral", brands: ["CEPOREX 250, 500 mg caps"] }, { name: "Cefazolin", synonyms: ["Ancef"], dose: "0.5–2 g i.v./i.m. BD-TDS", brands: [] }] }, { name: "Second Generation", drugs: [{ name: "Cefuroxime", synonyms: ["Zinnat", "Supacef"], dose: "250–500 mg BD oral; 0.75–1.5 g i.v. TDS", brands: ["ZINNAT 125, 250, 500 mg tabs", "SUPACEF 1.5 g inj"] }, { name: "Cefaclor", synonyms: ["Distaclor", "Ceclor"], dose: "250–500 mg TDS oral", brands: ["DISTACLOR", "CECLOR 250, 500 mg caps"] }] }, { name: "Third Generation", drugs: [{ name: "Cefotaxime", synonyms: ["Taxim", "Claforan"], dose: "1–2 g i.v./i.m. BD-QID", brands: ["TAXIM 0.5, 1 g inj"] }, { name: "Ceftriaxone", synonyms: ["Monocef", "Rocephin"], dose: "1–2 g i.v./i.m. OD (or BD for severe infections)", brands: ["MONOCEF", "ROCEPHIN 250 mg, 1 g inj"] }, { name: "Cefixime", synonyms: ["Suprax", "Zifi"], dose: "200–400 mg BD oral", brands: ["SUPRAX", "ZIFI 200, 400 mg tabs"] }, { name: "Cefpodoxime", synonyms: ["Cepodem", "Vantin"], dose: "100–200 mg BD oral", brands: ["CEPODEM", "VANTIN 100, 200 mg tabs"] }, { name: "Ceftazidime", synonyms: ["Fortaz", "Ceptaz"], dose: "0.5–2 g i.v./i.m. BD-TDS", brands: ["FORTAZ 1, 2 g inj"] }] }, { name: "Fourth Generation", drugs: [{ name: "Cefepime", synonyms: ["Maxipime"], dose: "0.5–2 g i.v./i.m. BD", brands: ["MAXIPIME 0.5, 1, 2 g inj"] }] }, { name: "Fifth Generation (MRSA-active)", drugs: [{ name: "Ceftaroline", synonyms: ["Teflaro"], dose: "600 mg i.v. BD", brands: [] }] }] },
+      { id: "11c", name: "Fluoroquinolones", synonyms: ["Quinolone Antibiotics", "Fluoroquinolone Antibacterials"], description: "Broad-spectrum antibiotics that inhibit bacterial DNA gyrase and topoisomerase IV.", subgroups: [{ name: "Quinolones", drugs: [{ name: "Nalidixic acid", synonyms: ["Negram", "Wintomylon"], dose: "1 g QID oral", brands: ["NEGRAM 500 mg tab"] }, { name: "Norfloxacin", synonyms: ["Norflox", "Norilet"], dose: "400 mg BD oral", brands: ["NORFLOX 400 mg tab"] }, { name: "Ciprofloxacin", synonyms: ["Cipro", "Ciplox"], dose: "250–750 mg BD oral; 200–400 mg BD i.v.", brands: ["CIPLOX", "CIPRO 250, 500, 750 mg tabs"] }, { name: "Ofloxacin", synonyms: ["Oflox", "Zanocin"], dose: "200–400 mg BD oral", brands: ["OFLOX", "ZANOCIN 200, 400 mg tabs"] }, { name: "Levofloxacin", synonyms: ["Levoflox", "Tavanic"], dose: "250–750 mg OD oral/i.v.", brands: ["LEVOFLOX", "TAVANIC 250, 500, 750 mg tabs"] }, { name: "Moxifloxacin", synonyms: ["Avelox", "Moxiflox"], dose: "400 mg OD oral/i.v.", brands: ["AVELOX", "MOXIFLOX 400 mg tab"] }] }] },
+      { id: "11d", name: "Aminoglycoside Antibiotics", synonyms: ["Aminoglycosides"], description: "Bactericidal antibiotics that inhibit protein synthesis by binding to the 30S ribosomal subunit.", subgroups: [{ name: "Aminoglycosides", drugs: [{ name: "Streptomycin", synonyms: [], dose: "0.75–1 g i.m. OD (antitubercular: 15 mg/kg/day)", brands: ["STREPTOMYCIN SULPHATE 1 g inj"] }, { name: "Gentamicin", synonyms: ["Garamycin", "Genticyn"], dose: "1.5–2 mg/kg i.v./i.m. 8 hourly", brands: ["GENTICYN 20, 40, 80 mg/ml inj"] }, { name: "Amikacin", synonyms: ["Amikin", "Amicin"], dose: "7.5 mg/kg i.v./i.m. BD", brands: ["AMIKIN", "AMICIN 100, 250, 500 mg inj"] }, { name: "Tobramycin", synonyms: ["Tobran"], dose: "1 mg/kg i.v./i.m. 8 hourly", brands: [] }, { name: "Netilmicin", synonyms: ["Netromycin"], dose: "4–6 mg/kg/day i.v./i.m.", brands: [] }] }] },
+      { id: "11e", name: "Macrolide Antibiotics", synonyms: ["Macrolides"], description: "Antibiotics that inhibit bacterial protein synthesis by binding to the 50S ribosomal subunit.", subgroups: [{ name: "Macrolides", drugs: [{ name: "Erythromycin", synonyms: ["Erythrocin", "Althrocin"], dose: "250–500 mg QID oral; 0.5–1 g i.v. 6 hourly", brands: ["ERYTHROCIN", "ALTHROCIN 250, 500 mg tabs"] }, { name: "Azithromycin", synonyms: ["Zithromax", "Azee"], dose: "500 mg OD oral for 3 days (or 500 mg day 1, 250 mg days 2–5)", brands: ["ZITHROMAX", "AZEE 250, 500 mg tabs"] }, { name: "Clarithromycin", synonyms: ["Klaricid", "Claribid"], dose: "250–500 mg BD oral", brands: ["KLARICID", "CLARIBID 250, 500 mg tabs"] }, { name: "Roxithromycin", synonyms: ["Rulide"], dose: "150 mg BD or 300 mg OD oral", brands: ["RULIDE 150 mg tab"] }] }] },
+      { id: "11f", name: "Tetracyclines", synonyms: ["Tetracycline Antibiotics"], description: "Broad-spectrum bacteriostatic antibiotics that inhibit protein synthesis by blocking 30S ribosome.", subgroups: [{ name: "Tetracyclines", drugs: [{ name: "Tetracycline", synonyms: ["Hostacycline"], dose: "250–500 mg QID oral", brands: ["HOSTACYCLINE 250 mg cap"] }, { name: "Doxycycline", synonyms: ["Vibramycin", "Microdox"], dose: "100–200 mg OD-BD oral", brands: ["VIBRAMYCIN", "MICRODOX 100 mg caps"] }, { name: "Minocycline", synonyms: ["Minolox", "Minocin"], dose: "100 mg BD oral", brands: ["MINOLOX", "MINOCIN 50, 100 mg tabs"] }] }] },
+      { id: "11g", name: "Antitubercular Drugs", synonyms: ["Anti-TB Drugs", "Tuberculosis Medications"], description: "Drugs used in the treatment of tuberculosis, used in combination to prevent resistance.", subgroups: [{ name: "First-line Antitubercular Drugs", drugs: [{ name: "Isoniazid (INH)", synonyms: ["INH", "Isonex"], dose: "5 mg/kg (300 mg max) OD oral; or intermittent therapy", brands: ["ISONEX 100, 300 mg tabs"] }, { name: "Rifampicin", synonyms: ["Rifadin", "Rimactane"], dose: "10 mg/kg (600 mg max) OD oral on empty stomach", brands: ["RIFADIN", "RIMACTANE 150, 450, 600 mg caps"] }, { name: "Pyrazinamide", synonyms: ["PZA", "Pyralin"], dose: "25–35 mg/kg/day in 1–3 doses", brands: ["PYRALIN 500, 750 mg tabs"] }, { name: "Ethambutol", synonyms: ["EMB", "Myambutol"], dose: "15–25 mg/kg OD oral", brands: ["MYAMBUTOL 400, 800 mg tabs"] }, { name: "Streptomycin", synonyms: [], dose: "15 mg/kg (1 g max) i.m. OD", brands: ["STREPTOMYCIN SULPHATE 1 g inj"] }] }, { name: "Second-line Antitubercular Drugs", drugs: [{ name: "Kanamycin", synonyms: [], dose: "15 mg/kg/day i.m.", brands: [] }, { name: "Amikacin", synonyms: [], dose: "15 mg/kg/day i.m./i.v.", brands: [] }, { name: "Cycloserine", synonyms: [], dose: "250–500 mg BD", brands: [] }, { name: "Para-aminosalicylic acid (PAS)", synonyms: ["Sodium PAS"], dose: "10–12 g/day in divided doses", brands: [] }, { name: "Ethionamide", synonyms: [], dose: "250 mg TDS", brands: [] }, { name: "Capreomycin", synonyms: [], dose: "1 g i.m. OD", brands: [] }] }] }
+    ]
+  }
+,
+
+// ============================================================
+// CHAPTER 12: ANTIFUNGAL, ANTIVIRAL, ANTIPROTOZOAL, ANTHELMINTIC
+// (Expanded from existing stub — full version)
+// ============================================================
+{
+  id: 12,
+  title: "Antimicrobial Agents — Antifungal, Antiviral, Antiprotozoal and Anthelmintic",
+  description: "This section covers antimicrobial agents targeting non-bacterial pathogens. Antifungals are grouped by mechanism; antivirals by target virus; antiprotozoals by parasite type; and anthelmintics by spectrum. Includes modern direct-acting antivirals for HIV, HBV, HCV, and respiratory viruses.",
+  subclasses: [
+    {
+      id: "12a",
+      name: "Antifungal Drugs",
+      synonyms: ["Antimycotic Drugs", "Antifungal Agents"],
+      description: "Antifungal agents target structures unique to fungi. Polyenes (amphotericin B, nystatin) bind ergosterol and disrupt membrane integrity; azoles inhibit ergosterol biosynthesis via CYP51; echinocandins inhibit β-1,3-glucan synthesis in the fungal cell wall. Newer agents include isavuconazole for invasive mould infections, ibrexafungerp (a triterpenoid glucan synthase inhibitor), and rezafungin (an extended half-life echinocandin).",
+      subgroups: [
+        {
+          name: "Polyene Antifungals",
+          drugs: [
+            { name: "Amphotericin B", synonyms: ["AmB", "Fungizone"], dose: "0.5–1.5 mg/kg/day i.v. infusion", brands: [] },
+            { name: "Amphotericin B liposomal", synonyms: ["L-AmB", "AmBisome"], dose: "3–5 mg/kg/day i.v.", brands: [] },
+            { name: "Nystatin", synonyms: [], dose: "500,000–1,000,000 units TDS oral; topically", brands: [] }
+          ]
+        },
+        {
+          name: "Azole Antifungals — Imidazoles",
+          drugs: [
+            { name: "Ketoconazole", synonyms: [], dose: "200–400 mg OD oral; 2% topical", brands: [] },
+            { name: "Clotrimazole", synonyms: [], dose: "1% cream/solution topically BD–TDS", brands: [] },
+            { name: "Miconazole", synonyms: [], dose: "2% topically BD; 200–400 mg i.v./oral", brands: [] },
+            { name: "Econazole", synonyms: [], dose: "1% cream topically OD–BD", brands: [] },
+            { name: "Tioconazole", synonyms: [], dose: "1% topically OD–BD", brands: [] }
+          ]
+        },
+        {
+          name: "Azole Antifungals — Triazoles",
+          drugs: [
+            { name: "Fluconazole", synonyms: ["Diflucan"], dose: "150 mg single dose (vulvovaginal candidiasis); 200–400 mg OD (systemic)", brands: [] },
+            { name: "Itraconazole", synonyms: ["Sporanox"], dose: "100–400 mg OD–BD oral", brands: [] },
+            { name: "Voriconazole", synonyms: ["Vfend"], dose: "Loading 6 mg/kg i.v. BD x2 doses; maintenance 4 mg/kg BD; oral 200 mg BD", brands: [] },
+            { name: "Posaconazole", synonyms: ["Noxafil"], dose: "300 mg BD day 1, then 300 mg OD oral/i.v.", brands: [] },
+            { name: "Isavuconazole", synonyms: ["Cresemba", "Isavuconazonium sulfate"], dose: "372 mg (= 200 mg isavuconazole) TDS x2 days loading, then OD", brands: [] },
+            { name: "Ravuconazole", synonyms: [], dose: "", brands: [] },
+            { name: "Oteseconazole", synonyms: ["Vivjoa"], dose: "600 mg OD x2 days, then 450 mg OD x7 days, then 150 mg OD maintenance", brands: [] }
+          ]
+        },
+        {
+          name: "Echinocandins",
+          drugs: [
+            { name: "Caspofungin", synonyms: ["Cancidas"], dose: "Loading 70 mg i.v. day 1; maintenance 50 mg OD i.v.", brands: [] },
+            { name: "Micafungin", synonyms: ["Mycamine"], dose: "100–150 mg OD i.v.", brands: [] },
+            { name: "Anidulafungin", synonyms: ["Eraxis"], dose: "Loading 200 mg i.v. day 1; maintenance 100 mg OD i.v.", brands: [] },
+            { name: "Rezafungin", synonyms: ["Rezzayo"], dose: "400 mg i.v. week 1; 200 mg weekly thereafter", brands: [] }
+          ]
+        },
+        {
+          name: "Other Antifungals",
+          drugs: [
+            { name: "Flucytosine", synonyms: ["5-FC", "5-Fluorocytosine"], dose: "100–150 mg/kg/day oral in 4 divided doses", brands: [] },
+            { name: "Griseofulvin", synonyms: [], dose: "500 mg–1 g/day oral (microsize); 330–660 mg/day (ultramicrosize)", brands: [] },
+            { name: "Terbinafine", synonyms: ["Lamisil"], dose: "250 mg OD oral; 1% cream topically OD–BD", brands: [] },
+            { name: "Ibrexafungerp", synonyms: ["Brexafemme"], dose: "300 mg BD x1 day (2 doses) oral", brands: [] },
+            { name: "Olorofim", synonyms: [], dose: "120 mg OD oral (investigational/approved for limited use)", brands: [] },
+            { name: "Fosmanogepix", synonyms: [], dose: "", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "12b",
+      name: "Antiviral Drugs — Anti-Herpes",
+      synonyms: ["Antiherpes Agents", "Herpesvirus Antiviral Drugs"],
+      description: "Antiherpesvirus agents primarily inhibit viral DNA polymerase. Aciclovir and its prodrugs (valaciclovir, famciclovir) are activated by viral thymidine kinase and are the cornerstone of HSV and VZV management. CMV requires agents with broader kinase independence — ganciclovir and its prodrug valganciclovir; foscarnet and cidofovir for resistant disease; letermovir and maribavir for CMV prophylaxis and treatment in immunocompromised hosts.",
+      subgroups: [
+        {
+          name: "Nucleoside Analogues — Anti-HSV/VZV",
+          drugs: [
+            { name: "Aciclovir", synonyms: ["Acyclovir", "Zovirax"], dose: "200–800 mg oral 5x/day; 5–10 mg/kg i.v. 8 hourly; 5% topical", brands: [] },
+            { name: "Valaciclovir", synonyms: ["Valacyclovir", "Valtrex"], dose: "500–1000 mg BD–TDS oral", brands: [] },
+            { name: "Famciclovir", synonyms: [], dose: "250–500 mg TDS oral (zoster: 500 mg TDS x7 days)", brands: [] },
+            { name: "Penciclovir", synonyms: [], dose: "1% cream topically every 2 hours while awake for 4 days", brands: [] },
+            { name: "Brivudine", synonyms: [], dose: "125 mg OD oral x7 days (VZV)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-CMV Agents",
+          drugs: [
+            { name: "Ganciclovir", synonyms: [], dose: "Induction: 5 mg/kg i.v. BD x14–21 days; maintenance 5 mg/kg OD", brands: [] },
+            { name: "Valganciclovir", synonyms: ["Valcyte"], dose: "Induction: 900 mg BD oral x21 days; maintenance 900 mg OD", brands: [] },
+            { name: "Foscarnet", synonyms: ["Foscavir"], dose: "Induction: 60 mg/kg i.v. 8 hourly x2–3 weeks; maintenance 90–120 mg/kg OD", brands: [] },
+            { name: "Cidofovir", synonyms: [], dose: "5 mg/kg i.v. once weekly x2 weeks, then every 2 weeks", brands: [] },
+            { name: "Letermovir", synonyms: ["Prevymis"], dose: "480 mg OD oral/i.v. (prophylaxis CMV in HSCT)", brands: [] },
+            { name: "Maribavir", synonyms: ["Livtencity"], dose: "400 mg BD oral (refractory CMV)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "12c",
+      name: "Antiviral Drugs — Antiretrovirals (HIV)",
+      synonyms: ["Antiretroviral Drugs", "ARV", "Anti-HIV Drugs", "ART"],
+      description: "HIV pharmacotherapy relies on combination antiretroviral therapy (ART) using agents from multiple mechanistic classes to achieve sustained viral suppression. NRTIs act as competitive inhibitors and chain terminators of reverse transcriptase; NNRTIs bind allosterically; protease inhibitors prevent virion maturation; integrase strand transfer inhibitors block proviral integration; entry/fusion inhibitors and capsid inhibitors address novel steps in the viral replication cycle. Fixed-dose single-tablet regimens have optimised adherence.",
+      subgroups: [
+        {
+          name: "NRTIs (Nucleoside/Nucleotide Reverse Transcriptase Inhibitors)",
+          drugs: [
+            { name: "Zidovudine", synonyms: ["AZT", "ZDV", "Retrovir"], dose: "300 mg BD oral; 1–2 mg/kg i.v. 4 hourly", brands: [] },
+            { name: "Lamivudine", synonyms: ["3TC", "Epivir"], dose: "150 mg BD or 300 mg OD oral", brands: [] },
+            { name: "Emtricitabine", synonyms: ["FTC", "Emtriva"], dose: "200 mg OD oral", brands: [] },
+            { name: "Tenofovir disoproxil fumarate", synonyms: ["TDF", "Viread"], dose: "300 mg OD oral", brands: [] },
+            { name: "Tenofovir alafenamide", synonyms: ["TAF"], dose: "10–25 mg OD oral", brands: [] },
+            { name: "Abacavir", synonyms: ["ABC", "Ziagen"], dose: "300 mg BD or 600 mg OD oral", brands: [] },
+            { name: "Didanosine", synonyms: ["ddI", "Videx"], dose: "250–400 mg OD oral (weight-based)", brands: [] },
+            { name: "Stavudine", synonyms: ["d4T", "Zerit"], dose: "30–40 mg BD oral (weight-based)", brands: [] },
+            { name: "Zalcitabine", synonyms: ["ddC", "Hivid"], dose: "0.75 mg TDS oral (largely discontinued)", brands: [] }
+          ]
+        },
+        {
+          name: "NNRTIs (Non-Nucleoside Reverse Transcriptase Inhibitors)",
+          drugs: [
+            { name: "Nevirapine", synonyms: ["NVP", "Viramune"], dose: "200 mg OD x14 days lead-in, then 200 mg BD oral", brands: [] },
+            { name: "Efavirenz", synonyms: ["EFV", "Sustiva", "Stocrin"], dose: "600 mg OD at bedtime oral", brands: [] },
+            { name: "Etravirine", synonyms: ["ETR", "Intelence"], dose: "200 mg BD oral with food", brands: [] },
+            { name: "Rilpivirine", synonyms: ["RPV", "Edurant"], dose: "25 mg OD oral with meal", brands: [] },
+            { name: "Doravirine", synonyms: ["DOR", "Pifeltro"], dose: "100 mg OD oral", brands: [] },
+            { name: "Lersivirine", synonyms: [], dose: "", brands: [] }
+          ]
+        },
+        {
+          name: "PIs (Protease Inhibitors)",
+          drugs: [
+            { name: "Lopinavir/ritonavir", synonyms: ["LPV/r", "Kaletra"], dose: "400/100 mg BD oral (or 800/200 mg OD)", brands: [] },
+            { name: "Atazanavir", synonyms: ["ATV", "Reyataz"], dose: "300 mg OD + ritonavir 100 mg OD oral", brands: [] },
+            { name: "Darunavir", synonyms: ["DRV", "Prezista"], dose: "800 mg OD + ritonavir 100 mg OD (treatment-naive)", brands: [] },
+            { name: "Ritonavir", synonyms: ["RTV", "Norvir"], dose: "100–200 mg OD as pharmacokinetic booster", brands: [] },
+            { name: "Cobicistat", synonyms: ["COBI", "Tybost"], dose: "150 mg OD as pharmacokinetic booster", brands: [] },
+            { name: "Saquinavir", synonyms: ["SQV", "Invirase"], dose: "1000 mg BD + ritonavir 100 mg BD", brands: [] },
+            { name: "Fosamprenavir", synonyms: ["FPV"], dose: "700 mg BD + ritonavir 100 mg BD", brands: [] },
+            { name: "Tipranavir", synonyms: ["TPV", "Aptivus"], dose: "500 mg BD + ritonavir 200 mg BD", brands: [] }
+          ]
+        },
+        {
+          name: "INSTIs (Integrase Strand Transfer Inhibitors)",
+          drugs: [
+            { name: "Raltegravir", synonyms: ["RAL", "Isentress"], dose: "400 mg BD or 1200 mg OD oral", brands: [] },
+            { name: "Elvitegravir", synonyms: ["EVG"], dose: "150 mg OD (with cobicistat boosting) oral", brands: [] },
+            { name: "Dolutegravir", synonyms: ["DTG", "Tivicay"], dose: "50 mg OD (or 50 mg BD if resistance suspected)", brands: [] },
+            { name: "Bictegravir", synonyms: ["BIC"], dose: "50 mg OD (in fixed-dose combination)", brands: [] },
+            { name: "Cabotegravir", synonyms: ["CAB", "Vocabria"], dose: "600 mg i.m. every 4 weeks (long-acting); 30 mg OD oral (oral lead-in)", brands: [] }
+          ]
+        },
+        {
+          name: "Entry/Fusion Inhibitors",
+          drugs: [
+            { name: "Enfuvirtide", synonyms: ["T-20", "Fuzeon"], dose: "90 mg s.c. BD", brands: [] },
+            { name: "Maraviroc", synonyms: ["MVC", "Selzentry"], dose: "150–600 mg BD oral (dose depends on co-medications)", brands: [] },
+            { name: "Ibalizumab", synonyms: ["Trogarzo"], dose: "2000 mg loading i.v., then 800 mg every 2 weeks", brands: [] },
+            { name: "Fostemsavir", synonyms: ["FTR", "Rukobia"], dose: "600 mg BD oral", brands: [] },
+            { name: "Lenacapavir", synonyms: ["LEN", "Sunlenca"], dose: "600 mg s.c. every 6 months (after oral lead-in)", brands: [] }
+          ]
+        },
+        {
+          name: "Fixed-Dose Combinations (Key ARV Regimens)",
+          drugs: [
+            { name: "Bictegravir/tenofovir alafenamide/emtricitabine", synonyms: ["B/F/TAF", "Biktarvy"], dose: "1 tablet OD oral (50/25/200 mg)", brands: [] },
+            { name: "Dolutegravir/abacavir/lamivudine", synonyms: ["DTG/ABC/3TC", "Triumeq"], dose: "1 tablet OD oral", brands: [] },
+            { name: "Dolutegravir/lamivudine", synonyms: ["DTG/3TC", "Dovato"], dose: "1 tablet OD oral (50/300 mg)", brands: [] },
+            { name: "Rilpivirine/tenofovir alafenamide/emtricitabine", synonyms: ["RPV/TAF/FTC", "Odefsey"], dose: "1 tablet OD oral", brands: [] },
+            { name: "Efavirenz/tenofovir/emtricitabine", synonyms: ["EFV/TDF/FTC", "Atripla"], dose: "1 tablet OD oral", brands: [] },
+            { name: "Cabotegravir/rilpivirine long-acting", synonyms: ["CAB/RPV LA", "Cabenuva"], dose: "600 mg/900 mg i.m. monthly or every 2 months", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "12d",
+      name: "Antiviral Drugs — Anti-Hepatitis",
+      synonyms: ["Anti-HBV", "Anti-HCV", "Hepatitis Antivirals"],
+      description: "Chronic hepatitis B management uses nucleos(t)ide analogues — tenofovir (TDF or TAF) and entecavir — to suppress viral replication durably; these agents rarely achieve functional cure. Hepatitis C has been transformed by pan-genotypic direct-acting antiviral combinations targeting NS5B polymerase (sofosbuvir), NS5A (velpatasvir, pibrentasvir), and NS3/4A protease (glecaprevir, voxilaprevir), achieving sustained virological response rates above 95% in 8–12 weeks.",
+      subgroups: [
+        {
+          name: "Anti-HBV (Hepatitis B) Agents",
+          drugs: [
+            { name: "Entecavir", synonyms: ["ETV", "Baraclude"], dose: "0.5 mg OD oral (treatment-naive); 1 mg OD (lamivudine-resistant)", brands: [] },
+            { name: "Tenofovir disoproxil fumarate", synonyms: ["TDF"], dose: "300 mg OD oral", brands: [] },
+            { name: "Tenofovir alafenamide", synonyms: ["TAF", "Vemlidy"], dose: "25 mg OD oral", brands: [] },
+            { name: "Adefovir dipivoxil", synonyms: ["ADV", "Hepsera"], dose: "10 mg OD oral", brands: [] },
+            { name: "Telbivudine", synonyms: ["LdT", "Tyzeka"], dose: "600 mg OD oral", brands: [] },
+            { name: "Lamivudine", synonyms: ["3TC", "Epivir-HBV"], dose: "100 mg OD oral (HBV); 150 mg BD (HIV)", brands: [] },
+            { name: "Abelacimab", synonyms: [], dose: "", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-HCV Direct-Acting Antivirals (DAAs) — NS5B Inhibitors",
+          drugs: [
+            { name: "Sofosbuvir", synonyms: ["SOF", "Sovaldi"], dose: "400 mg OD oral (in combination)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-HCV DAAs — NS5A Inhibitors",
+          drugs: [
+            { name: "Ledipasvir", synonyms: ["LDV"], dose: "90 mg OD (in combination with sofosbuvir)", brands: [] },
+            { name: "Daclatasvir", synonyms: ["DCV", "Daklinza"], dose: "60 mg OD oral (with sofosbuvir)", brands: [] },
+            { name: "Velpatasvir", synonyms: ["VEL"], dose: "100 mg OD (in combination)", brands: [] },
+            { name: "Pibrentasvir", synonyms: ["PIB"], dose: "120 mg OD (in combination)", brands: [] },
+            { name: "Elbasvir", synonyms: ["EBR"], dose: "50 mg OD (in combination)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-HCV DAAs — NS3/4A Protease Inhibitors",
+          drugs: [
+            { name: "Glecaprevir", synonyms: ["GLE"], dose: "300 mg OD (in combination)", brands: [] },
+            { name: "Grazoprevir", synonyms: ["GZR"], dose: "100 mg OD (in combination)", brands: [] },
+            { name: "Voxilaprevir", synonyms: ["VOX"], dose: "100 mg OD (in combination)", brands: [] },
+            { name: "Simeprevir", synonyms: ["SMV", "Olysio"], dose: "150 mg OD oral (with sofosbuvir)", brands: [] },
+            { name: "Paritaprevir/ritonavir/ombitasvir", synonyms: ["Viekira Pak"], dose: "150/100/25 mg OD + dasabuvir 250 mg BD", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-HCV Fixed-Dose Combinations (Pangenotypic)",
+          drugs: [
+            { name: "Sofosbuvir/velpatasvir", synonyms: ["SOF/VEL", "Epclusa"], dose: "400/100 mg OD oral x12 weeks", brands: [] },
+            { name: "Sofosbuvir/ledipasvir", synonyms: ["SOF/LDV", "Harvoni"], dose: "400/90 mg OD oral x8–12 weeks", brands: [] },
+            { name: "Glecaprevir/pibrentasvir", synonyms: ["GLE/PIB", "Mavyret"], dose: "300/120 mg OD oral x8–12 weeks", brands: [] },
+            { name: "Sofosbuvir/velpatasvir/voxilaprevir", synonyms: ["SOF/VEL/VOX", "Vosevi"], dose: "400/100/100 mg OD oral x12 weeks", brands: [] },
+            { name: "Elbasvir/grazoprevir", synonyms: ["EBR/GZR", "Zepatier"], dose: "50/100 mg OD oral x12 weeks", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "12e",
+      name: "Antiviral Drugs — Respiratory Viruses",
+      synonyms: ["Anti-Influenza Drugs", "Anti-COVID Drugs", "Anti-RSV"],
+      description: "Neuraminidase inhibitors (oseltamivir, zanamivir) and the cap-dependent endonuclease inhibitor baloxavir marboxil address influenza. SARS-CoV-2 pharmacotherapy includes the oral protease inhibitor combination nirmatrelvir/ritonavir (Paxlovid), the nucleoside analogue prodrug molnupiravir, and the intravenous nucleotide analogue remdesivir. Nirsevimab, a long-acting monoclonal antibody against RSV prefusion protein, provides seasonal prophylaxis in infants.",
+      subgroups: [
+        {
+          name: "Anti-Influenza Agents",
+          drugs: [
+            { name: "Oseltamivir", synonyms: ["Tamiflu"], dose: "75 mg BD oral x5 days (treatment); 75 mg OD (prophylaxis)", brands: [] },
+            { name: "Zanamivir", synonyms: ["Relenza"], dose: "10 mg (2 inhalations) BD x5 days", brands: [] },
+            { name: "Peramivir", synonyms: ["Rapivab"], dose: "600 mg single i.v. infusion", brands: [] },
+            { name: "Baloxavir marboxil", synonyms: ["Xofluza"], dose: "40–80 mg single oral dose (weight-based)", brands: [] },
+            { name: "Laninamivir", synonyms: [], dose: "20–40 mg single inhalation (Japan-approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-COVID-19 (SARS-CoV-2) Agents",
+          drugs: [
+            { name: "Nirmatrelvir/ritonavir", synonyms: ["Paxlovid"], dose: "300 mg/100 mg BD oral x5 days", brands: [] },
+            { name: "Remdesivir", synonyms: ["GS-5734", "Veklury"], dose: "200 mg i.v. day 1, then 100 mg OD i.v. x4 days", brands: [] },
+            { name: "Molnupiravir", synonyms: ["EIDD-2801", "Lagevrio"], dose: "800 mg BD oral x5 days", brands: [] },
+            { name: "Ensitrelvir", synonyms: ["Xocova"], dose: "375 mg OD day 1, then 125 mg OD x4 days (Japan-approved)", brands: [] },
+            { name: "Azvudine", synonyms: [], dose: "5 mg OD oral (China NMPA-approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-RSV Agents",
+          drugs: [
+            { name: "Ribavirin", synonyms: ["Virazole", "Rebetol"], dose: "600 mg BD–TDS oral (HCV); inhalation for RSV", brands: [] },
+            { name: "Palivizumab", synonyms: ["Synagis"], dose: "15 mg/kg i.m. monthly (RSV prophylaxis in high-risk infants)", brands: [] },
+            { name: "Nirsevimab", synonyms: ["Beyfortus"], dose: "50–100 mg i.m. single dose (RSV prophylaxis, neonates/infants)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "12f",
+      name: "Antiprotozoal Drugs",
+      synonyms: ["Antiprotozoals", "Antiparasitic Protozoal Agents"],
+      description: "Antiprotozoal pharmacotherapy is organised by parasite biology. Malaria treatment is now based on artemisinin combination therapies (ACTs), which exploit the rapid action of artemisinins paired with partner drugs of longer half-life to prevent recrudescence. Visceral leishmaniasis is managed with amphotericin B formulations, miltefosine, or antimonials depending on geography and resistance patterns. Trypanosomiasis regimens include novel oral agents (fexinidazole for sleeping sickness; benznidazole for Chagas disease). Intestinal protozoa are addressed with nitroimidazoles and nitazoxanide.",
+      subgroups: [
+        {
+          name: "Antimalarials — Blood Schizontocides",
+          drugs: [
+            { name: "Chloroquine", synonyms: ["CQ", "Aralen"], dose: "600 mg base stat, then 300 mg after 6 hr, then 300 mg OD x2 days", brands: [] },
+            { name: "Hydroxychloroquine", synonyms: ["HCQ", "Plaquenil"], dose: "400 mg OD (malaria prophylaxis); 200–400 mg/day (autoimmune)", brands: [] },
+            { name: "Amodiaquine", synonyms: ["AQ"], dose: "10 mg/kg OD x3 days (as part of combination therapy)", brands: [] },
+            { name: "Quinine", synonyms: [], dose: "600 mg TDS oral x7 days; 20 mg/kg loading i.v., then 10 mg/kg 8 hourly", brands: [] },
+            { name: "Mefloquine", synonyms: ["Lariam"], dose: "250 mg OD oral (prophylaxis); 750 mg then 500 mg after 6–8 hr (treatment)", brands: [] },
+            { name: "Lumefantrine", synonyms: [], dose: "In combination with artemether (see ACTs)", brands: [] },
+            { name: "Piperaquine", synonyms: [], dose: "In combination with dihydroartemisinin", brands: [] }
+          ]
+        },
+        {
+          name: "Antimalarials — Artemisinin-based Combination Therapies (ACTs)",
+          drugs: [
+            { name: "Artemether/lumefantrine", synonyms: ["AL", "Coartem"], dose: "80/480 mg BD x3 days (adult); weight-based in children", brands: [] },
+            { name: "Artesunate/amodiaquine", synonyms: ["ASAQ", "Coarsucam"], dose: "4 mg/kg artesunate + 10 mg/kg AQ OD x3 days", brands: [] },
+            { name: "Dihydroartemisinin/piperaquine", synonyms: ["DHA/PPQ", "Eurartesim"], dose: "40/320 mg OD x3 days (adult)", brands: [] },
+            { name: "Artesunate", synonyms: [], dose: "2.4 mg/kg i.v. at 0, 12, 24 hr, then OD (severe malaria)", brands: [] },
+            { name: "Artesunate/pyronaridine", synonyms: ["Pyramax"], dose: "Weight-based OD x3 days", brands: [] }
+          ]
+        },
+        {
+          name: "Antimalarials — Tissue Schizontocides / Gametocytocides",
+          drugs: [
+            { name: "Primaquine", synonyms: [], dose: "15 mg base OD x14 days (P. vivax radical cure); 0.25–0.5 mg/kg (P. falciparum gametocyte)", brands: [] },
+            { name: "Tafenoquine", synonyms: ["Krintafel", "Arakoda"], dose: "300 mg single dose (P. vivax radical cure; after chloroquine)", brands: [] },
+            { name: "Proguanil", synonyms: ["Paludrine"], dose: "200 mg OD (with atovaquone for prophylaxis)", brands: [] },
+            { name: "Atovaquone/proguanil", synonyms: ["Malarone"], dose: "250/100 mg OD (prophylaxis); 1000/400 mg OD x3 days (treatment)", brands: [] },
+            { name: "Pyrimethamine", synonyms: [], dose: "25 mg OD (malaria prophylaxis; used with sulfadoxine)", brands: [] },
+            { name: "Sulfadoxine/pyrimethamine", synonyms: ["SP", "Fansidar"], dose: "1500/75 mg single dose", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-Leishmania Drugs",
+          drugs: [
+            { name: "Sodium stibogluconate", synonyms: ["SSG", "Pentostam"], dose: "20 mg/kg/day i.m./i.v. x28–30 days", brands: [] },
+            { name: "Meglumine antimoniate", synonyms: ["Glucantime"], dose: "20 mg/kg/day i.m. x28 days", brands: [] },
+            { name: "Miltefosine", synonyms: ["Impavido"], dose: "2.5 mg/kg/day oral x28 days (adult 50–100 mg/day)", brands: [] },
+            { name: "Amphotericin B liposomal", synonyms: ["L-AmB"], dose: "3–5 mg/kg/day i.v. x3–5 days (visceral leishmaniasis)", brands: [] },
+            { name: "Paromomycin", synonyms: ["Aminosidine"], dose: "11–15 mg/kg/day i.m. x21 days", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-Trypanosoma Drugs",
+          drugs: [
+            { name: "Melarsoprol", synonyms: [], dose: "2.2 mg/kg/day i.v. x10 days (T. brucei gambiense stage 2)", brands: [] },
+            { name: "Eflornithine", synonyms: ["DFMO"], dose: "400 mg/kg/day i.v. in 4 doses x14 days", brands: [] },
+            { name: "Nifurtimox", synonyms: [], dose: "8–10 mg/kg/day oral in 3–4 doses x60–90 days (Chagas)", brands: [] },
+            { name: "Benznidazole", synonyms: [], dose: "5–7 mg/kg/day in 2 doses x60 days (Chagas)", brands: [] },
+            { name: "Fexinidazole", synonyms: ["Fexinidazole"], dose: "1800 mg OD x4 days, then 1200 mg OD x6 days (HAT stage 1/2)", brands: [] },
+            { name: "Acoziborole", synonyms: [], dose: "960 mg single oral dose (investigational/approved WHO-priority)", brands: [] },
+            { name: "Suramin", synonyms: [], dose: "1 g i.v. weekly x5–6 doses (HAT stage 1)", brands: [] },
+            { name: "Pentamidine", synonyms: [], dose: "4 mg/kg OD i.m./i.v. x7–10 days (HAT stage 1)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-Toxoplasma and Other Antiprotozoals",
+          drugs: [
+            { name: "Pyrimethamine + sulfadiazine", synonyms: [], dose: "Pyrimethamine 200 mg loading then 50–75 mg OD + sulfadiazine 4–6 g/day in 4 doses", brands: [] },
+            { name: "Metronidazole", synonyms: ["Flagyl"], dose: "400–800 mg TDS oral; 500 mg i.v. 8 hourly", brands: [] },
+            { name: "Tinidazole", synonyms: [], dose: "2 g OD oral x3 days (giardiasis); 2 g stat (trichomoniasis)", brands: [] },
+            { name: "Secnidazole", synonyms: [], dose: "2 g single dose oral", brands: [] },
+            { name: "Nitazoxanide", synonyms: ["Alinia"], dose: "500 mg BD oral x3 days (adults)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "12g",
+      name: "Anthelmintic Drugs",
+      synonyms: ["Antiparasitic Helminthic Agents", "Worm Treatments"],
+      description: "Anthelmintic agents act on parasite-specific targets. Benzimidazoles (albendazole, mebendazole) inhibit tubulin polymerisation, disrupting microtubule-dependent glucose uptake; macrocyclic lactones (ivermectin, moxidectin) potentiate invertebrate-specific glutamate-gated chloride channels, causing paralysis; praziquantel increases helminth cell membrane permeability to calcium, producing tetanic paralysis and tegument disruption effective against trematodes and cestodes.",
+      subgroups: [
+        {
+          name: "Benzimidazoles",
+          drugs: [
+            { name: "Mebendazole", synonyms: [], dose: "100 mg BD x3 days (intestinal nematodes); 500 mg single dose (mass treatment)", brands: [] },
+            { name: "Albendazole", synonyms: [], dose: "400 mg single dose (intestinal nematodes); 400 mg BD x8–30 days (tissue helminths)", brands: [] },
+            { name: "Flubendazole", synonyms: [], dose: "100 mg BD x3 days oral", brands: [] }
+          ]
+        },
+        {
+          name: "Macrocyclic Lactones",
+          drugs: [
+            { name: "Ivermectin", synonyms: ["Stromectol", "Mectizan"], dose: "150–200 µg/kg single dose oral", brands: [] },
+            { name: "Moxidectin", synonyms: ["Moxidectin"], dose: "8 mg single oral dose (onchocerciasis)", brands: [] }
+          ]
+        },
+        {
+          name: "Other Anthelmintics",
+          drugs: [
+            { name: "Praziquantel", synonyms: [], dose: "20 mg/kg TDS x1 day (tapeworm); 20–75 mg/kg/day in 3 doses x1–3 days (schistosomiasis)", brands: [] },
+            { name: "Pyrantel pamoate", synonyms: [], dose: "10 mg/kg single dose (max 1 g)", brands: [] },
+            { name: "Oxamniquine", synonyms: [], dose: "15–60 mg/kg oral (schistosomiasis, S. mansoni)", brands: [] },
+            { name: "Diethylcarbamazine", synonyms: ["DEC", "Hetrazan"], dose: "6 mg/kg/day in 3 doses x12 days (filariasis)", brands: [] },
+            { name: "Niclosamide", synonyms: [], dose: "2 g single chewable dose (tapeworm)", brands: [] },
+            { name: "Triclabendazole", synonyms: ["Egaten"], dose: "10 mg/kg single dose or BD x1 day (fascioliasis)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ============================================================
+// CHAPTER 13: ANTICANCER / ANTINEOPLASTIC DRUGS
+// ============================================================
+{
+  id: 13,
+  title: "Oncology Pharmacology — Anticancer and Antineoplastic Agents",
+  description: "Oncology pharmacology is organised by mechanism of action. Classical cytotoxic classes (alkylating agents, antimetabolites, topoisomerase inhibitors, antimicrotubule agents) are followed by molecularly targeted small molecules — kinase inhibitors, PARP inhibitors, CDK4/6 inhibitors — monoclonal antibody therapies, antibody-drug conjugates, immune checkpoint inhibitors, and hormonal agents.",
+  subclasses: [
+    {
+      id: "13a",
+      name: "Alkylating Agents",
+      synonyms: ["DNA Alkylating Agents", "Alkylators"],
+      description: "Alkylating agents exert cytotoxicity by transferring alkyl groups to DNA, predominantly at the N7 position of guanine, generating crosslinks and strand breaks that impede replication and transcription. They act across all phases of the cell cycle. Different subclasses — nitrogen mustards, platinum compounds, alkyl sulfonates, nitrosoureas, and triazines — differ in their chemical reactivity, resistance profiles, and toxicity patterns.",
+      subgroups: [
+        {
+          name: "Nitrogen Mustards",
+          drugs: [
+            { name: "Cyclophosphamide", synonyms: ["CTX", "Cytoxan", "Endoxan"], dose: "500–1500 mg/m² i.v. (pulse); 1–5 mg/kg/day oral (low-dose)", brands: [] },
+            { name: "Ifosfamide", synonyms: ["IFO", "Ifex"], dose: "1.2–2.5 g/m²/day i.v. x3–5 days", brands: [] },
+            { name: "Mechlorethamine", synonyms: ["Nitrogen mustard", "HN2", "Mustargen"], dose: "0.4 mg/kg i.v. per course", brands: [] },
+            { name: "Melphalan", synonyms: ["Alkeran", "L-PAM"], dose: "6 mg/day oral x2–3 weeks; 8–10 mg/m² i.v. (high-dose)", brands: [] },
+            { name: "Chlorambucil", synonyms: ["Leukeran"], dose: "0.1–0.2 mg/kg/day oral x3–6 weeks", brands: [] },
+            { name: "Bendamustine", synonyms: ["Treanda"], dose: "90–120 mg/m² i.v. days 1–2 of 28-day cycle", brands: [] }
+          ]
+        },
+        {
+          name: "Platinum Compounds",
+          drugs: [
+            { name: "Cisplatin", synonyms: ["CDDP", "Platinol"], dose: "50–100 mg/m² i.v. every 3–4 weeks", brands: [] },
+            { name: "Carboplatin", synonyms: ["CBDCA", "Paraplatin"], dose: "AUC 5–7 i.v. every 3–4 weeks (Calvert formula)", brands: [] },
+            { name: "Oxaliplatin", synonyms: ["Eloxatin"], dose: "85 mg/m² i.v. every 2 weeks", brands: [] },
+            { name: "Nedaplatin", synonyms: [], dose: "80–100 mg/m² i.v. every 3–4 weeks (Japan)", brands: [] },
+            { name: "Lobaplatin", synonyms: [], dose: "30–35 mg/m² i.v. (China NMPA)", brands: [] }
+          ]
+        },
+        {
+          name: "Alkyl Sulfonates",
+          drugs: [
+            { name: "Busulfan", synonyms: ["Busilvex", "Myleran"], dose: "0.8–1 mg/kg i.v. every 6 hr x4 days (conditioning); 4–8 mg/day oral", brands: [] },
+            { name: "Treosulfan", synonyms: [], dose: "3.5 g/m² i.v. x3 days (conditioning)", brands: [] }
+          ]
+        },
+        {
+          name: "Nitrosoureas",
+          drugs: [
+            { name: "Carmustine", synonyms: ["BCNU", "BiCNU"], dose: "150–200 mg/m² i.v. every 6 weeks", brands: [] },
+            { name: "Lomustine", synonyms: ["CCNU", "CeeNU"], dose: "100–130 mg/m² oral every 6 weeks", brands: [] },
+            { name: "Streptozocin", synonyms: ["Zanosar"], dose: "500 mg/m²/day i.v. x5 days every 6 weeks", brands: [] },
+            { name: "Fotemustine", synonyms: [], dose: "100 mg/m² i.v. weekly x3, then rest, then every 3 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Triazines and Others",
+          drugs: [
+            { name: "Dacarbazine", synonyms: ["DTIC", "DTIC-Dome"], dose: "150–250 mg/m²/day i.v. x5 days every 3 weeks", brands: [] },
+            { name: "Temozolomide", synonyms: ["TMZ", "Temodar", "Temodal"], dose: "75 mg/m²/day oral during radiotherapy; 150–200 mg/m²/day x5 days/28-day cycle", brands: [] },
+            { name: "Procarbazine", synonyms: ["Matulane"], dose: "100 mg/m²/day oral x14 days", brands: [] },
+            { name: "Altretamine", synonyms: ["Hexamethylmelamine", "Hexalen"], dose: "260 mg/m²/day oral in 4 divided doses x14 days/28-day cycle", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "13b",
+      name: "Antimetabolites",
+      synonyms: ["Anti-Metabolites", "Nucleoside Analogues (Oncology)"],
+      description: "Antimetabolites are structural analogues of purines, pyrimidines, or folate cofactors that compete with endogenous substrates or irreversibly inhibit biosynthetic enzymes, ultimately impeding nucleic acid synthesis. Being S-phase specific, their cytotoxicity is greatest in rapidly proliferating cells. The three major subclasses — antifolates, pyrimidine analogues, and purine analogues — each target distinct steps in nucleotide biosynthesis.",
+      subgroups: [
+        {
+          name: "Antifolates",
+          drugs: [
+            { name: "Methotrexate", synonyms: ["MTX", "Rheumatrex", "Trexall"], dose: "15–30 mg/m² i.v. (oncology); up to 12 g/m² i.v. (high-dose with leucovorin rescue)", brands: [] },
+            { name: "Pemetrexed", synonyms: ["Alimta"], dose: "500 mg/m² i.v. every 21 days", brands: [] },
+            { name: "Raltitrexed", synonyms: ["Tomudex"], dose: "3 mg/m² i.v. every 3 weeks", brands: [] },
+            { name: "Pralatrexate", synonyms: ["Folotyn"], dose: "30 mg/m² i.v. weekly x6 of 7-week cycle", brands: [] }
+          ]
+        },
+        {
+          name: "Pyrimidine Analogues",
+          drugs: [
+            { name: "5-Fluorouracil", synonyms: ["5-FU", "Fluorouracil"], dose: "400–600 mg/m²/day i.v. bolus; 1000 mg/m²/day continuous infusion x4–5 days", brands: [] },
+            { name: "Capecitabine", synonyms: ["Xeloda"], dose: "1000–1250 mg/m² BD oral x14 days/21-day cycle", brands: [] },
+            { name: "Cytarabine", synonyms: ["Ara-C", "Cytosar", "Cytosine arabinoside"], dose: "100–200 mg/m²/day continuous i.v. x7 days (standard); 2–3 g/m² i.v. 12-hourly (high dose)", brands: [] },
+            { name: "Gemcitabine", synonyms: ["Gemzar"], dose: "1000–1250 mg/m² i.v. days 1,8 of 21-day cycle", brands: [] },
+            { name: "Decitabine", synonyms: ["Dacogen"], dose: "15 mg/m² i.v. 8-hourly x3 days every 6 weeks (or 20 mg/m² OD x5 days)", brands: [] },
+            { name: "Azacitidine", synonyms: ["5-AZA", "Vidaza"], dose: "75 mg/m²/day s.c./i.v. x7 days every 28 days", brands: [] },
+            { name: "Tegafur/uracil", synonyms: ["UFT"], dose: "300 mg/m²/day tegafur in 3 doses x28 days", brands: [] },
+            { name: "Trifluridine/tipiracil", synonyms: ["TAS-102", "Lonsurf"], dose: "35 mg/m² BD oral days 1–5 and 8–12 of 28-day cycle", brands: [] }
+          ]
+        },
+        {
+          name: "Purine Analogues",
+          drugs: [
+            { name: "Mercaptopurine", synonyms: ["6-MP", "Purinethol"], dose: "2.5 mg/kg/day oral", brands: [] },
+            { name: "Thioguanine", synonyms: ["6-TG", "Tabloid"], dose: "2 mg/kg/day oral", brands: [] },
+            { name: "Fludarabine", synonyms: ["FAMP", "Fludara"], dose: "25 mg/m²/day i.v. x5 days every 4 weeks; 40 mg/m²/day oral x5 days", brands: [] },
+            { name: "Cladribine", synonyms: ["2-CdA", "Leustatin"], dose: "0.09 mg/kg/day continuous i.v. x7 days (HCL)", brands: [] },
+            { name: "Clofarabine", synonyms: ["Clolar", "Evoltra"], dose: "52 mg/m²/day i.v. x5 days every 2–6 weeks", brands: [] },
+            { name: "Nelarabine", synonyms: ["Arranon"], dose: "1500 mg/m² i.v. days 1,3,5 of 21-day cycle (adults)", brands: [] },
+            { name: "Pentostatin", synonyms: ["DCF", "Nipent"], dose: "4 mg/m² i.v. every 2 weeks", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "13c",
+      name: "Topoisomerase Inhibitors",
+      synonyms: ["Topoisomerase I and II Inhibitors"],
+      description: "Topoisomerase inhibitors exploit enzymes essential for managing DNA topology during replication and transcription. Topoisomerase I inhibitors (camptothecin derivatives — irinotecan, topotecan) stabilise the enzyme-DNA cleavable complex after single-strand nicking. Topoisomerase II inhibitors act similarly with double-strand breaks: anthracyclines intercalate DNA and also generate free radicals; epipodophyllotoxins (etoposide) act without intercalation.",
+      subgroups: [
+        {
+          name: "Topoisomerase I Inhibitors (Camptothecins)",
+          drugs: [
+            { name: "Irinotecan", synonyms: ["CPT-11", "Campto"], dose: "125 mg/m² i.v. weekly x4 (or 180 mg/m² every 2 weeks in FOLFIRI)", brands: [] },
+            { name: "Topotecan", synonyms: ["Hycamtin"], dose: "1.5 mg/m²/day i.v. x5 days every 3 weeks (or 2.3 mg/m²/day oral x5 days)", brands: [] },
+            { name: "Belotecan", synonyms: [], dose: "0.5 mg/m²/day i.v. x5 days every 3 weeks (Korea/limited)", brands: [] }
+          ]
+        },
+        {
+          name: "Topoisomerase II Inhibitors — Anthracyclines",
+          drugs: [
+            { name: "Doxorubicin", synonyms: ["Adriamycin", "Rubex"], dose: "60–75 mg/m² i.v. every 3 weeks", brands: [] },
+            { name: "Liposomal doxorubicin", synonyms: ["PEGylated liposomal doxorubicin", "Doxil", "Caelyx"], dose: "20–50 mg/m² i.v. every 4 weeks", brands: [] },
+            { name: "Epirubicin", synonyms: ["Ellence", "Pharmorubicin"], dose: "60–120 mg/m² i.v. every 3–4 weeks", brands: [] },
+            { name: "Daunorubicin", synonyms: ["Daunomycin", "Cerubidine"], dose: "45–60 mg/m²/day i.v. x3 days", brands: [] },
+            { name: "Idarubicin", synonyms: ["Idamycin"], dose: "12–13 mg/m²/day i.v. x3 days", brands: [] },
+            { name: "Mitoxantrone", synonyms: ["Novantrone"], dose: "12–14 mg/m² i.v. every 3 weeks", brands: [] },
+            { name: "Valrubicin", synonyms: ["Valstar"], dose: "800 mg intravesical weekly x6 weeks (bladder cancer)", brands: [] }
+          ]
+        },
+        {
+          name: "Topoisomerase II Inhibitors — Epipodophyllotoxins",
+          drugs: [
+            { name: "Etoposide", synonyms: ["VP-16", "VePesid"], dose: "50–100 mg/m²/day i.v. x3–5 days; 50 mg/m²/day oral x14–21 days", brands: [] },
+            { name: "Teniposide", synonyms: ["VM-26", "Vumon"], dose: "100–180 mg/m² i.v. every 1–2 weeks", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "13d",
+      name: "Antimicrotubule Agents",
+      synonyms: ["Tubulin-Binding Agents", "Mitotic Inhibitors"],
+      description: "Antimicrotubule agents disrupt the dynamic equilibrium of microtubule polymerisation that is essential for chromosomal segregation during mitosis. Vinca alkaloids (vincristine, vinblastine, vinorelbine) promote microtubule depolymerisation; taxanes (paclitaxel, docetaxel) and epothilones hyperstabilise microtubules, preventing their disassembly — both mechanisms arrest cells in M-phase and trigger apoptosis.",
+      subgroups: [
+        {
+          name: "Vinca Alkaloids",
+          drugs: [
+            { name: "Vincristine", synonyms: ["VCR", "Oncovin"], dose: "1.4 mg/m² i.v. (max 2 mg) every 1–2 weeks", brands: [] },
+            { name: "Vinblastine", synonyms: ["VBL", "Velban"], dose: "6 mg/m² i.v. every 1–2 weeks", brands: [] },
+            { name: "Vinorelbine", synonyms: ["NVB", "Navelbine"], dose: "25–30 mg/m² i.v. weekly; 60–80 mg/m² oral weekly", brands: [] },
+            { name: "Vindesine", synonyms: [], dose: "3–4 mg/m² i.v. every 1–2 weeks", brands: [] },
+            { name: "Vinflunine", synonyms: ["Javlor"], dose: "320 mg/m² i.v. every 3 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Taxanes",
+          drugs: [
+            { name: "Paclitaxel", synonyms: ["Taxol"], dose: "175 mg/m² i.v. every 3 weeks; 80 mg/m² i.v. weekly", brands: [] },
+            { name: "Nab-paclitaxel", synonyms: ["Albumin-bound paclitaxel", "Abraxane"], dose: "100–260 mg/m² i.v. every 3 weeks or weekly", brands: [] },
+            { name: "Docetaxel", synonyms: ["Taxotere"], dose: "75–100 mg/m² i.v. every 3 weeks", brands: [] },
+            { name: "Cabazitaxel", synonyms: ["Jevtana"], dose: "20–25 mg/m² i.v. every 3 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Epothilones",
+          drugs: [
+            { name: "Ixabepilone", synonyms: ["Ixempra"], dose: "40 mg/m² i.v. every 3 weeks", brands: [] },
+            { name: "Eribulin", synonyms: ["Halaven"], dose: "1.4 mg/m² i.v. days 1,8 of 21-day cycle", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "13e",
+      name: "Targeted Therapy — Kinase Inhibitors",
+      synonyms: ["Tyrosine Kinase Inhibitors", "TKIs", "Small Molecule Kinase Inhibitors"],
+      description: "Molecularly targeted small-molecule kinase inhibitors occupy the ATP-binding pocket of dysregulated kinases that drive oncogenic signalling. They are classified by the kinase(s) targeted: BCR-ABL inhibitors for CML, EGFR inhibitors for NSCLC with activating mutations, ALK/ROS1 inhibitors for fusion-driven lung cancer, BRAF/MEK inhibitors for melanoma, CDK4/6 inhibitors for hormone receptor-positive breast cancer, BTK inhibitors for B-cell malignancies, PARP inhibitors for homologous recombination-deficient tumours, and many others.",
+      subgroups: [
+        {
+          name: "BCR-ABL Inhibitors (CML/ALL)",
+          drugs: [
+            { name: "Imatinib", synonyms: ["Gleevec", "Glivec", "STI571"], dose: "400–600 mg OD oral (CML); 400 mg BD (accelerated/blast phase)", brands: [] },
+            { name: "Dasatinib", synonyms: ["Sprycel"], dose: "100 mg OD oral (CML chronic); 140 mg OD (accelerated)", brands: [] },
+            { name: "Nilotinib", synonyms: ["Tasigna"], dose: "300 mg BD oral (first-line); 400 mg BD (resistant)", brands: [] },
+            { name: "Bosutinib", synonyms: ["Bosulif"], dose: "400–500 mg OD oral", brands: [] },
+            { name: "Ponatinib", synonyms: ["Iclusig"], dose: "15–45 mg OD oral", brands: [] },
+            { name: "Asciminib", synonyms: ["Scemblix"], dose: "40 mg BD oral (non-T315I); 200 mg BD (T315I mutation)", brands: [] }
+          ]
+        },
+        {
+          name: "EGFR Inhibitors (NSCLC, CRC, HNSCC)",
+          drugs: [
+            { name: "Erlotinib", synonyms: ["Tarceva"], dose: "100–150 mg OD oral", brands: [] },
+            { name: "Gefitinib", synonyms: ["Iressa"], dose: "250 mg OD oral", brands: [] },
+            { name: "Afatinib", synonyms: ["Gilotrif", "Giotrif"], dose: "40 mg OD oral", brands: [] },
+            { name: "Osimertinib", synonyms: ["Tagrisso", "AZD9291"], dose: "80 mg OD oral", brands: [] },
+            { name: "Dacomitinib", synonyms: ["Vizimpro"], dose: "45 mg OD oral", brands: [] },
+            { name: "Lapatinib", synonyms: ["Tykerb", "Tyverb"], dose: "1250–1500 mg OD oral", brands: [] },
+            { name: "Neratinib", synonyms: ["Nerlynx"], dose: "240 mg OD oral", brands: [] },
+            { name: "Tucatinib", synonyms: ["Tukysa"], dose: "300 mg BD oral", brands: [] },
+            { name: "Mobocertinib", synonyms: ["Exkivity"], dose: "160 mg OD oral (EGFR exon 20 insertions)", brands: [] }
+          ]
+        },
+        {
+          name: "ALK/ROS1 Inhibitors",
+          drugs: [
+            { name: "Crizotinib", synonyms: ["Xalkori"], dose: "250 mg BD oral", brands: [] },
+            { name: "Ceritinib", synonyms: ["Zykadia"], dose: "450 mg OD oral with food (or 750 mg fasted)", brands: [] },
+            { name: "Alectinib", synonyms: ["Alecensa"], dose: "600 mg BD oral", brands: [] },
+            { name: "Brigatinib", synonyms: ["Alunbrig"], dose: "90 mg OD x7 days, then 180 mg OD oral", brands: [] },
+            { name: "Lorlatinib", synonyms: ["Lorbrena"], dose: "100 mg OD oral", brands: [] },
+            { name: "Entrectinib", synonyms: ["Rozlytrek"], dose: "600 mg OD oral (ALK/ROS1/NTRK)", brands: [] }
+          ]
+        },
+        {
+          name: "BRAF/MEK Inhibitors (Melanoma, NSCLC)",
+          drugs: [
+            { name: "Vemurafenib", synonyms: ["Zelboraf"], dose: "960 mg BD oral", brands: [] },
+            { name: "Dabrafenib", synonyms: ["Tafinlar"], dose: "150 mg BD oral", brands: [] },
+            { name: "Encorafenib", synonyms: ["Braftovi"], dose: "450 mg OD oral (with binimetinib)", brands: [] },
+            { name: "Trametinib", synonyms: ["Mekinist"], dose: "2 mg OD oral", brands: [] },
+            { name: "Cobimetinib", synonyms: ["Cotellic"], dose: "60 mg OD oral x21 days of 28-day cycle", brands: [] },
+            { name: "Binimetinib", synonyms: ["Mektovi"], dose: "45 mg BD oral", brands: [] },
+            { name: "Selumetinib", synonyms: ["Koselugo"], dose: "25 mg/m² BD oral (NF1-associated plexiform neurofibromas)", brands: [] }
+          ]
+        },
+        {
+          name: "CDK4/6 Inhibitors (Breast Cancer)",
+          drugs: [
+            { name: "Palbociclib", synonyms: ["Ibrance"], dose: "125 mg OD oral x21 days of 28-day cycle", brands: [] },
+            { name: "Ribociclib", synonyms: ["Kisqali"], dose: "600 mg OD oral x21 days of 28-day cycle", brands: [] },
+            { name: "Abemaciclib", synonyms: ["Verzenio", "Verzenios"], dose: "150–200 mg BD oral (continuous)", brands: [] },
+            { name: "Dalpiciclib", synonyms: [], dose: "150 mg OD oral x21 of 28-day cycle (China NMPA)", brands: [] }
+          ]
+        },
+        {
+          name: "PI3K/AKT/mTOR Inhibitors",
+          drugs: [
+            { name: "Everolimus", synonyms: ["Afinitor", "Votubia"], dose: "10 mg OD oral", brands: [] },
+            { name: "Temsirolimus", synonyms: ["Torisel"], dose: "25 mg i.v. weekly", brands: [] },
+            { name: "Idelalisib", synonyms: ["Zydelig"], dose: "150 mg BD oral", brands: [] },
+            { name: "Copanlisib", synonyms: ["Aliqopa"], dose: "60 mg i.v. days 1,8,15 of 28-day cycle", brands: [] },
+            { name: "Umbralisib", synonyms: ["Ukoniq"], dose: "800 mg OD oral", brands: [] },
+            { name: "Alpelisib", synonyms: ["Piqray"], dose: "300 mg OD oral (PIK3CA-mutated breast cancer)", brands: [] },
+            { name: "Capivasertib", synonyms: ["Truqap"], dose: "400 mg BD oral x4 days on/3 days off", brands: [] }
+          ]
+        },
+        {
+          name: "BTK Inhibitors (B-cell Malignancies)",
+          drugs: [
+            { name: "Ibrutinib", synonyms: ["Imbruvica"], dose: "420–560 mg OD oral", brands: [] },
+            { name: "Acalabrutinib", synonyms: ["Calquence"], dose: "100 mg BD oral", brands: [] },
+            { name: "Zanubrutinib", synonyms: ["Brukinsa"], dose: "160 mg BD oral or 320 mg OD oral", brands: [] },
+            { name: "Pirtobrutinib", synonyms: ["Jaypirca"], dose: "200 mg OD oral (non-covalent BTKi)", brands: [] }
+          ]
+        },
+        {
+          name: "VEGFR/Multi-Kinase Inhibitors (Solid Tumours)",
+          drugs: [
+            { name: "Sorafenib", synonyms: ["Nexavar"], dose: "400 mg BD oral", brands: [] },
+            { name: "Sunitinib", synonyms: ["Sutent"], dose: "50 mg OD oral x4 weeks of 6-week cycle", brands: [] },
+            { name: "Pazopanib", synonyms: ["Votrient"], dose: "800 mg OD oral", brands: [] },
+            { name: "Axitinib", synonyms: ["Inlyta"], dose: "5 mg BD oral", brands: [] },
+            { name: "Regorafenib", synonyms: ["Stivarga"], dose: "160 mg OD oral x21 days of 28-day cycle", brands: [] },
+            { name: "Lenvatinib", synonyms: ["Lenvima"], dose: "8–24 mg OD oral (dose depends on indication)", brands: [] },
+            { name: "Cabozantinib", synonyms: ["Cometriq", "Cabometyx"], dose: "60 mg OD oral", brands: [] },
+            { name: "Vandetanib", synonyms: ["Caprelsa"], dose: "300 mg OD oral", brands: [] },
+            { name: "Nintedanib", synonyms: ["Ofev", "Vargatef"], dose: "150 mg BD oral (IPF/lung cancer)", brands: [] },
+            { name: "Ripretinib", synonyms: ["Qinlock"], dose: "150 mg OD oral (GIST)", brands: [] },
+            { name: "Avapritinib", synonyms: ["Ayvakit", "Ayvakyt"], dose: "300 mg OD oral fasted", brands: [] }
+          ]
+        },
+        {
+          name: "PARP Inhibitors",
+          drugs: [
+            { name: "Olaparib", synonyms: ["Lynparza"], dose: "300 mg BD oral (tablet); 400 mg BD (capsule)", brands: [] },
+            { name: "Rucaparib", synonyms: ["Rubraca"], dose: "600 mg BD oral", brands: [] },
+            { name: "Niraparib", synonyms: ["Zejula"], dose: "200–300 mg OD oral", brands: [] },
+            { name: "Talazoparib", synonyms: ["Talzenna"], dose: "1 mg OD oral", brands: [] },
+            { name: "Fluzoparib", synonyms: [], dose: "150 mg BD oral (China NMPA)", brands: [] },
+            { name: "Pamiparib", synonyms: [], dose: "60 mg BD oral (China NMPA)", brands: [] }
+          ]
+        },
+        {
+          name: "IDH1/IDH2 Inhibitors (AML)",
+          drugs: [
+            { name: "Ivosidenib", synonyms: ["Tibsovo"], dose: "500 mg OD oral (IDH1-mutated AML/cholangiocarcinoma)", brands: [] },
+            { name: "Enasidenib", synonyms: ["Idhifa"], dose: "100 mg OD oral (IDH2-mutated AML)", brands: [] },
+            { name: "Olutasidenib", synonyms: ["Rezlidhia"], dose: "150 mg BD oral (IDH1-mutated AML)", brands: [] }
+          ]
+        },
+        {
+          name: "NTRK Inhibitors (TRK Fusion Cancer)",
+          drugs: [
+            { name: "Larotrectinib", synonyms: ["Vitrakvi"], dose: "100 mg BD oral", brands: [] },
+            { name: "Entrectinib", synonyms: ["Rozlytrek"], dose: "600 mg OD oral", brands: [] },
+            { name: "Repotrectinib", synonyms: ["Augtyro"], dose: "160 mg OD x21 days, then 160 mg BD", brands: [] }
+          ]
+        },
+        {
+          name: "KRAS Inhibitors",
+          drugs: [
+            { name: "Sotorasib", synonyms: ["Lumakras", "Lumykras"], dose: "960 mg OD oral (KRAS G12C-mutated NSCLC)", brands: [] },
+            { name: "Adagrasib", synonyms: ["Krazati"], dose: "600 mg BD oral (KRAS G12C)", brands: [] }
+          ]
+        },
+        {
+          name: "FLT3 Inhibitors (AML)",
+          drugs: [
+            { name: "Midostaurin", synonyms: ["Rydapt"], dose: "50 mg BD oral with food (FLT3-mutated AML)", brands: [] },
+            { name: "Gilteritinib", synonyms: ["Xospata"], dose: "120 mg OD oral (relapsed/refractory FLT3-mutated AML)", brands: [] },
+            { name: "Quizartinib", synonyms: ["Vanflyta"], dose: "35.4 mg OD oral", brands: [] }
+          ]
+        },
+        {
+          name: "JAK Inhibitors (Oncology Use)",
+          drugs: [
+            { name: "Ruxolitinib", synonyms: ["Jakafi", "Jakavi"], dose: "10–25 mg BD oral (myelofibrosis/PV, dose based on platelet count)", brands: [] },
+            { name: "Fedratinib", synonyms: ["Inrebic"], dose: "400 mg OD oral", brands: [] },
+            { name: "Pacritinib", synonyms: ["Vonjo"], dose: "200 mg BD oral (low platelets)", brands: [] },
+            { name: "Momelotinib", synonyms: ["Ojjaara"], dose: "200 mg OD oral", brands: [] }
+          ]
+        },
+        {
+          name: "Other Targeted Kinase Inhibitors",
+          drugs: [
+            { name: "Crizotinib", synonyms: ["Xalkori"], dose: "250 mg BD oral (MET/ALK/ROS1)", brands: [] },
+            { name: "Tepotinib", synonyms: ["Tepmetko"], dose: "500 mg OD oral (METex14 NSCLC)", brands: [] },
+            { name: "Capmatinib", synonyms: ["Tabrecta"], dose: "400 mg BD oral (METex14)", brands: [] },
+            { name: "Pralsetinib", synonyms: ["Gavreto"], dose: "400 mg OD oral fasted (RET fusion)", brands: [] },
+            { name: "Selpercatinib", synonyms: ["Retevmo", "Retsevmo"], dose: "120–160 mg BD oral (RET fusion/mutation)", brands: [] },
+            { name: "Erdafitinib", synonyms: ["Balversa"], dose: "8 mg OD oral (FGFR-mutated urothelial cancer)", brands: [] },
+            { name: "Infigratinib", synonyms: ["Truseltiq"], dose: "125 mg OD oral x21 of 28-day cycle (FGFR2 cholangiocarcinoma)", brands: [] },
+            { name: "Futibatinib", synonyms: ["Lytgobi"], dose: "20 mg OD oral (FGFR2-rearranged cholangiocarcinoma)", brands: [] },
+            { name: "Gilteritinib", synonyms: ["Xospata"], dose: "120 mg OD oral", brands: [] },
+            { name: "Glasdegib", synonyms: ["Daurismo"], dose: "100 mg OD oral (Hedgehog pathway)", brands: [] },
+            { name: "Vismodegib", synonyms: ["Erivedge"], dose: "150 mg OD oral (Hedgehog/SMO, BCC)", brands: [] },
+            { name: "Sonidegib", synonyms: ["Odomzo"], dose: "200 mg OD oral fasted (Hedgehog/SMO, BCC)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "13f",
+      name: "Targeted Therapy — Monoclonal Antibodies (Oncology)",
+      synonyms: ["Therapeutic Monoclonal Antibodies", "Anti-cancer mAbs"],
+      description: "Therapeutic monoclonal antibodies in oncology exploit tumour antigen specificity to deliver multiple mechanisms of action — blocking growth factor receptor signalling (trastuzumab, cetuximab), mediating antibody-dependent cellular cytotoxicity, or carrying cytotoxic payloads as antibody-drug conjugates (ADCs). ADCs combine the selectivity of monoclonal antibodies with potent cytotoxic warheads, achieving tumour-targeted drug delivery with a wider therapeutic index than conventional chemotherapy.",
+      subgroups: [
+        {
+          name: "Anti-HER2 Antibodies",
+          drugs: [
+            { name: "Trastuzumab", synonyms: ["Herceptin"], dose: "8 mg/kg i.v. loading, then 6 mg/kg every 3 weeks", brands: [] },
+            { name: "Pertuzumab", synonyms: ["Perjeta"], dose: "840 mg i.v. loading, then 420 mg every 3 weeks", brands: [] },
+            { name: "Trastuzumab deruxtecan", synonyms: ["T-DXd", "Enhertu"], dose: "5.4–6.4 mg/kg i.v. every 3 weeks (ADC)", brands: [] },
+            { name: "Trastuzumab emtansine", synonyms: ["T-DM1", "Kadcyla"], dose: "3.6 mg/kg i.v. every 3 weeks (ADC)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-EGFR Antibodies",
+          drugs: [
+            { name: "Cetuximab", synonyms: ["Erbitux"], dose: "400 mg/m² i.v. loading, then 250 mg/m² weekly", brands: [] },
+            { name: "Panitumumab", synonyms: ["Vectibix"], dose: "6 mg/kg i.v. every 2 weeks", brands: [] },
+            { name: "Necitumumab", synonyms: ["Portrazza"], dose: "800 mg i.v. days 1,8 of 21-day cycle", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-VEGF/VEGFR Antibodies",
+          drugs: [
+            { name: "Bevacizumab", synonyms: ["Avastin"], dose: "5–15 mg/kg i.v. every 2–3 weeks", brands: [] },
+            { name: "Ramucirumab", synonyms: ["Cyramza"], dose: "8–10 mg/kg i.v. every 2–3 weeks", brands: [] },
+            { name: "Ziv-aflibercept", synonyms: ["Zaltrap", "VEGF-Trap"], dose: "4 mg/kg i.v. every 2 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-CD20 Antibodies (B-cell Malignancies)",
+          drugs: [
+            { name: "Rituximab", synonyms: ["Rituxan", "MabThera"], dose: "375 mg/m² i.v. weekly x4 (indolent NHL); 375 mg/m² with chemotherapy (aggressive NHL)", brands: [] },
+            { name: "Obinutuzumab", synonyms: ["Gazyva", "Gazyvaro"], dose: "1000 mg i.v. days 1,8,15 cycle 1; then day 1 cycles 2–6", brands: [] },
+            { name: "Ofatumumab", synonyms: ["Arzerra"], dose: "Varies by indication", brands: [] },
+            { name: "Ibritumomab tiuxetan", synonyms: ["Zevalin"], dose: "0.4 mCi/kg i.v. (radioimmunotherapy)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-CD38 Antibodies (Multiple Myeloma)",
+          drugs: [
+            { name: "Daratumumab", synonyms: ["Darzalex"], dose: "16 mg/kg i.v. weekly x8, then every 2 weeks x8, then every 4 weeks", brands: [] },
+            { name: "Isatuximab", synonyms: ["Sarclisa"], dose: "10 mg/kg i.v. weekly x4, then every 2 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Other Anti-cancer Antibodies",
+          drugs: [
+            { name: "Denosumab", synonyms: ["Xgeva", "Prolia"], dose: "120 mg s.c. every 4 weeks (bone metastases); 60 mg every 6 months (osteoporosis)", brands: [] },
+            { name: "Elotuzumab", synonyms: ["Empliciti"], dose: "10 mg/kg i.v. weekly x2 cycles, then every 2 weeks", brands: [] },
+            { name: "Brentuximab vedotin", synonyms: ["Adcetris"], dose: "1.8 mg/kg i.v. every 3 weeks (anti-CD30 ADC)", brands: [] },
+            { name: "Gemtuzumab ozogamicin", synonyms: ["Mylotarg"], dose: "3 mg/m² i.v. days 1,4,7 (anti-CD33 ADC, AML)", brands: [] },
+            { name: "Inotuzumab ozogamicin", synonyms: ["Besylomab", "Besponsa"], dose: "0.8 mg/m² day 1, 0.5 mg/m² days 8,15 (anti-CD22 ADC)", brands: [] },
+            { name: "Polatuzumab vedotin", synonyms: ["Polivy"], dose: "1.8 mg/kg i.v. every 3 weeks (anti-CD79b ADC)", brands: [] },
+            { name: "Enfortumab vedotin", synonyms: ["Padcev"], dose: "1.25 mg/kg i.v. days 1,8,15 of 28-day cycle (anti-Nectin-4 ADC)", brands: [] },
+            { name: "Sacituzumab govitecan", synonyms: ["Trodelvy"], dose: "10 mg/kg i.v. days 1,8 of 21-day cycle (anti-TROP-2 ADC)", brands: [] },
+            { name: "Fam-trastuzumab deruxtecan", synonyms: ["DS-8201", "Enhertu"], dose: "5.4 mg/kg i.v. every 3 weeks (anti-HER2 ADC)", brands: [] },
+            { name: "Mirvetuximab soravtansine", synonyms: ["Elahere"], dose: "6 mg/kg (adjusted ideal body weight) i.v. every 3 weeks (anti-FRα ADC)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "13g",
+      name: "Immune Checkpoint Inhibitors",
+      synonyms: ["ICIs", "PD-1 Inhibitors", "PD-L1 Inhibitors", "CTLA-4 Inhibitors", "Cancer Immunotherapy"],
+      description: "Immune checkpoint inhibitors release endogenous T-cell responses against tumour neoantigens. Anti-PD-1 antibodies (pembrolizumab, nivolumab, cemiplimab) and anti-PD-L1 antibodies (atezolizumab, durvalumab, avelumab) disinhibit tumour-infiltrating T cells; anti-CTLA-4 antibody (ipilimumab) removes suppression at lymph node priming; anti-LAG-3 relatlimab adds a third checkpoint. Combination checkpoint blockade and combination with chemotherapy have expanded indications broadly across solid and haematological malignancies.",
+      subgroups: [
+        {
+          name: "Anti-PD-1 Antibodies",
+          drugs: [
+            { name: "Pembrolizumab", synonyms: ["Keytruda"], dose: "200 mg i.v. every 3 weeks or 400 mg every 6 weeks (fixed dose)", brands: [] },
+            { name: "Nivolumab", synonyms: ["Opdivo"], dose: "240 mg i.v. every 2 weeks or 480 mg every 4 weeks", brands: [] },
+            { name: "Cemiplimab", synonyms: ["Libtayo"], dose: "350 mg i.v. every 3 weeks", brands: [] },
+            { name: "Dostarlimab", synonyms: ["Jemperli"], dose: "500 mg i.v. every 3 weeks x4 doses, then 1000 mg every 6 weeks", brands: [] },
+            { name: "Sintilimab", synonyms: ["Tyvyt"], dose: "200 mg i.v. every 3 weeks (China NMPA)", brands: [] },
+            { name: "Camrelizumab", synonyms: ["Airuika"], dose: "200 mg i.v. every 2–3 weeks (China NMPA)", brands: [] },
+            { name: "Tislelizumab", synonyms: ["Tevimbra", "BGB-A317"], dose: "200 mg i.v. every 3 weeks", brands: [] },
+            { name: "Toripalimab", synonyms: ["Tuoyi"], dose: "240 mg i.v. every 3 weeks (China NMPA/FDA)", brands: [] },
+            { name: "Spartalizumab", synonyms: [], dose: "", brands: [] },
+            { name: "Penpulimab", synonyms: [], dose: "200 mg i.v. every 3 weeks (China NMPA)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-PD-L1 Antibodies",
+          drugs: [
+            { name: "Atezolizumab", synonyms: ["Tecentriq"], dose: "840 mg i.v. every 2 weeks, 1200 mg every 3 weeks, or 1680 mg every 4 weeks", brands: [] },
+            { name: "Durvalumab", synonyms: ["Imfinzi"], dose: "10 mg/kg i.v. every 2 weeks or 1500 mg every 4 weeks", brands: [] },
+            { name: "Avelumab", synonyms: ["Bavencio"], dose: "800 mg i.v. every 2 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-CTLA-4 Antibodies",
+          drugs: [
+            { name: "Ipilimumab", synonyms: ["Yervoy"], dose: "1–3 mg/kg i.v. every 3 weeks x4 doses", brands: [] },
+            { name: "Tremelimumab", synonyms: ["Imjudo"], dose: "300 mg i.v. single dose (with durvalumab)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-LAG-3 Antibodies",
+          drugs: [
+            { name: "Relatlimab", synonyms: ["Opdualag (with nivolumab)"], dose: "160 mg i.v. every 4 weeks (fixed-dose combination with nivolumab 480 mg)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "13h",
+      name: "Hormonal / Endocrine Therapies (Oncology)",
+      synonyms: ["Hormonal Anticancer Drugs", "Endocrine Therapy"],
+      description: "Endocrine therapy in oncology exploits the hormone-dependence of certain cancers. Breast cancer therapy employs selective oestrogen receptor modulators (tamoxifen), aromatase inhibitors (anastrozole, letrozole, exemestane), and selective oestrogen receptor degraders (fulvestrant, elacestrant) to suppress oestrogenic tumour growth. Prostate cancer therapy uses GnRH agonists and antagonists for medical castration, alongside androgen receptor inhibitors (enzalutamide, apalutamide, darolutamide) and CYP17 inhibitors (abiraterone) to deprive tumours of androgen signalling.",
+      subgroups: [
+        {
+          name: "Selective Estrogen Receptor Modulators (SERMs)",
+          drugs: [
+            { name: "Tamoxifen", synonyms: ["Nolvadex"], dose: "20 mg OD oral", brands: [] },
+            { name: "Toremifene", synonyms: ["Fareston"], dose: "60 mg OD oral", brands: [] }
+          ]
+        },
+        {
+          name: "Aromatase Inhibitors (AIs)",
+          drugs: [
+            { name: "Anastrozole", synonyms: ["Arimidex"], dose: "1 mg OD oral", brands: [] },
+            { name: "Letrozole", synonyms: ["Femara"], dose: "2.5 mg OD oral", brands: [] },
+            { name: "Exemestane", synonyms: ["Aromasin"], dose: "25 mg OD oral with food", brands: [] }
+          ]
+        },
+        {
+          name: "Selective Estrogen Receptor Degraders (SERDs)",
+          drugs: [
+            { name: "Fulvestrant", synonyms: ["Faslodex"], dose: "500 mg i.m. on days 1, 15, 29, then monthly", brands: [] },
+            { name: "Elacestrant", synonyms: ["Orserdu"], dose: "345 mg OD oral (ESR1-mutated breast cancer)", brands: [] }
+          ]
+        },
+        {
+          name: "GnRH Agonists",
+          drugs: [
+            { name: "Leuprolide", synonyms: ["Lupron", "Prostap"], dose: "3.75 mg i.m. monthly; 7.5 mg monthly; 22.5 mg every 3 months (depot)", brands: [] },
+            { name: "Goserelin", synonyms: ["Zoladex"], dose: "3.6 mg s.c. implant every 28 days; 10.8 mg every 12 weeks", brands: [] },
+            { name: "Triptorelin", synonyms: ["Decapeptyl", "Trelstar"], dose: "3.75 mg i.m. every 4 weeks; 11.25 mg every 12 weeks", brands: [] },
+            { name: "Buserelin", synonyms: [], dose: "Implant or intranasal formulations", brands: [] }
+          ]
+        },
+        {
+          name: "GnRH Antagonists",
+          drugs: [
+            { name: "Degarelix", synonyms: ["Firmagon"], dose: "240 mg s.c. loading, then 80 mg s.c. every 28 days", brands: [] },
+            { name: "Relugolix", synonyms: ["Orgovyx"], dose: "360 mg loading oral day 1, then 120 mg OD", brands: [] }
+          ]
+        },
+        {
+          name: "Androgen Receptor Inhibitors",
+          drugs: [
+            { name: "Flutamide", synonyms: [], dose: "250 mg TDS oral", brands: [] },
+            { name: "Bicalutamide", synonyms: ["Casodex"], dose: "50 mg OD oral (localised); 150 mg OD (advanced)", brands: [] },
+            { name: "Enzalutamide", synonyms: ["Xtandi"], dose: "160 mg OD oral", brands: [] },
+            { name: "Apalutamide", synonyms: ["Erleada"], dose: "240 mg OD oral", brands: [] },
+            { name: "Darolutamide", synonyms: ["Nubeqa"], dose: "600 mg BD oral with food", brands: [] }
+          ]
+        },
+        {
+          name: "CYP17 Inhibitors (Androgen Biosynthesis)",
+          drugs: [
+            { name: "Abiraterone acetate", synonyms: ["Zytiga", "Yonsa"], dose: "1000 mg OD oral fasted with prednisone 5 mg BD (or 500 mg with food — Yonsa)", brands: [] },
+            { name: "Orteronel", synonyms: [], dose: "300 mg BD oral (Japan/investigational)", brands: [] }
+          ]
+        },
+        {
+          name: "Other Hormonal Agents",
+          drugs: [
+            { name: "Megestrol acetate", synonyms: ["Megace"], dose: "160 mg OD oral (breast cancer); 40 mg QID (appetite stimulant)", brands: [] },
+            { name: "Diethylstilboestrol (DES)", synonyms: ["Stilbestrol"], dose: "1–3 mg OD oral (prostate cancer, historical use)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "13i",
+      name: "Proteasome Inhibitors and Other Myeloma Drugs",
+      synonyms: ["Multiple Myeloma Drugs", "Proteasome Inhibitors"],
+      description: "Multiple myeloma pharmacotherapy has evolved into multi-agent regimens incorporating proteasome inhibitors (bortezomib, carfilzomib, ixazomib), immunomodulatory drugs (thalidomide, lenalidomide, pomalidomide), anti-CD38 monoclonal antibodies (daratumumab, isatuximab), and BCMA-targeted therapies including antibody-drug conjugates (belantamab mafodotin), bispecific T-cell engagers (teclistamab, talquetamab), and CAR-T cell therapies (ciltacabtagene autoleucel, idecabtagene vicleucel).",
+      subgroups: [
+        {
+          name: "Proteasome Inhibitors",
+          drugs: [
+            { name: "Bortezomib", synonyms: ["Velcade"], dose: "1.3 mg/m² i.v./s.c. twice weekly x2 weeks of 21-day cycle", brands: [] },
+            { name: "Carfilzomib", synonyms: ["Kyprolis"], dose: "20–70 mg/m² i.v. twice weekly x3 weeks of 28-day cycle", brands: [] },
+            { name: "Ixazomib", synonyms: ["Ninlaro"], dose: "4 mg oral weekly x3 weeks of 28-day cycle", brands: [] }
+          ]
+        },
+        {
+          name: "Immunomodulatory Drugs (IMiDs)",
+          drugs: [
+            { name: "Thalidomide", synonyms: ["Thalomid"], dose: "50–200 mg OD oral at night (myeloma)", brands: [] },
+            { name: "Lenalidomide", synonyms: ["Revlimid"], dose: "25 mg OD oral days 1–21 of 28-day cycle", brands: [] },
+            { name: "Pomalidomide", synonyms: ["Pomalyst", "Imnovid"], dose: "4 mg OD oral days 1–21 of 28-day cycle", brands: [] }
+          ]
+        },
+        {
+          name: "BCMA-Targeted Therapies",
+          drugs: [
+            { name: "Belantamab mafodotin", synonyms: ["Blenrep"], dose: "2.5 mg/kg i.v. every 3 weeks (anti-BCMA ADC)", brands: [] },
+            { name: "Teclistamab", synonyms: ["Tecvayli"], dose: "1.5 mg/kg s.c. weekly (bispecific BCMA×CD3)", brands: [] },
+            { name: "Elranatamab", synonyms: ["Elrexfio"], dose: "76 mg s.c. weekly (bispecific BCMA×CD3)", brands: [] },
+            { name: "Talquetamab", synonyms: ["Talvey"], dose: "0.4 mg/kg s.c. weekly or 0.8 mg/kg every 2 weeks (bispecific GPRC5D×CD3)", brands: [] },
+            { name: "Ciltacabtagene autoleucel", synonyms: ["Carvykti"], dose: "0.5–1.0×10⁶ CAR-T cells/kg i.v. single infusion", brands: [] },
+            { name: "Idecabtagene vicleucel", synonyms: ["Abecma", "bb2121"], dose: "150–450×10⁶ CAR-T cells i.v. single infusion", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "13j",
+      name: "Miscellaneous Anticancer Agents",
+      synonyms: ["Other Anticancer Drugs", "Differentiation Agents", "Miscellaneous Oncology"],
+      description: "Miscellaneous anticancer agents encompass mechanistically distinct classes. Differentiating agents (ATRA, arsenic trioxide) overcome differentiation arrest in acute promyelocytic leukaemia. Epigenetic modulators — HDAC inhibitors and EZH2 inhibitors — reverse aberrant gene silencing in haematological malignancies. BCL-2 inhibitor venetoclax exploits apoptotic pathway dependency. Asparaginase depletes circulating asparagine in ALL. Hydroxyurea inhibits ribonucleotide reductase. Luspatercept reduces ineffective erythropoiesis in MDS and thalassaemia.",
+      subgroups: [
+        {
+          name: "Differentiating Agents",
+          drugs: [
+            { name: "All-trans retinoic acid (ATRA)", synonyms: ["Tretinoin", "Vesanoid"], dose: "45 mg/m²/day oral in 2 divided doses (APL)", brands: [] },
+            { name: "Arsenic trioxide", synonyms: ["ATO", "Trisenox"], dose: "0.15 mg/kg/day i.v. (APL)", brands: [] }
+          ]
+        },
+        {
+          name: "Histone Deacetylase (HDAC) Inhibitors",
+          drugs: [
+            { name: "Vorinostat", synonyms: ["Zolinza"], dose: "400 mg OD oral with food", brands: [] },
+            { name: "Romidepsin", synonyms: ["Istodax"], dose: "14 mg/m² i.v. days 1,8,15 of 28-day cycle", brands: [] },
+            { name: "Belinostat", synonyms: ["Beleodaq"], dose: "1000 mg/m² i.v. days 1–5 of 21-day cycle", brands: [] },
+            { name: "Panobinostat", synonyms: ["Farydak", "Faridak"], dose: "20 mg oral 3x/week for 2 weeks of 21-day cycle", brands: [] },
+            { name: "Chidamide", synonyms: [], dose: "30 mg twice weekly oral (China NMPA)", brands: [] }
+          ]
+        },
+        {
+          name: "EZH2 Inhibitors",
+          drugs: [
+            { name: "Tazemetostat", synonyms: ["Tazverik"], dose: "800 mg BD oral (EZH2-mutant/wild-type follicular lymphoma, epithelioid sarcoma)", brands: [] }
+          ]
+        },
+        {
+          name: "Miscellaneous",
+          drugs: [
+            { name: "Asparaginase", synonyms: ["L-asparaginase", "Elspar"], dose: "200–1000 IU/kg i.m./i.v. (ALL)", brands: [] },
+            { name: "Pegaspargase", synonyms: ["PEG-ASNase", "Oncaspar"], dose: "2500 IU/m² i.m./i.v. every 14 days", brands: [] },
+            { name: "Hydroxyurea", synonyms: ["Hydroxycarbamide", "Hydrea"], dose: "20–30 mg/kg/day oral (CML/sickle cell)", brands: [] },
+            { name: "Mitomycin C", synonyms: ["MMC", "Mutamycin"], dose: "20 mg/m² i.v. every 6 weeks", brands: [] },
+            { name: "Bleomycin", synonyms: [], dose: "10–20 units/m² i.v./i.m. weekly or twice weekly", brands: [] },
+            { name: "Venetoclax", synonyms: ["Venclyxto", "Venclexta"], dose: "Ramp-up: 20 mg→800 mg OD oral over 5 weeks; maintenance 400 mg OD (CLL)", brands: [] },
+            { name: "Navitoclax", synonyms: [], dose: "150–300 mg OD oral (investigational)", brands: [] },
+            { name: "Olutasidenib", synonyms: ["Rezlidhia"], dose: "150 mg BD oral", brands: [] },
+            { name: "Tagraxofusp", synonyms: ["Elzonris"], dose: "12 mcg/kg i.v. OD x5 days (BPDCN)", brands: [] },
+            { name: "Imetelstat", synonyms: ["Rytelo"], dose: "9.4 mg/kg i.v. every 4 weeks (myelodysplastic syndromes)", brands: [] },
+            { name: "Luspatercept", synonyms: ["Reblozyl"], dose: "1 mg/kg s.c. every 3 weeks (ESA-refractory MDS/beta-thalassemia)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ============================================================
+// CHAPTER 14: IMMUNOSUPPRESSANTS AND BIOLOGICS (NON-ONCOLOGY)
+// ============================================================
+{
+  id: 14,
+  title: "Immunopharmacology — Immunosuppressants, Biologics and Targeted Agents",
+  description: "Immunopharmacology covers calcineurin inhibitors and antiproliferatives for transplantation, followed by the expanding landscape of biologic agents targeting specific cytokines (TNF-α, IL-6, IL-17, IL-23, IL-4/13), cell surface markers, and intracellular signalling kinases — now central to rheumatology, gastroenterology, and dermatology practice.",
+  subclasses: [
+    {
+      id: "14a",
+      name: "Conventional Immunosuppressants",
+      synonyms: ["Calcineurin Inhibitors", "Antiproliferative Immunosuppressants", "Transplant Drugs"],
+      description: "Conventional immunosuppressants form the pharmacological foundation of solid organ transplantation and severe autoimmune disease management. Calcineurin inhibitors (ciclosporin, tacrolimus) block IL-2-mediated T-cell proliferation; antiproliferatives (mycophenolate, azathioprine) suppress lymphocyte division; mTOR inhibitors (sirolimus, everolimus) block a downstream proliferative signal; the fusion protein belatacept blocks T-cell co-stimulation.",
+      subgroups: [
+        {
+          name: "Calcineurin Inhibitors",
+          drugs: [
+            { name: "Ciclosporin", synonyms: ["Cyclosporine", "Cyclosporin A", "Sandimmun"], dose: "2–15 mg/kg/day oral in 2 doses; i.v. 1/3 of oral dose", brands: [] },
+            { name: "Tacrolimus", synonyms: ["FK506", "Prograf", "Advagraf"], dose: "0.1–0.3 mg/kg/day oral in 2 doses (transplant); 0.5–4 mg OD (extended-release)", brands: [] },
+            { name: "Voclosporin", synonyms: ["Lupkynis"], dose: "23.7 mg BD oral (lupus nephritis)", brands: [] }
+          ]
+        },
+        {
+          name: "Antiproliferative/Antimetabolic Agents",
+          drugs: [
+            { name: "Mycophenolate mofetil", synonyms: ["MMF", "CellCept"], dose: "1–1.5 g BD oral; 1 g BD i.v.", brands: [] },
+            { name: "Mycophenolate sodium", synonyms: ["MPA", "Myfortic"], dose: "720 mg BD oral (EC tablet)", brands: [] },
+            { name: "Azathioprine", synonyms: ["AZA", "Imuran"], dose: "1–3 mg/kg/day oral", brands: ["IMURAN", "AZORAN", "AZOPRINE 50 mg tab"] },
+            { name: "Leflunomide", synonyms: ["Arava"], dose: "100 mg/day x3 days loading, then 20 mg OD oral", brands: [] }
+          ]
+        },
+        {
+          name: "mTOR Inhibitors (Transplant)",
+          drugs: [
+            { name: "Sirolimus", synonyms: ["Rapamycin", "Rapamune"], dose: "Loading 6 mg oral, then 2 mg/day (adjust by levels)", brands: [] },
+            { name: "Everolimus", synonyms: ["Certican", "Zortress"], dose: "0.75 mg BD oral (transplant, trough 3–8 ng/mL)", brands: [] }
+          ]
+        },
+        {
+          name: "Selective T-cell Costimulation Blockers",
+          drugs: [
+            { name: "Belatacept", synonyms: ["Nulojix"], dose: "10 mg/kg i.v. on days 1,5, weeks 2,4,8,12; then 5 mg/kg every 4 weeks", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "14b",
+      name: "TNF-α Inhibitors",
+      synonyms: ["Anti-TNF Biologics", "TNF Blockers"],
+      description: "TNF-α inhibitors were the first biologic DMARDs approved and remain among the most widely used. They include fully human or humanised monoclonal antibodies against TNF-α (adalimumab, golimumab) and a PEGylated antibody fragment (certolizumab pegol), as well as a fusion protein decoy receptor (etanercept). Infliximab is a chimeric antibody administered intravenously. They reduce joint inflammation, structural damage, and systemic disease burden across multiple immune-mediated conditions.",
+      subgroups: [
+        {
+          name: "Anti-TNF Monoclonal Antibodies and Fusion Proteins",
+          drugs: [
+            { name: "Adalimumab", synonyms: ["Humira"], dose: "40 mg s.c. every 2 weeks (RA/psoriasis); 80 mg loading then 40 mg every 2 weeks (Crohn's)", brands: [] },
+            { name: "Infliximab", synonyms: ["Remicade"], dose: "3–10 mg/kg i.v. at 0, 2, 6 weeks, then every 8 weeks", brands: [] },
+            { name: "Etanercept", synonyms: ["Enbrel"], dose: "25 mg s.c. twice weekly or 50 mg s.c. weekly", brands: [] },
+            { name: "Golimumab", synonyms: ["Simponi", "Simponi Aria"], dose: "50 mg s.c. monthly; 2 mg/kg i.v. at 0,4 weeks then every 8 weeks", brands: [] },
+            { name: "Certolizumab pegol", synonyms: ["Cimzia"], dose: "400 mg s.c. at 0,2,4 weeks, then 200 mg every 2 weeks or 400 mg every 4 weeks", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "14c",
+      name: "IL-Inhibitors and Other Biologic DMARDs",
+      synonyms: ["Interleukin Inhibitors", "Anti-IL Biologics", "Non-TNF Biologics"],
+      description: "Non-TNF biologic DMARDs target specific cytokines and cell surface molecules implicated in distinct inflammatory phenotypes. IL-6/IL-6R inhibitors (tocilizumab, sarilumab) are highly effective in RA and cytokine storm syndromes. IL-17 inhibitors (secukinumab, ixekizumab, bimekizumab) address psoriasis, psoriatic arthritis, and ankylosing spondylitis. IL-23 p19 inhibitors (guselkumab, risankizumab, tildrakizumab) offer sustained remission in psoriasis and IBD. Type 2 inflammation is addressed by dupilumab (anti-IL-4Rα), mepolizumab and benralizumab (anti-IL-5 pathway), omalizumab (anti-IgE), and tezepelumab (anti-TSLP).",
+      subgroups: [
+        {
+          name: "IL-6 / IL-6R Inhibitors",
+          drugs: [
+            { name: "Tocilizumab", synonyms: ["Actemra", "RoActemra"], dose: "4–8 mg/kg i.v. every 4 weeks; 162 mg s.c. weekly or every 2 weeks", brands: [] },
+            { name: "Sarilumab", synonyms: ["Kevzara"], dose: "150–200 mg s.c. every 2 weeks", brands: [] },
+            { name: "Siltuximab", synonyms: ["Sylvant"], dose: "11 mg/kg i.v. every 3 weeks (Castleman disease)", brands: [] }
+          ]
+        },
+        {
+          name: "IL-1 Inhibitors",
+          drugs: [
+            { name: "Anakinra", synonyms: ["Kineret"], dose: "100 mg s.c. OD (RA); 1–2 mg/kg OD (SJIA)", brands: [] },
+            { name: "Canakinumab", synonyms: ["Ilaris"], dose: "150 mg s.c. every 8 weeks (RA/CAPS)", brands: [] },
+            { name: "Rilonacept", synonyms: ["Arcalyst"], dose: "320 mg s.c. loading, then 160 mg s.c. weekly", brands: [] }
+          ]
+        },
+        {
+          name: "IL-12/23 Inhibitors (p40)",
+          drugs: [
+            { name: "Ustekinumab", synonyms: ["Stelara"], dose: "45–90 mg s.c. at 0,4 weeks, then every 12 weeks (psoriasis, weight-based); 260–520 mg i.v. loading then 90 mg s.c. every 8 weeks (IBD)", brands: [] }
+          ]
+        },
+        {
+          name: "IL-17 Inhibitors",
+          drugs: [
+            { name: "Secukinumab", synonyms: ["Cosentyx"], dose: "300 mg s.c. weekly x5 doses, then monthly (psoriasis); 150 mg monthly (AS)", brands: [] },
+            { name: "Ixekizumab", synonyms: ["Taltz"], dose: "160 mg s.c. loading, then 80 mg every 2 weeks x12 weeks, then every 4 weeks", brands: [] },
+            { name: "Bimekizumab", synonyms: ["Bimzelx"], dose: "320 mg s.c. every 4 weeks (psoriasis)", brands: [] },
+            { name: "Brodalumab", synonyms: ["Siliq", "Kyntheum"], dose: "210 mg s.c. at 0,1,2 weeks, then every 2 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "IL-23 Inhibitors (p19)",
+          drugs: [
+            { name: "Guselkumab", synonyms: ["Tremfya"], dose: "100 mg s.c. at 0,4 weeks, then every 8 weeks", brands: [] },
+            { name: "Risankizumab", synonyms: ["Skyrizi"], dose: "150 mg s.c. at 0,4 weeks, then every 12 weeks (psoriasis); 600 mg i.v. induction x3, then 360 mg s.c. every 8 weeks (IBD)", brands: [] },
+            { name: "Tildrakizumab", synonyms: ["Ilumya", "Ilumetri"], dose: "100 mg s.c. at 0,4 weeks, then every 12 weeks", brands: [] },
+            { name: "Mirikizumab", synonyms: ["Omvoh"], dose: "300 mg i.v. every 4 weeks x3, then 200 mg s.c. every 4 weeks (IBD)", brands: [] }
+          ]
+        },
+        {
+          name: "IL-4/13 Inhibitors (Type 2 Inflammation)",
+          drugs: [
+            { name: "Dupilumab", synonyms: ["Dupixent"], dose: "600 mg s.c. loading, then 300 mg every 2 weeks (atopic dermatitis); 300 mg every 2 weeks (asthma)", brands: [] },
+            { name: "Tralokinumab", synonyms: ["Adtralza"], dose: "600 mg s.c. loading, then 300 mg every 2 weeks", brands: [] },
+            { name: "Cendakimab", synonyms: [], dose: "", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-B-cell / Anti-CD20 (Autoimmune)",
+          drugs: [
+            { name: "Rituximab", synonyms: ["Rituxan", "MabThera"], dose: "1000 mg i.v. x2 doses 2 weeks apart (RA); 375 mg/m² weekly x4 (ANCA vasculitis)", brands: [] },
+            { name: "Ocrelizumab", synonyms: ["Ocrevus"], dose: "300 mg i.v. x2 doses 2 weeks apart, then 600 mg every 6 months (MS)", brands: [] },
+            { name: "Ofatumumab", synonyms: ["Kesimpta"], dose: "20 mg s.c. at weeks 0,1,2, then monthly (MS)", brands: [] },
+            { name: "Ublituximab", synonyms: ["Briumvi"], dose: "150 mg i.v. then 450 mg i.v. 2 weeks later, then 450 mg every 24 weeks (MS)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-BLyS Agents (SLE/Lupus)",
+          drugs: [
+            { name: "Belimumab", synonyms: ["Benlysta"], dose: "10 mg/kg i.v. at 0,2,4 weeks, then every 4 weeks; 200 mg s.c. weekly", brands: [] },
+            { name: "Anifrolumab", synonyms: ["Saphnelo"], dose: "300 mg i.v. every 4 weeks (SLE)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-Integrin Antibodies (IBD)",
+          drugs: [
+            { name: "Natalizumab", synonyms: ["Tysabri"], dose: "300 mg i.v. every 4 weeks (Crohn's/MS)", brands: [] },
+            { name: "Vedolizumab", synonyms: ["Entyvio"], dose: "300 mg i.v. at 0,2,6 weeks, then every 8 weeks (IBD)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-IL-5 / Eosinophil Modulators (Asthma/Eosinophilia)",
+          drugs: [
+            { name: "Mepolizumab", synonyms: ["Nucala"], dose: "100 mg s.c. every 4 weeks (eosinophilic asthma)", brands: [] },
+            { name: "Reslizumab", synonyms: ["Cinqair"], dose: "3 mg/kg i.v. every 4 weeks", brands: [] },
+            { name: "Benralizumab", synonyms: ["Fasenra"], dose: "30 mg s.c. every 4 weeks x3, then every 8 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-IgE Agents",
+          drugs: [
+            { name: "Omalizumab", synonyms: ["Xolair"], dose: "75–375 mg s.c. every 2–4 weeks (dose based on IgE level and weight)", brands: [] },
+            { name: "Ligelizumab", synonyms: [], dose: "", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-TSLP (Asthma)",
+          drugs: [
+            { name: "Tezepelumab", synonyms: ["Tezspire"], dose: "210 mg s.c. every 4 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Complement Inhibitors",
+          drugs: [
+            { name: "Eculizumab", synonyms: ["Soliris"], dose: "900 mg i.v. weekly x4, then 1200 mg every 2 weeks (PNH/aHUS)", brands: [] },
+            { name: "Ravulizumab", synonyms: ["Ultomiris"], dose: "Weight-based i.v. loading then every 8 weeks (PNH/aHUS)", brands: [] },
+            { name: "Avacopan", synonyms: ["Tavneos"], dose: "30 mg BD oral (ANCA-associated vasculitis)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "14d",
+      name: "JAK Inhibitors (tsDMARDs)",
+      synonyms: ["Janus Kinase Inhibitors", "Targeted Synthetic DMARDs", "JAKi"],
+      description: "Janus kinase inhibitors are orally bioavailable small molecules that block intracellular cytokine signalling through inhibition of JAK1, JAK2, JAK3, and/or TYK2. By interrupting STAT phosphorylation downstream of multiple cytokine receptors simultaneously, they suppress a broad inflammatory response. TYK2-selective deucravacitinib achieves psoriasis efficacy with a more favourable safety profile by sparing JAK1/2/3.",
+      subgroups: [
+        {
+          name: "JAK Inhibitors",
+          drugs: [
+            { name: "Tofacitinib", synonyms: ["Xeljanz"], dose: "5 mg BD oral (RA/UC/PsA); 10 mg BD (induction UC)", brands: [] },
+            { name: "Baricitinib", synonyms: ["Olumiant"], dose: "2 mg OD oral (RA); 4 mg OD (alopecia areata/COVID-19)", brands: [] },
+            { name: "Upadacitinib", synonyms: ["Rinvoq"], dose: "15 mg OD oral (RA); 30–45 mg OD (IBD/atopic dermatitis)", brands: [] },
+            { name: "Filgotinib", synonyms: ["Jyseleca"], dose: "200 mg OD oral (RA/UC, EMA)", brands: [] },
+            { name: "Abrocitinib", synonyms: ["Cibinqo"], dose: "100–200 mg OD oral (atopic dermatitis)", brands: [] },
+            { name: "Deucravacitinib", synonyms: ["Sotyktu"], dose: "6 mg OD oral (psoriasis, TYK2 inhibitor)", brands: [] },
+            { name: "Ritlecitinib", synonyms: ["Litfulo"], dose: "50 mg OD oral (alopecia areata)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ============================================================
+// CHAPTER 15: DERMATOLOGICAL DRUGS (SYSTEMIC AND TOPICAL)
+// ============================================================
+{
+  id: 15,
+  title: "Dermatological Pharmacology",
+  description: "Dermatological pharmacology encompasses topical and systemic treatment strategies for common inflammatory skin conditions. Retinoids, keratolytics, PDE4 inhibitors, JAK inhibitors, and biologic agents represent the modern therapeutic ladder alongside established corticosteroid formulations.",
+  subclasses: [
+    {
+      id: "15a",
+      name: "Drugs for Acne",
+      synonyms: ["Anti-acne Drugs", "Acne Treatments"],
+      description: "Acne pharmacotherapy addresses four pathogenic pillars: sebum overproduction, follicular hyperkeratinisation, Cutibacterium acnes colonisation, and inflammation. Topical retinoids normalise follicular epithelial turnover; benzoyl peroxide and topical antibiotics reduce microbial load; oral isotretinoin (systemic retinoid) remains the most effective agent for severe or treatment-resistant acne; the androgen receptor inhibitor clascoterone offers a targeted topical antiandrogen option.",
+      subgroups: [
+        {
+          name: "Topical Retinoids",
+          drugs: [
+            { name: "Tretinoin", synonyms: ["All-trans retinoic acid", "Retin-A"], dose: "0.025–0.1% cream/gel topically at night", brands: [] },
+            { name: "Adapalene", synonyms: ["Differin"], dose: "0.1–0.3% gel/cream topically OD at night", brands: [] },
+            { name: "Tazarotene", synonyms: ["Tazorac", "Zorac"], dose: "0.05–0.1% cream/gel topically OD at night", brands: [] },
+            { name: "Trifarotene", synonyms: ["Aklief"], dose: "0.005% cream topically OD (truncal acne)", brands: [] }
+          ]
+        },
+        {
+          name: "Topical Antibacterials (Acne)",
+          drugs: [
+            { name: "Benzoyl peroxide", synonyms: ["BPO"], dose: "2.5–10% topically OD–BD", brands: [] },
+            { name: "Clindamycin phosphate", synonyms: [], dose: "1% solution/gel topically BD", brands: [] },
+            { name: "Erythromycin", synonyms: [], dose: "2–4% topically BD", brands: [] },
+            { name: "Nadifloxacin", synonyms: [], dose: "1% cream topically BD", brands: [] },
+            { name: "Ivermectin 1% cream", synonyms: [], dose: "1% cream topically OD (rosacea/Demodex)", brands: [] }
+          ]
+        },
+        {
+          name: "Systemic Agents for Acne/Rosacea",
+          drugs: [
+            { name: "Isotretinoin", synonyms: ["13-cis-retinoic acid", "Accutane", "Roaccutane"], dose: "0.5–1 mg/kg/day oral in 2 divided doses (usually 16–24 weeks)", brands: [] },
+            { name: "Doxycycline", synonyms: [], dose: "50–100 mg OD–BD oral (anti-inflammatory for acne)", brands: [] },
+            { name: "Sarecycline", synonyms: ["Seysara"], dose: "1.5 mg/kg OD oral (FDA-approved for acne)", brands: [] },
+            { name: "Clascoterone", synonyms: ["Winlevi"], dose: "1% cream topically BD (androgen receptor inhibitor)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "15b",
+      name: "Drugs for Psoriasis",
+      synonyms: ["Antipsoriatic Drugs", "Psoriasis Treatments"],
+      description: "Psoriasis management is scaled to disease severity. Topical agents — vitamin D analogues, retinoids, and corticosteroids — control mild-to-moderate plaque disease. Systemic conventional agents (methotrexate, ciclosporin, acitretin) are used for extensive or refractory disease. Targeted oral agents (apremilast, deucravacitinib) and biologic therapies acting on IL-17, IL-23, and TNF-α pathways have transformed management of moderate-to-severe psoriasis.",
+      subgroups: [
+        {
+          name: "Topical Agents for Psoriasis",
+          drugs: [
+            { name: "Calcipotriol", synonyms: ["Calcipotriene", "Dovonex"], dose: "0.005% ointment/cream topically BD", brands: [] },
+            { name: "Calcipotriol/betamethasone dipropionate", synonyms: ["Enstilar", "Xamiol"], dose: "Foam/gel topically OD (up to 4 weeks)", brands: [] },
+            { name: "Tazarotene", synonyms: [], dose: "0.05–0.1% cream/gel topically OD (plaque psoriasis)", brands: [] },
+            { name: "Tapinarof", synonyms: ["Vtama"], dose: "1% cream topically OD", brands: [] },
+            { name: "Roflumilast cream", synonyms: ["Zoryve"], dose: "0.3% cream topically OD", brands: [] }
+          ]
+        },
+        {
+          name: "Systemic Non-biologic Agents for Psoriasis",
+          drugs: [
+            { name: "Methotrexate", synonyms: [], dose: "7.5–25 mg weekly oral/i.m./s.c.", brands: [] },
+            { name: "Ciclosporin", synonyms: ["Cyclosporine"], dose: "2.5–5 mg/kg/day oral in 2 divided doses (short-term)", brands: [] },
+            { name: "Acitretin", synonyms: ["Neotigason", "Soriatane"], dose: "25–50 mg OD oral (systemic retinoid)", brands: [] },
+            { name: "Apremilast", synonyms: ["Otezla"], dose: "30 mg BD oral (PDE4 inhibitor, titrated over 5 days)", brands: [] },
+            { name: "Deucravacitinib", synonyms: ["Sotyktu"], dose: "6 mg OD oral (TYK2 inhibitor)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "15c",
+      name: "Drugs for Atopic Dermatitis (Eczema)",
+      synonyms: ["Eczema Treatments", "Atopic Dermatitis Drugs"],
+      description: "Atopic dermatitis pharmacotherapy has expanded dramatically. Topical calcineurin inhibitors (tacrolimus, pimecrolimus) provide steroid-sparing anti-inflammatory activity. Newer topical options include crisaborole (PDE4 inhibitor), roflumilast cream (PDE4 inhibitor), and ruxolitinib cream (JAK1/2 inhibitor). Dupilumab (anti-IL-4Rα) is the leading systemic biologic; oral JAK inhibitors (upadacitinib, abrocitinib, baricitinib) offer additional options for moderate-to-severe disease.",
+      subgroups: [
+        {
+          name: "Topical Calcineurin Inhibitors",
+          drugs: [
+            { name: "Tacrolimus ointment", synonyms: ["Protopic"], dose: "0.03% (children); 0.1% (adults) topically BD", brands: [] },
+            { name: "Pimecrolimus", synonyms: ["Elidel"], dose: "1% cream topically BD", brands: [] }
+          ]
+        },
+        {
+          name: "Topical PDE4 Inhibitors",
+          drugs: [
+            { name: "Crisaborole", synonyms: ["Eucrisa"], dose: "2% ointment topically BD (mild–moderate AD)", brands: [] },
+            { name: "Roflumilast cream", synonyms: ["Zoryve"], dose: "0.15% cream topically OD (AD)", brands: [] }
+          ]
+        },
+        {
+          name: "Topical JAK Inhibitors",
+          drugs: [
+            { name: "Ruxolitinib cream", synonyms: ["Opzelura"], dose: "1.5% cream topically BD (mild–moderate AD)", brands: [] },
+            { name: "Delgocitinib", synonyms: ["Corectim"], dose: "0.5% ointment topically BD (Japan-approved)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "15d",
+      name: "Topical Corticosteroids",
+      synonyms: ["Topical Steroids", "Dermocorticoids"],
+      description: "Topical corticosteroids are classified by vasoconstrictive potency — from mild (hydrocortisone) through moderate and potent to very potent (clobetasol propionate). Potency selection balances therapeutic efficacy against the risk of local (skin atrophy, telangiectasia) and systemic adverse effects. Vehicle formulation (ointment > cream > lotion > gel) influences both potency and site suitability.",
+      subgroups: [
+        {
+          name: "Low Potency",
+          drugs: [
+            { name: "Hydrocortisone", synonyms: [], dose: "0.5–2.5% cream/ointment topically BD–QID", brands: [] }
+          ]
+        },
+        {
+          name: "Moderate Potency",
+          drugs: [
+            { name: "Triamcinolone acetonide", synonyms: [], dose: "0.025–0.1% cream/ointment BD–QID", brands: [] },
+            { name: "Betamethasone valerate", synonyms: [], dose: "0.025–0.1% cream/ointment BD", brands: [] },
+            { name: "Fluocinolone acetonide", synonyms: [], dose: "0.01–0.025% cream/ointment BD–QID", brands: [] }
+          ]
+        },
+        {
+          name: "Potent",
+          drugs: [
+            { name: "Betamethasone dipropionate", synonyms: [], dose: "0.05% cream/ointment OD–BD", brands: [] },
+            { name: "Mometasone furoate", synonyms: [], dose: "0.1% cream/ointment OD", brands: [] },
+            { name: "Fluticasone propionate", synonyms: ["Flohale", "Flomist"], dose: "0.05% cream/ointment OD–BD", brands: [] }
+          ]
+        },
+        {
+          name: "Very Potent",
+          drugs: [
+            { name: "Clobetasol propionate", synonyms: [], dose: "0.05% cream/ointment OD–BD (max 50 g/week)", brands: [] },
+            { name: "Halobetasol propionate", synonyms: [], dose: "0.05% cream/ointment OD–BD", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ============================================================
+// CHAPTER 16: OPHTHALMIC DRUGS (BEYOND GLAUCOMA)
+// ============================================================
+{
+  id: 16,
+  title: "Ophthalmic Pharmacology",
+  description: "Ophthalmic pharmacology beyond intraocular pressure management includes intravitreal anti-VEGF biologics for retinal neovascular disease, immunomodulatory treatments for dry eye disease, topical anti-infective regimens for ocular infections, and anti-inflammatory drops for anterior segment conditions.",
+  subclasses: [
+    {
+      id: "16a",
+      name: "Anti-VEGF Agents (Intravitreal)",
+      synonyms: ["VEGF Inhibitors (Ophthalmology)", "Anti-angiogenic Eye Drugs"],
+      description: "Intravitreal anti-VEGF agents are the standard of care for neovascular (wet) age-related macular degeneration, diabetic macular oedema, and macular oedema secondary to retinal vein occlusion. They inhibit VEGF-A (ranibizumab, bevacizumab, brolucizumab) or simultaneously target VEGF-A and angiopoietin-2 (faricimab), reducing pathological neovascularisation and vascular leakage. Extended dosing intervals with newer agents reduce injection burden.",
+      subgroups: [
+        {
+          name: "Anti-VEGF Intravitreal Agents",
+          drugs: [
+            { name: "Ranibizumab", synonyms: ["Lucentis"], dose: "0.5 mg (0.05 mL) intravitreal injection monthly", brands: [] },
+            { name: "Bevacizumab", synonyms: ["Avastin (off-label use)"], dose: "1.25 mg (0.05 mL) intravitreal injection (off-label)", brands: [] },
+            { name: "Aflibercept", synonyms: ["Eylea", "VEGF-Trap Eye"], dose: "2 mg (0.05 mL) intravitreal every 4 weeks x3 months, then every 8 weeks", brands: [] },
+            { name: "Faricimab", synonyms: ["Vabysmo"], dose: "6 mg (0.05 mL) intravitreal every 4 weeks x4, then every 8–16 weeks (Ang-2/VEGF-A bispecific)", brands: [] },
+            { name: "Brolucizumab", synonyms: ["Beovu"], dose: "6 mg (0.05 mL) intravitreal every 6 weeks x3 months, then every 8–12 weeks", brands: [] },
+            { name: "Pegaptanib", synonyms: ["Macugen"], dose: "0.3 mg intravitreal every 6 weeks (largely superseded)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "16b",
+      name: "Drugs for Dry Eye Disease",
+      synonyms: ["Dry Eye Treatments", "Artificial Tears", "Lacrimal Secretagogues"],
+      description: "Dry eye disease involves a self-perpetuating cycle of tear film instability, hyperosmolarity, and ocular surface inflammation. Topical ciclosporin (Restasis, Ikervis) and lifitegrast (an LFA-1 antagonist, Xiidra) target the inflammatory component. Varenicline nasal spray stimulates trigeminal parasympathetic pathways to increase natural tear and mucin secretion, representing a novel non-inflammatory approach.",
+      subgroups: [
+        {
+          name: "Topical Immunosuppressants for Dry Eye",
+          drugs: [
+            { name: "Ciclosporin ophthalmic emulsion", synonyms: ["Restasis"], dose: "0.05% topically BD", brands: [] },
+            { name: "Ciclosporin 0.1% cationic emulsion", synonyms: ["Ikervis"], dose: "0.1% topically OD at bedtime (EMA)", brands: [] },
+            { name: "Lifitegrast", synonyms: ["Xiidra"], dose: "5% ophthalmic solution topically BD", brands: [] }
+          ]
+        },
+        {
+          name: "Secretagogues for Dry Eye",
+          drugs: [
+            { name: "Varenicline nasal spray", synonyms: ["Tyrvaya"], dose: "0.03 mg per nostril BD (nicotinic receptor agonist)", brands: [] },
+            { name: "Reproxalap", synonyms: [], dose: "0.25% topically QID (RASP inhibitor, investigational)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "16c",
+      name: "Ocular Anti-Infectives",
+      synonyms: ["Topical Eye Antibiotics", "Ophthalmic Antivirals", "Ocular Antifungals"],
+      description: "Ocular anti-infectives are formulated as drops or ointments with concentrations appropriate for conjunctival, corneal, and anterior chamber pharmacology. Fluoroquinolones (ciprofloxacin, ofloxacin, moxifloxacin, besifloxacin) provide broad-spectrum antibacterial coverage for bacterial conjunctivitis and keratitis; chloramphenicol retains wide use in many health systems. Aciclovir ointment and ganciclovir gel address herpetic keratitis; natamycin is the primary topical antifungal for fungal keratitis.",
+      subgroups: [
+        {
+          name: "Topical Antibacterial Eye Drops",
+          drugs: [
+            { name: "Chloramphenicol", synonyms: [], dose: "0.5% drops every 2–3 hours; 1% ointment BD–QID", brands: [] },
+            { name: "Tobramycin", synonyms: ["Tobran"], dose: "0.3% drops every 4 hours; ointment BD–TDS", brands: [] },
+            { name: "Ciprofloxacin", synonyms: ["Cipro", "Ciplox"], dose: "0.3% drops every 2–4 hours", brands: [] },
+            { name: "Ofloxacin", synonyms: ["Oflox", "Zanocin"], dose: "0.3% drops every 2–4 hours", brands: [] },
+            { name: "Moxifloxacin", synonyms: ["Avelox", "Moxiflox"], dose: "0.5% drops TDS x7 days", brands: [] },
+            { name: "Levofloxacin", synonyms: ["Levoflox", "Tavanic"], dose: "0.5% drops every 2 hours initially", brands: [] },
+            { name: "Besifloxacin", synonyms: ["Besivance"], dose: "0.6% drops TDS x7 days", brands: [] },
+            { name: "Fusidic acid", synonyms: [], dose: "1% gel/drops BD (staphylococcal conjunctivitis)", brands: [] },
+            { name: "Azithromycin ophthalmic", synonyms: ["Azasite", "Azithromycin"], dose: "1% drops BD x2 days, then OD x5 days", brands: [] }
+          ]
+        },
+        {
+          name: "Topical Antiviral Eye Agents",
+          drugs: [
+            { name: "Aciclovir eye ointment", synonyms: [], dose: "3% ointment 5x daily x14 days (HSV keratitis)", brands: [] },
+            { name: "Ganciclovir eye gel", synonyms: ["Zirgan"], dose: "0.15% gel 5x daily until ulcer healed, then TDS x7 days", brands: [] },
+            { name: "Trifluridine", synonyms: ["Viroptic"], dose: "1% drops every 2 hours x14 days (HSV keratitis)", brands: [] }
+          ]
+        },
+        {
+          name: "Topical Antifungal Eye Drops",
+          drugs: [
+            { name: "Natamycin", synonyms: [], dose: "5% suspension drops every 1–2 hours initially (fungal keratitis)", brands: [] },
+            { name: "Voriconazole", synonyms: [], dose: "1% drops every 1–2 hours (compounded, fungal keratitis)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "16d",
+      name: "Ocular Anti-inflammatory Drugs",
+      synonyms: ["Ophthalmic NSAIDs", "Ophthalmic Corticosteroids"],
+      description: "Ocular anti-inflammatory agents are used for anterior segment inflammation, post-cataract surgery prophylaxis, and allergic conjunctivitis. Topical NSAIDs (ketorolac, diclofenac, nepafenac, bromfenac) inhibit COX-mediated prostaglandin synthesis in ocular tissues. Corticosteroid eye drops (prednisolone, dexamethasone, fluorometholone, loteprednol) are more potent but carry risks of raised intraocular pressure and posterior subcapsular cataract with prolonged use.",
+      subgroups: [
+        {
+          name: "Topical Ophthalmic NSAIDs",
+          drugs: [
+            { name: "Ketorolac ophthalmic", synonyms: [], dose: "0.5% drops QID", brands: [] },
+            { name: "Diclofenac ophthalmic", synonyms: [], dose: "0.1% drops QID", brands: [] },
+            { name: "Nepafenac", synonyms: ["Nevanac"], dose: "0.1–0.3% drops OD–TDS", brands: [] },
+            { name: "Bromfenac", synonyms: ["Prolensa", "Yellox"], dose: "0.07–0.09% drops OD–BD", brands: [] }
+          ]
+        },
+        {
+          name: "Topical Ophthalmic Corticosteroids",
+          drugs: [
+            { name: "Prednisolone acetate", synonyms: [], dose: "1% drops every 1–4 hours (post-surgical)", brands: [] },
+            { name: "Dexamethasone", synonyms: [], dose: "0.1% drops every 4–6 hours", brands: [] },
+            { name: "Fluorometholone", synonyms: [], dose: "0.1–0.25% drops BD–QID", brands: [] },
+            { name: "Loteprednol etabonate", synonyms: ["Lotemax"], dose: "0.2–0.5% drops BD–QID", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 17,
+  title: "Rare Disease Therapeutics and Orphan Drug Pharmacology",
+  description: "Rare disease therapeutics represent some of the most mechanistically innovative drugs in modern pharmacology — including enzyme replacement therapies for lysosomal storage disorders, RNA-based drugs (siRNA and antisense oligonucleotides), gene therapy vectors, and coagulation factor concentrates with non-replacement alternatives for haemophilia.",
+  subclasses: [
+    {
+      id: "17a",
+      name: "Enzyme Replacement Therapies (ERTs)",
+      synonyms: ["Lysosomal Storage Disorder Drugs", "ERTs"],
+      description: "Enzyme replacement therapy provides exogenous recombinant enzyme that is taken up by cells via mannose-6-phosphate receptors, restoring lysosomal substrate catabolism. ERTs are available for Gaucher disease (imiglucerase, velaglucerase alfa), Fabry disease (agalsidase alfa and beta), Pompe disease (alglucosidase alfa, avalglucosidase alfa), and several mucopolysaccharidoses. They reduce substrate accumulation and ameliorate visceral manifestations but do not penetrate the CNS. Pharmacological chaperones (migalastat, eliglustat) offer oral alternatives for specific mutation subsets.",
+      subgroups: [
+        {
+          name: "Gaucher Disease",
+          drugs: [
+            { name: "Imiglucerase", synonyms: ["Cerezyme"], dose: "2.5–60 units/kg i.v. every 2 weeks (ERT, Gaucher type 1)", brands: [] },
+            { name: "Velaglucerase alfa", synonyms: ["VPRIV"], dose: "15–60 units/kg i.v. every 2 weeks", brands: [] },
+            { name: "Taliglucerase alfa", synonyms: ["Elelyso"], dose: "30–60 units/kg i.v. every 2 weeks", brands: [] },
+            { name: "Miglustat", synonyms: ["Zavesca"], dose: "100 mg TDS oral (substrate reduction therapy)", brands: [] },
+            { name: "Eliglustat", synonyms: ["Cerdelga"], dose: "84 mg OD or BD oral (based on CYP2D6 genotype)", brands: [] }
+          ]
+        },
+        {
+          name: "Fabry Disease",
+          drugs: [
+            { name: "Agalsidase alfa", synonyms: ["Replagal"], dose: "0.2 mg/kg i.v. every 2 weeks (EMA)", brands: [] },
+            { name: "Agalsidase beta", synonyms: ["Fabrazyme"], dose: "1 mg/kg i.v. every 2 weeks (FDA/EMA)", brands: [] },
+            { name: "Migalastat", synonyms: ["Galafold"], dose: "123 mg oral every other day (pharmacological chaperone; amenable mutations)", brands: [] }
+          ]
+        },
+        {
+          name: "Pompe Disease (GSD type II)",
+          drugs: [
+            { name: "Alglucosidase alfa", synonyms: ["Myozyme", "Lumizyme"], dose: "20 mg/kg i.v. every 2 weeks", brands: [] },
+            { name: "Avalglucosidase alfa", synonyms: ["Nexviazyme", "Nexviadyme"], dose: "20 mg/kg i.v. every 2 weeks (next-gen ERT)", brands: [] },
+            { name: "Cipaglucosidase alfa/miglustat", synonyms: ["Pombiliti/Opfolda"], dose: "20 mg/kg i.v. + 260 mg miglustat oral 1 hr before infusion, every 2 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "MPS and Other LSDs",
+          drugs: [
+            { name: "Laronidase", synonyms: ["Aldurazyme"], dose: "0.58 mg/kg i.v. weekly (MPS I)", brands: [] },
+            { name: "Idursulfase", synonyms: ["Elaprase"], dose: "0.5 mg/kg i.v. weekly (MPS II — Hunter syndrome)", brands: [] },
+            { name: "Elosulfase alfa", synonyms: ["Vimizim"], dose: "2 mg/kg i.v. weekly (MPS IVA — Morquio A)", brands: [] },
+            { name: "Galsulfase", synonyms: ["Naglazyme"], dose: "1 mg/kg i.v. weekly (MPS VI — Maroteaux-Lamy)", brands: [] },
+            { name: "Cerliponase alfa", synonyms: ["Brineura"], dose: "300 mg intraventricular every 2 weeks (CLN2 Batten disease)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "17b",
+      name: "RNA-Based Therapeutics (siRNA / ASO / mRNA)",
+      synonyms: ["siRNA Drugs", "Antisense Oligonucleotides", "RNA Interference"],
+      description: "RNA-based therapeutics harness the cell's own gene-silencing machinery. Small interfering RNAs (siRNAs), delivered via lipid nanoparticles or GalNAc conjugates for hepatic targeting, direct the RISC complex to cleave specific mRNA transcripts — approved siRNAs silence PCSK9, ALAS1, HAO1, LDHA, and TTR genes for familial hypercholesterolaemia, acute hepatic porphyria, hyperoxaluria, and transthyretin amyloidosis respectively. Antisense oligonucleotides (ASOs) sterically block translation or redirect splicing — exemplified by nusinersen (SMN2 splicing in SMA) and tofersen (SOD1 in ALS).",
+      subgroups: [
+        {
+          name: "siRNA (Small Interfering RNA) Drugs",
+          drugs: [
+            { name: "Inclisiran", synonyms: ["Leqvio"], dose: "284 mg s.c. day 1, 3 months, then every 6 months (LDL-C reduction via PCSK9 siRNA)", brands: [] },
+            { name: "Givosiran", synonyms: ["Givlaari"], dose: "2.5 mg/kg s.c. monthly (acute hepatic porphyria; ALAS1 siRNA)", brands: [] },
+            { name: "Lumasiran", synonyms: ["Oxlumo"], dose: "Weight-based s.c. monthly x3 then quarterly (primary hyperoxaluria type 1; HAO1 siRNA)", brands: [] },
+            { name: "Nedosiran", synonyms: ["Rivfloza"], dose: "Weight-based s.c. monthly (primary hyperoxaluria type 1; LDHA siRNA)", brands: [] },
+            { name: "Vutrisiran", synonyms: ["Amvuttra"], dose: "25 mg s.c. every 3 months (hATTR amyloidosis; TTR siRNA)", brands: [] },
+            { name: "Patisiran", synonyms: ["Onpattro"], dose: "0.3 mg/kg i.v. every 3 weeks (hATTR amyloidosis; first approved siRNA drug)", brands: [] },
+            { name: "Fitusiran", synonyms: ["Alhemo"], dose: "50–80 mg s.c. monthly (haemophilia A and B prophylaxis; AT siRNA)", brands: [] }
+          ]
+        },
+        {
+          name: "Antisense Oligonucleotides (ASOs)",
+          drugs: [
+            { name: "Inotersen", synonyms: ["Tegsedi"], dose: "284 mg s.c. weekly (hATTR amyloidosis; TTR ASO)", brands: [] },
+            { name: "Eplontersen", synonyms: ["Wainua"], dose: "45 mg s.c. monthly (hATTR polyneuropathy; GalNAc-conjugated ASO)", brands: [] },
+            { name: "Nusinersen", synonyms: ["Spinraza"], dose: "12 mg intrathecal (SMA; SMN2 ASO — listed also under CNS)", brands: [] },
+            { name: "Tofersen", synonyms: ["Qalsody"], dose: "100 mg intrathecal every 2 weeks x3 then every 4 weeks (SOD1-ALS ASO)", brands: [] },
+            { name: "Casimersen", synonyms: ["Amondys 45"], dose: "30 mg/kg i.v. weekly (Duchenne MD exon 45 skipping)", brands: [] },
+            { name: "Viltolarsen", synonyms: ["Viltepso"], dose: "80 mg/kg i.v. weekly (Duchenne MD exon 53 skipping)", brands: [] },
+            { name: "Eteplirsen", synonyms: ["Exondys 51"], dose: "30 mg/kg i.v. weekly (Duchenne MD exon 51 skipping)", brands: [] },
+            { name: "Volanesorsen", synonyms: ["Waylivra"], dose: "285 mg s.c. weekly (familial chylomicronaemia; APOC3 ASO; EMA)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "17c",
+      name: "Drugs for Haemophilia",
+      synonyms: ["Haemophilia Drugs", "Factor Replacement Therapies", "Non-factor Haemophilia Therapies"],
+      description: "Haemophilia pharmacotherapy has evolved from plasma-derived and recombinant factor concentrates — standard and extended half-life variants for Haemophilia A (FVIII) and B (FIX) — to mechanistically distinct non-replacement strategies. Emicizumab mimics FVIII by bridging FIXa and FX; fitusiran (an anti-antithrombin siRNA) restores thrombin generation by suppressing a natural anticoagulant. Gene therapies (valoctocogene roxaparvovec, etranacogene dezaparvovec) offer the prospect of sustained factor production from a single infusion.",
+      subgroups: [
+        {
+          name: "Standard Factor Replacements",
+          drugs: [
+            { name: "Factor VIII concentrate", synonyms: ["Advate", "Recombinate", "Kogenate"], dose: "25–50 IU/kg i.v. (dose by severity and indication)", brands: [] },
+            { name: "Factor IX concentrate", synonyms: ["BeneFIX", "Rixubis"], dose: "25–100 IU/kg i.v. (dose by severity)", brands: [] },
+            { name: "Factor VIIa recombinant", synonyms: ["NovoSeven", "Niastase"], dose: "90 mcg/kg i.v. every 2–3 hr (inhibitor patients)", brands: [] }
+          ]
+        },
+        {
+          name: "Extended Half-Life Factor Products",
+          drugs: [
+            { name: "Efmoroctocog alfa", synonyms: ["Elocta", "Eloctate"], dose: "50 IU/kg every 4 days (Fc-fused FVIII)", brands: [] },
+            { name: "Eftrenonacog alfa", synonyms: ["Alprolix"], dose: "50–100 IU/kg weekly or every 10 days (Fc-fused FIX)", brands: [] },
+            { name: "Fitusiran", synonyms: ["Alhemo"], dose: "50–80 mg s.c. monthly (anti-AT siRNA; subcutaneous, non-replacement)", brands: [] }
+          ]
+        },
+        {
+          name: "Non-Factor Haemophilia A Therapies",
+          drugs: [
+            { name: "Emicizumab", synonyms: ["Hemlibra"], dose: "3 mg/kg s.c. weekly x4 wk, then 1.5 mg/kg weekly or 3 mg/kg every 2 wk or 6 mg/kg every 4 wk (prophylaxis, any inhibitor status)", brands: [] },
+            { name: "Marstacimab", synonyms: [], dose: "(Investigational — Phase 3)", brands: [] }
+          ]
+        },
+        {
+          name: "Gene Therapies for Haemophilia",
+          drugs: [
+            { name: "Valoctocogene roxaparvovec", synonyms: ["Roctavian", "BMN 270"], dose: "6×10¹³ vg/kg i.v. single infusion (Haemophilia A gene therapy, AAV5-FVIII)", brands: [] },
+            { name: "Fidanacogene elaparvovec", synonyms: ["Beqvez"], dose: "5×10¹¹ vg/kg i.v. single infusion (Haemophilia B gene therapy, AAV-FIX)", brands: [] },
+            { name: "Etranacogene dezaparvovec", synonyms: ["Hemgenix"], dose: "2×10¹³ gc/kg i.v. single infusion (Haemophilia B gene therapy; AAV5-FIX)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "17d",
+      name: "Drugs for Hereditary Metabolic Disorders",
+      synonyms: ["Inborn Errors of Metabolism Drugs", "IEM Drugs"],
+      description: "Inborn errors of metabolism pharmacotherapy aims to reduce toxic substrate accumulation, supplement deficient products, or bypass the enzymatic block. Sapropterin activates residual phenylalanine hydroxylase in BH4-responsive PKU; pegvaliase provides a bacterial phenylalanine ammonia lyase substitute. Ammonia scavengers (sodium phenylbutyrate, glycerol phenylbutyrate) divert nitrogen excretion via alternative pathways in urea cycle disorders. Betaine remethylates homocysteine in homocystinuria.",
+      subgroups: [
+        {
+          name: "Phenylketonuria (PKU)",
+          drugs: [
+            { name: "Sapropterin", synonyms: ["Kuvan", "BH4"], dose: "10–20 mg/kg/day oral (BH4-responsive PKU)", brands: [] },
+            { name: "Pegvaliase", synonyms: ["Palynziq"], dose: "2.5 mg s.c. weekly titrated to 40 mg/day (EMA-approved PAL enzyme substitute)", brands: [] }
+          ]
+        },
+        {
+          name: "Urea Cycle Disorders",
+          drugs: [
+            { name: "Sodium phenylbutyrate", synonyms: ["Ammonaps", "Buphenyl"], dose: "9.9–13 g/m²/day oral in 3–6 divided doses (ammonia scavenger)", brands: [] },
+            { name: "Glycerol phenylbutyrate", synonyms: ["Ravicti"], dose: "4.5–11.2 mL/m²/day oral in 3 doses (ammonia scavenger; pre-meal)", brands: [] },
+            { name: "Arginine", synonyms: [], dose: "Weight-based oral/i.v. supplementation (various UCD)", brands: [] },
+            { name: "Carglumic acid", synonyms: ["Carbaglu"], dose: "100–250 mg/kg/day oral in 2–4 divided doses (NAGS deficiency)", brands: [] }
+          ]
+        },
+        {
+          name: "Organic Acidaemias / Fatty Acid Oxidation Disorders",
+          drugs: [
+            { name: "Betaine", synonyms: ["Cystadane"], dose: "6 g/day oral in 2 divided doses (homocystinuria; min. 3 g/day in children)", brands: [] },
+            { name: "Triheptanoin", synonyms: ["Dojolvi"], dose: "Up to 35% of total daily caloric intake oral (LCHAD and related FAO disorders)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+{
+  id: 18,
+  title: "Anaesthetic Pharmacology and Sedation Agents",
+  description: "This section covers supporting pharmacology in anaesthetic practice: agents for neuromuscular blockade reversal, agents for procedural sedation outside the operating theatre, and pharmacological management of postoperative nausea and vomiting.",
+  subclasses: [
+    {
+      id: "18a",
+      name: "Neuromuscular Reversal Agents",
+      synonyms: ["Sugammadex", "Anticholinesterases for Reversal", "NMB Reversal Agents"],
+      description: "Neuromuscular blockade reversal agents restore voluntary motor function at the end of anaesthesia. Sugammadex encapsulates steroidal neuromuscular blockers (rocuronium, vecuronium) within its ring structure, rapidly forming an inert complex regardless of depth of block. Neostigmine inhibits acetylcholinesterase at the motor end-plate, increasing acetylcholine competitively, but requires concurrent antimuscarinic agents and is less effective at deep block levels.",
+      subgroups: [
+        {
+          name: "Selective Relaxant Binding Agents",
+          drugs: [
+            { name: "Sugammadex", synonyms: ["Bridion"], dose: "2 mg/kg i.v. (moderate block); 4 mg/kg (deep block); 16 mg/kg (immediate reversal of rocuronium)", brands: [] }
+          ]
+        },
+        {
+          name: "Cholinesterase Inhibitors (for Reversal)",
+          drugs: [
+            { name: "Neostigmine", synonyms: ["Prostigmin"], dose: "0.04–0.07 mg/kg i.v. (with glycopyrrolate or atropine) for NMB reversal", brands: [] },
+            { name: "Edrophonium", synonyms: ["Tensilon"], dose: "0.5–1 mg/kg i.v. (with atropine) for NMB reversal", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "18b",
+      name: "Procedural Sedation Agents",
+      synonyms: ["Conscious Sedation Drugs", "Procedural Anaesthesia"],
+      description: "Procedural sedation requires agents with rapid onset, controllable depth, and predictable offset. Dexmedetomidine (an α2-adrenoceptor agonist) provides sedation with preserved respiratory drive and analgesic-sparing properties, particularly valuable in ICU and endoscopic settings. Remimazolam is an ultra-short-acting benzodiazepine hydrolysed by tissue esterases, reversible with flumazenil. These agents offer an improved pharmacokinetic profile over traditional midazolam and propofol for prolonged sedation.",
+      subgroups: [
+        {
+          name: "Procedural Sedation",
+          drugs: [
+            { name: "Dexmedetomidine", synonyms: ["Precedex", "Dexdor"], dose: "1 mcg/kg i.v. loading over 10 min, then 0.2–0.7 mcg/kg/hr infusion (sedation in ICU/procedural; alpha-2 agonist)", brands: [] },
+            { name: "Remimazolam", synonyms: ["Byfavo", "Anerem"], dose: "3–5 mg i.v. bolus, 1–2 mg supplemental doses (procedural sedation; ultra-short benzodiazepine)", brands: [] },
+            { name: "Fospropofol", synonyms: ["Lusedra"], dose: "6.5 mg/kg i.v. (MAC sedation; prodrug of propofol)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "18c",
+      name: "Drugs for Postoperative Nausea and Vomiting (PONV)",
+      synonyms: ["PONV Prevention", "Postoperative Antiemetics"],
+      description: "Postoperative nausea and vomiting (PONV) results from multiple receptor pathway activations in the chemoreceptor trigger zone and vomiting centre. Multimodal prophylaxis combines agents from different classes — 5-HT3 antagonists (ondansetron), corticosteroids (dexamethasone), NK1 antagonists (aprepitant), and dopamine antagonists (droperidol, amisulpride) — based on Apfel risk score stratification.",
+      subgroups: [
+        {
+          name: "PONV Prophylaxis and Treatment",
+          drugs: [
+            { name: "Ondansetron", synonyms: ["Zofran"], dose: "4 mg i.v. at end of surgery (PONV prophylaxis)", brands: [] },
+            { name: "Dexamethasone", synonyms: [], dose: "4–8 mg i.v. at induction (PONV prophylaxis)", brands: [] },
+            { name: "Droperidol", synonyms: ["Inapsine"], dose: "0.625–1.25 mg i.v. (PONV prophylaxis/treatment)", brands: [] },
+            { name: "Amisulpride", synonyms: ["Barhemsys"], dose: "5 mg i.v. (prophylaxis); 10 mg i.v. (treatment of established PONV)", brands: [] },
+            { name: "Aprepitant", synonyms: ["Emend"], dose: "40 mg oral 1–3 hr before anaesthesia (PONV prophylaxis)", brands: [] },
+            { name: "Casopitant", synonyms: [], dose: "(Limited availability)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+{
+  id: 19,
+  title: "Miscellaneous Pharmacological Agents",
+  description: "This section brings together therapeutically important agents that span multiple physiological systems — uric acid-lowering and uricosuric agents, chelating drugs for metal toxicity and storage disorders, clinical antidotes for poisoning, and immunoglobulin preparations for passive immune protection.",
+  subclasses: [
+    {
+      id: "19a",
+      name: "Uricosurics and Novel Gout Drugs",
+      synonyms: ["Uricosuric Agents", "Pegloticase", "Novel Gout Treatments"],
+      description: "Urate-lowering therapy is extended here to include recombinant uricase preparations. Pegloticase converts uric acid to allantoin (a more soluble metabolite) and is reserved for refractory tophaceous gout that has failed conventional therapy. Rasburicase is used acutely for tumour lysis syndrome hyperuricaemia. Newer uricosurics (lesinurad, dotinurad) selectively inhibit URAT1 in the proximal tubule and are used in combination with xanthine oxidase inhibitors.",
+      subgroups: [
+        {
+          name: "Uricases (Recombinant)",
+          drugs: [
+            { name: "Pegloticase", synonyms: ["Krystexxa"], dose: "8 mg i.v. every 2 weeks (severe chronic gout refractory to conventional therapy)", brands: [] },
+            { name: "Rasburicase", synonyms: ["Fasturtec", "Elitek"], dose: "0.2 mg/kg/day i.v. x5 days (tumour lysis syndrome hyperuricaemia)", brands: [] }
+          ]
+        },
+        {
+          name: "Newer Uricosurics",
+          drugs: [
+            { name: "Lesinurad", synonyms: ["Zurampic", "Duzallo (with allopurinol)"], dose: "200 mg OD oral (with xanthine oxidase inhibitor)", brands: [] },
+            { name: "Dotinurad", synonyms: [], dose: "0.5–4 mg OD oral (Japan-approved URAT1 inhibitor)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "19b",
+      name: "Chelating Agents",
+      synonyms: ["Chelators", "Heavy Metal Antidotes", "Iron Chelators"],
+      description: "Chelating agents form stable, water-soluble complexes with metal ions that can then be renally excreted. Iron chelators (deferoxamine, deferasirox, deferiprone) differ in route of administration and organ distribution, with deferiprone uniquely able to remove cardiac iron. Copper chelators (penicillamine, trientine, tetrathiomolybdate) mobilise copper in Wilson's disease; zinc acetate blocks intestinal copper absorption as maintenance therapy. Heavy metal poisoning is addressed by DMSA, DMPS, BAL, or EDTA depending on the toxin.",
+      subgroups: [
+        {
+          name: "Iron Chelators",
+          drugs: [
+            { name: "Deferoxamine", synonyms: ["Desferrioxamine", "Desferal"], dose: "20–60 mg/kg/day s.c./i.v. (continuous infusion; iron overload/acute poisoning)", brands: [] },
+            { name: "Deferasirox", synonyms: ["Exjade", "Jadenu"], dose: "14–28 mg/kg OD oral (dispersible tablet); 7–21 mg/kg OD (film-coated)", brands: [] },
+            { name: "Deferiprone", synonyms: ["Ferriprox", "L1"], dose: "25 mg/kg TDS oral (max 100 mg/kg/day)", brands: [] }
+          ]
+        },
+        {
+          name: "Copper Chelators (Wilson's Disease)",
+          drugs: [
+            { name: "Penicillamine", synonyms: ["Cuprimine", "Distamine"], dose: "750–1500 mg/day oral in 2–4 divided doses (Wilson's disease); reduce for maintenance", brands: [] },
+            { name: "Trientine", synonyms: ["Syprine", "Cuprior"], dose: "750–1250 mg/day oral in 2–4 divided doses", brands: [] },
+            { name: "Tetrathiomolybdate (bis-choline)", synonyms: ["Cuvrior"], dose: "15 mg QID with food + 15 mg TDS without food (EMA 2022 — Wilson's disease)", brands: [] }
+          ]
+        },
+        {
+          name: "Heavy Metal Chelators",
+          drugs: [
+            { name: "DMSA (dimercaptosuccinic acid)", synonyms: ["Succimer", "Chemet"], dose: "10 mg/kg TDS x5 days, then BD x14 days oral (lead poisoning)", brands: [] },
+            { name: "DMPS (dimercaptopropanesulfonate)", synonyms: ["Unithiol"], dose: "5 mg/kg i.v. or oral (mercury/arsenic poisoning)", brands: [] },
+            { name: "BAL (British Anti-Lewisite)", synonyms: ["Dimercaprol"], dose: "3–4 mg/kg i.m. every 4–6 hr (arsenic/lead/mercury poisoning)", brands: [] },
+            { name: "EDTA (sodium calcium edetate)", synonyms: ["Calcium disodium EDTA"], dose: "25–50 mg/kg i.v. over 1 hr (lead poisoning)", brands: [] }
+          ]
+        },
+        {
+          name: "Zinc (Maintenance in Wilson's Disease)",
+          drugs: [
+            { name: "Zinc acetate/sulfate", synonyms: ["Galzin", "Wilzin"], dose: "50 mg elemental zinc TDS oral (maintenance Wilson's disease)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "19c",
+      name: "Specific Antidotes",
+      synonyms: ["Poison Antidotes", "Toxicological Antidotes"],
+      description: "Clinical toxicology antidotes act through receptor antagonism, enzyme reactivation, substrate depletion, or facilitation of toxic compound elimination. Naloxone competitively displaces opioids at mu receptors; flumazenil reverses benzodiazepine receptor agonism. Acetylcysteine replenishes glutathione for paracetamol-induced hepatotoxicity. Pralidoxime (with atropine) reactivates inhibited acetylcholinesterase in organophosphate poisoning. Factor Xa inhibitor reversal uses andexanet alfa; idarucizumab targets dabigatran specifically.",
+      subgroups: [
+        {
+          name: "Antidotes",
+          drugs: [
+            { name: "Naloxone", synonyms: ["Narcan", "Nyxoid"], dose: "0.4–2 mg i.v./i.m./intranasal (opioid reversal); repeat every 2–3 min as needed", brands: [] },
+            { name: "Flumazenil", synonyms: ["Anexate", "Romazicon"], dose: "0.2 mg i.v. over 30 sec, repeat every 1 min (max 3 mg) — benzodiazepine reversal", brands: [] },
+            { name: "Acetylcysteine", synonyms: ["NAC", "Parvolex"], dose: "150 mg/kg i.v. over 1 hr, then 50 mg/kg over 4 hr, then 100 mg/kg over 16 hr (paracetamol overdose)", brands: [] },
+            { name: "Atropine sulphate", synonyms: [], dose: "2–4 mg i.v. every 5–10 min (organophosphate poisoning; titrate to secretion drying)", brands: [] },
+            { name: "Pralidoxime", synonyms: ["PAM", "2-PAM", "Protopam"], dose: "1–2 g i.v. over 15–30 min, then 500 mg/hr infusion (organophosphate — given with atropine)", brands: [] },
+            { name: "Digoxin-specific antibody fragments", synonyms: ["DigiFab", "Digibind"], dose: "Dose calculated by amount ingested or serum level (digoxin toxicity)", brands: [] },
+            { name: "Protamine sulphate", synonyms: [], dose: "1 mg per 100 units heparin given (max 50 mg i.v. over 10 min) — heparin reversal", brands: [] },
+            { name: "Phytomenadione", synonyms: ["Vitamin K1", "Phytonadione", "Konakion"], dose: "1–10 mg i.v./oral (warfarin reversal; dose by INR)", brands: [] },
+            { name: "Hydroxocobalamin", synonyms: ["Cyanokit"], dose: "5 g i.v. over 15 min (cyanide poisoning)", brands: [] },
+            { name: "Sodium thiosulfate", synonyms: [], dose: "12.5 g i.v. over 10 min (cyanide poisoning; adjunct to hydroxocobalamin)", brands: [] },
+            { name: "Fomepizole", synonyms: ["Antizol", "4-MP"], dose: "15 mg/kg i.v. loading, then 10 mg/kg every 12 hr (methanol/ethylene glycol poisoning)", brands: [] },
+            { name: "Glucagon", synonyms: ["GlucaGen"], dose: "3–10 mg i.v./i.m. (beta-blocker/calcium-channel blocker overdose)", brands: [] },
+            { name: "Lipid emulsion 20%", synonyms: ["Intralipid (toxicology use)"], dose: "1.5 mL/kg i.v. bolus over 1 min, then 0.25 mL/kg/min infusion (local anaesthetic systemic toxicity/lipid-soluble drug OD)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "19d",
+      name: "Immunoglobulins and Blood Products",
+      synonyms: ["Intravenous Immunoglobulin", "IVIg", "Hyperimmune Globulins"],
+      description: "Intravenous and subcutaneous immunoglobulin preparations consist of pooled polyclonal IgG from thousands of donors. IVIg modulates immune function through Fc receptor blockade, anti-idiotypic antibody effects, and complement regulation, providing benefit in primary immunodeficiency, Guillain-Barré syndrome, immune thrombocytopenia, and Kawasaki disease. Specific hyperimmune globulins (HBIG, rabies IG, tetanus IG, VZIG) provide targeted passive protection following pathogen exposure.",
+      subgroups: [
+        {
+          name: "Intravenous Immunoglobulin (IVIg)",
+          drugs: [
+            { name: "Normal immunoglobulin (IVIg)", synonyms: ["IVIg", "IVIG", "Gammunex", "Privigen", "Gammagard"], dose: "0.4 g/kg/day i.v. x5 days (immunodeficiency, GBS); 1–2 g/kg over 1–2 days (ITP, Kawasaki)", brands: [] },
+            { name: "Subcutaneous immunoglobulin", synonyms: ["SCIg", "Hizentra", "Cuvitru"], dose: "0.1–0.6 g/kg/week s.c. (primary immunodeficiency)", brands: [] }
+          ]
+        },
+        {
+          name: "Hyperimmune Globulins",
+          drugs: [
+            { name: "Hepatitis B immunoglobulin", synonyms: ["HBIG", "Hepagam B"], dose: "200–500 IU i.m. (post-exposure prophylaxis)", brands: [] },
+            { name: "Rabies immunoglobulin", synonyms: ["HRIG", "Imogam Rabies"], dose: "20 IU/kg i.m./infiltrated at wound site (post-exposure with rabies vaccine)", brands: [] },
+            { name: "Tetanus immunoglobulin", synonyms: ["TIG", "Tetagam"], dose: "250–500 units i.m. (prophylaxis); 3000–6000 units (treatment)", brands: [] },
+            { name: "Varicella-zoster immunoglobulin", synonyms: ["VZIG", "VariZIG"], dose: "125 units/10 kg i.m. (max 625 units) — post-exposure prophylaxis in high-risk", brands: [] },
+            { name: "Cytomegalovirus immunoglobulin", synonyms: ["CMV-IgG", "Cytogam"], dose: "150 mg/kg i.v. within 72 hr of transplant, then every 2–4 weeks (CMV prophylaxis in transplant)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "19e",
+      name: "Drugs for Obesity-Related and Metabolic Surgery Adjuncts",
+      synonyms: ["Post-Bariatric Drugs", "Nutritional Supplementation Post-Surgery"],
+      description: "Bariatric surgery alters gastrointestinal anatomy in ways that compromise absorption of micronutrients — iron, calcium, vitamin D, vitamin B12, thiamine, and zinc — all requiring lifelong supplementation at doses higher than general population recommendations. Calcium citrate is preferred over carbonate post-surgery due to its pH-independent solubility. Iron requirements increase particularly after Roux-en-Y gastric bypass due to reduced gastric acid and bypassed duodenal absorption.",
+      subgroups: [
+        {
+          name: "Nutritional Supplements (Post-Bariatric / Malabsorption)",
+          drugs: [
+            { name: "Iron (elemental)", synonyms: ["Ferrous sulphate", "Iron bisglycinate"], dose: "45–60 mg elemental iron OD–BD (post-bariatric; higher doses for deficiency)", brands: [] },
+            { name: "Calcium citrate", synonyms: [], dose: "1200–2000 mg/day in divided doses oral (preferred post-bariatric over carbonate)", brands: [] },
+            { name: "Vitamin D3 (cholecalciferol)", synonyms: [], dose: "3000–6000 IU/day oral (post-bariatric maintenance); higher loading doses for deficiency", brands: [] },
+            { name: "Vitamin B12 (cyanocobalamin)", synonyms: [], dose: "350–1000 mcg/day oral or 1000 mcg/month i.m./s.c. (post-bariatric)", brands: [] },
+            { name: "Thiamine (Vitamin B1)", synonyms: ["Benfotiamine"], dose: "100 mg OD–TDS oral (post-bariatric; Wernicke's encephalopathy prevention)", brands: [] },
+            { name: "Zinc", synonyms: [], dose: "8–22 mg elemental zinc OD (post-bariatric)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ============================================================
+// CHAPTER 20: FDA NOVEL DRUG APPROVALS 2024-2026
+// ============================================================
+{
+  id: 20,
+  title: "Recent Novel Drug Approvals — FDA 2024–2026",
+  description: "Novel drugs approved by the US FDA (CDER) during 2024, 2025, and 2026 that represent new molecular entities or new therapeutic biologics not covered in earlier chapters. Organised by therapeutic area.",
+  subclasses: [
+
+    // ─── ONCOLOGY (2024–2026 FDA) ────────────────────────────────────────────
+    {
+      id: "20a",
+      name: "Novel Oncology Approvals (2024–2026)",
+      synonyms: ["Recent Cancer Drug Approvals", "New Anticancer FDA Approvals"],
+      description: "New anticancer drugs approved by the FDA between 2024 and 2026, representing novel kinase inhibitors, bispecific antibodies, antibody-drug conjugates, and other targeted agents not in the main oncology chapter.",
+      subgroups: [
+        {
+          name: "Novel Kinase Inhibitors — NSCLC (2024–2026)",
+          drugs: [
+            { name: "Lazertinib", synonyms: ["Lazcluze"], dose: "240 mg OD oral (3rd-gen EGFR inhibitor; in combination with amivantamab)", brands: [] },
+            { name: "Ensartinib", synonyms: ["Ensacove", "X-396"], dose: "225 mg OD oral (ALK inhibitor; NSCLC with ALK rearrangement)", brands: [] },
+            { name: "Taletrectinib", synonyms: ["Ibtrozi", "AB-106"], dose: "600 mg OD oral (ROS1/NTRK inhibitor)", brands: [] },
+            { name: "Zidesamtinib", synonyms: ["Jideytro"], dose: "Under investigation; dose per prescribing info (ROS1 inhibitor; post-prior ROS1 TKI)", brands: [] },
+            { name: "Sunvozertinib", synonyms: ["Zegfrovy", "DZD9008"], dose: "300 mg OD oral (EGFR exon 20 insertion NSCLC)", brands: [] },
+            { name: "Sevabertinib", synonyms: ["Hyrnuo", "JAB-30312"], dose: "Per prescribing information (HER2 TKD mutation NSCLC)", brands: [] },
+            { name: "Zongertinib", synonyms: ["Hernexeos", "BI 1810631"], dose: "120 mg OD oral (HER2 TKD mutation NSCLC)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Kinase Inhibitors — Brain/Glioma (2024–2026)",
+          drugs: [
+            { name: "Vorasidenib", synonyms: ["Voranigo"], dose: "40 mg OD oral (IDH1/2-mutated grade 2 glioma)", brands: [] },
+            { name: "Tovorafenib", synonyms: ["Ojemda", "DAY101", "MLN2480"], dose: "420 mg/m² oral once weekly (BRAF V600-mutated paediatric low-grade glioma)", brands: [] },
+            { name: "Dordaviprone", synonyms: ["Modeyso", "ONC201"], dose: "Per prescribing information (H3 K27M-mutated diffuse midline glioma; dopamine receptor antagonist)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Kinase Inhibitors — Haematologic Malignancies (2024–2026)",
+          drugs: [
+            { name: "Revumenib", synonyms: ["Revuforj", "SNDX-5613"], dose: "163 mg BD oral (Menin inhibitor; KMT2A-rearranged or NPM1-mutated relapsed/refractory AML)", brands: [] },
+            { name: "Ziftomenib", synonyms: ["Komzifti", "KO-539"], dose: "200 mg OD oral (Menin inhibitor; NPM1-mutated relapsed/refractory AML)", brands: [] },
+            { name: "Avutometinib", synonyms: ["Avmapki"], dose: "3.2 mg oral TDS (MEK inhibitor; in combination with defactinib for KRAS-mutated LGSOC)", brands: [] },
+            { name: "Defactinib", synonyms: ["Fakzynja", "VS-6063"], dose: "200 mg BD oral (FAK inhibitor; in combination with avutometinib for KRAS-mutated LGSOC)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Bispecific Antibodies and ADCs (2024–2026)",
+          drugs: [
+            { name: "Tarlatamab", synonyms: ["Imdelltra", "AMG 757"], dose: "10 mg i.v. every 2 weeks (DLL3×CD3 bispecific; extensive-stage SCLC)", brands: [] },
+            { name: "Zenocutuzumab", synonyms: ["Bizengri", "MCLA-128"], dose: "750 mg i.v. every 2 weeks (HER2×HER3 bispecific; NRG1-fusion NSCLC and pancreatic cancer)", brands: [] },
+            { name: "Zanidatamab", synonyms: ["Ziihera", "ZW25"], dose: "20 mg/kg i.v. every 2 weeks (HER2-bispecific; biliary tract cancer)", brands: [] },
+            { name: "Datopotamab deruxtecan", synonyms: ["Datroway", "Dato-DXd", "DS-1062a"], dose: "6 mg/kg i.v. every 3 weeks (anti-TROP2 ADC; HR+/HER2- breast cancer)", brands: [] },
+            { name: "Telisotuzumab vedotin", synonyms: ["Emrelis", "ABBV-399"], dose: "1.9 mg/kg i.v. every 2 weeks (anti-c-Met ADC; high c-Met NSCLC)", brands: [] },
+            { name: "Zolbetuximab", synonyms: ["Vyloy"], dose: "800 mg/m² i.v. cycle 1 day 1; 600 mg/m² subsequent cycles (anti-CLDN18.2; gastric/GEJ adenocarcinoma)", brands: [] },
+            { name: "Linvoseltamab", synonyms: ["Lynozyfic", "REGN5458"], dose: "200 mg i.v. weekly × 4 then 200 mg every 2 weeks (BCMA×CD3 bispecific; relapsed/refractory multiple myeloma)", brands: [] },
+            { name: "Iberdomide", synonyms: ["Zenbexus", "CC-220"], dose: "1.6 mg OD oral (cereblon E3 ligase modulator/CELMoD; multiple myeloma)", brands: [] },
+            { name: "Sonrotoclax", synonyms: ["Beqalzi", "BGB-11417"], dose: "Per prescribing information (BCL-2 inhibitor; relapsed/refractory mantle cell lymphoma)", brands: [] },
+            { name: "Pivekimab sunirine", synonyms: ["Decnupaz", "IMGN632"], dose: "0.045 mg/kg i.v. every 3 weeks (anti-CD123 ADC; blastic plasmacytoid dendritic cell neoplasm)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Immune Checkpoint and Immunotherapy Agents (2024–2026)",
+          drugs: [
+            { name: "Cosibelimab", synonyms: ["Unloxcyt", "CK-301"], dose: "800 mg i.v. every 2 weeks (anti-PD-L1; cutaneous squamous cell carcinoma)", brands: [] },
+            { name: "Tislelizumab", synonyms: ["Tevimbra", "BGB-A317"], dose: "200 mg i.v. every 3 weeks (anti-PD-1; oesophageal squamous cell carcinoma)", brands: [] },
+            { name: "Axatilimab", synonyms: ["Niktimvo", "SNDX-6352"], dose: "0.3 mg/kg i.v. every 2 weeks (anti-CSF-1R; chronic graft-versus-host disease)", brands: [] },
+            { name: "Nogapendekin alfa inbakicept", synonyms: ["Anktiva", "IL-15 superagonist"], dose: "400 mcg per bladder instillation weekly × 6 then monthly (intravesical IL-15 agonist; BCG-unresponsive NMIBC)", brands: [] },
+            { name: "Penpulimab", synonyms: ["penpulimab-kcqx", "AK105"], dose: "200 mg i.v. every 3 weeks (anti-PD-1; nasopharyngeal carcinoma)", brands: [] },
+            { name: "Daraxonrasib", synonyms: ["Rasonque", "RMC-6236"], dose: "Per prescribing information (KRAS G12X/G13X multi-selective RAS(ON) inhibitor; metastatic pancreatic cancer)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Hormonal/Endocrine Oncology Agents (2024–2026)",
+          drugs: [
+            { name: "Inavolisib", synonyms: ["Itovebi", "GDC-0077"], dose: "9 mg OD oral (PI3Kα inhibitor; PIK3CA-mutated HR+/HER2- metastatic breast cancer)", brands: [] },
+            { name: "Imlunestrant", synonyms: ["Inluriyo", "LY3484356"], dose: "400 mg OD oral (next-generation SERD; ESR1-mutated ER+/HER2- advanced breast cancer)", brands: [] },
+            { name: "Vepdegestrant", synonyms: ["Veppanu", "ARV-471"], dose: "200 mg OD oral (PROTAC SERD; ESR1-mutated ER+/HER2- advanced breast cancer)", brands: [] },
+            { name: "Relacorilant", synonyms: ["Lifyorli", "CORT125134"], dose: "Per prescribing information (selective glucocorticoid receptor modulator; platinum-resistant ovarian cancer)", brands: [] },
+            { name: "Gedatolisib", synonyms: ["Revtorpyk", "PF-05212384"], dose: "180 mg i.v. weekly (pan-PI3K/mTOR inhibitor; HR+/HER2- metastatic breast cancer without PIK3CA mutation)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Diagnostic/Imaging Agents — Oncology (2024–2026)",
+          drugs: [
+            { name: "Flurpiridaz F 18", synonyms: ["Flyrcado"], dose: "148–222 MBq (4–6 mCi) i.v. single dose (cardiac PET imaging for myocardial ischaemia)", brands: [] },
+            { name: "Pegulicianine", synonyms: ["Lumisight", "LUM015"], dose: "1 mg/kg i.v. infusion over 60 min; imaging 3–24 hr post-dose (fluorescent optical imaging agent; intraoperative cancer margin detection)", brands: [] },
+            { name: "Florquinitau F 18", synonyms: ["Tauklarify", "PI-2620"], dose: "Per prescribing information (tau PET agent; Alzheimer's disease evaluation)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── CARDIOVASCULAR & METABOLIC (2024–2026 FDA) ─────────────────────────
+    {
+      id: "20b",
+      name: "Novel Cardiovascular and Metabolic Approvals (2024–2026)",
+      synonyms: ["Recent CVS Drug Approvals", "New Metabolic FDA Approvals"],
+      description: "Novel cardiovascular, metabolic, and lipid-lowering drugs approved by the FDA in 2024–2026.",
+      subgroups: [
+        {
+          name: "Novel Cardiac Agents (2024–2026)",
+          drugs: [
+            { name: "Acoramidis", synonyms: ["Attruby", "AG10"], dose: "800 mg BD oral (transthyretin stabiliser; ATTR cardiomyopathy wild-type or variant)", brands: [] },
+            { name: "Sotatercept", synonyms: ["Winrevair", "ACE-011"], dose: "0.3 mg/kg s.c. every 3 weeks, titrate to 0.7 mg/kg (activin receptor ligand trap; pulmonary arterial hypertension)", brands: [] },
+            { name: "Aficamten", synonyms: ["Myqorzo", "CK-274"], dose: "5 mg OD oral, titrate to 10–15 mg OD (cardiac myosin inhibitor; obstructive hypertrophic cardiomyopathy)", brands: [] },
+            { name: "Landiolol", synonyms: ["Rapiblyk", "ONO-1101"], dose: "Loading 100 mcg/kg/min i.v. over 1 min, then 10–40 mcg/kg/min infusion (ultra-short-acting β1-selective blocker; supraventricular tachycardia)", brands: [] },
+            { name: "Etripamil", synonyms: ["Cardamyst", "MSP-2017"], dose: "70 mg intranasal (one spray each nostril) (non-dihydropyridine CCB nasal spray; paroxysmal SVT)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Lipid-Lowering Agents (2024–2026)",
+          drugs: [
+            { name: "Olezarsen", synonyms: ["Tryngolza", "AKCEA-APOCIII-LRx"], dose: "80 mg s.c. monthly (anti-APOC3 ASO; familial chylomicronaemia syndrome)", brands: [] },
+            { name: "Plozasiran", synonyms: ["Redemplo", "ARO-APOC3"], dose: "50 mg s.c. every 3 months (APOC3 siRNA; familial chylomicronaemia syndrome)", brands: [] },
+            { name: "Lerodalcibep", synonyms: ["Lerochol", "LIB003"], dose: "300 mg s.c. monthly (PCSK9-binding fusion protein; hypercholesterolaemia — alternative to mAb PCSK9 inhibitors)", brands: [] },
+            { name: "Enlicitide decanoate", synonyms: ["Lipfendra"], dose: "Per prescribing information (oral PCSK9 inhibitor; LDL-cholesterol reduction)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Antidiabetic and Weight Management Agents (2024–2026)",
+          drugs: [
+            { name: "Orforglipron", synonyms: ["Foundayo", "LY3502970"], dose: "3 mg OD oral, titrate to 36 mg OD (oral non-peptide GLP-1 receptor agonist; obesity/overweight)", brands: [] },
+            { name: "Insulin icodec", synonyms: ["Awiqli", "OW insulin"], dose: "Once-weekly s.c. (long-acting basal insulin; type 2 diabetes mellitus)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── NEUROLOGY & PSYCHIATRY (2024–2026 FDA) ─────────────────────────────
+    {
+      id: "20c",
+      name: "Novel Neurological and Psychiatric Approvals (2024–2026)",
+      synonyms: ["Recent Neurology Drug Approvals", "New CNS FDA Approvals"],
+      description: "Novel CNS drugs approved by the FDA in 2024–2026, covering pain, movement disorders, psychiatric conditions, and rare neurological diseases.",
+      subgroups: [
+        {
+          name: "Novel Analgesics (2024–2026)",
+          drugs: [
+            { name: "Suzetrigine", synonyms: ["Journavx", "VX-548"], dose: "50 mg BD oral (NaV1.8 sodium channel blocker; first non-opioid in new class for moderate-severe acute pain)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Psychiatric Agents (2024–2026)",
+          drugs: [
+            { name: "Xanomeline/trospium chloride", synonyms: ["Cobenfy", "KarXT"], dose: "50/20 mg BD oral, titrate to 125/30 mg BD (M1/M4 muscarinic agonist + peripheral antimuscarinic; schizophrenia — first new mechanism since 1950s)", brands: [] },
+            { name: "Milsaperidone", synonyms: ["Bysanti", "TAK-906"], dose: "Per prescribing information (D2/D3/D4 receptor antagonist; schizophrenia and bipolar I mania)", brands: [] },
+            { name: "Centanafadine", synonyms: ["Simtriyo", "CTN"], dose: "Per prescribing information (NE/DA/5-HT reuptake inhibitor; ADHD)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Sleep Disorder Agents (2024–2026)",
+          drugs: [
+            { name: "Oveporexton", synonyms: ["Orzeyful", "TAK-861"], dose: "Per prescribing information (orexin 2 receptor agonist; narcolepsy type 1 — novel mechanism replacing lost orexin signalling)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Agents for Rare Neurological Diseases (2024–2026)",
+          drugs: [
+            { name: "Arimoclomol", synonyms: ["Miplyffa", "BRX-345"], dose: "Under investigation; per prescribing information (heat shock protein amplifier; Niemann-Pick disease type C)", brands: [] },
+            { name: "Levacetylleucine", synonyms: ["Aqneursa", "N-acetyl-L-leucine"], dose: "4 g (4 × 1 g) daily oral in divided doses (neurological disease modifier; Niemann-Pick disease type C)", brands: [] },
+            { name: "Zilganersen", synonyms: ["Zanvastro", "ION373"], dose: "Intrathecal injection per prescribing information (GFAP ASO; Alexander disease)", brands: [] },
+            { name: "Elamipretide", synonyms: ["Forzinity", "SS-31", "MTP-131"], dose: "40 mg s.c. OD (mitochondria-targeting peptide; Barth syndrome)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Motion Sickness/Nausea Agents (2024–2026)",
+          drugs: [
+            { name: "Tradipitant", synonyms: ["Nereus", "LY686017"], dose: "Per prescribing information (NK1 receptor antagonist; nausea/vomiting associated with motion)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── RESPIRATORY & PULMONARY (2024–2026 FDA) ─────────────────────────────
+    {
+      id: "20d",
+      name: "Novel Respiratory Approvals (2024–2026)",
+      synonyms: ["Recent Respiratory Drug Approvals"],
+      description: "Novel respiratory drugs approved by the FDA in 2024–2026.",
+      subgroups: [
+        {
+          name: "Novel Respiratory Agents (2024–2026)",
+          drugs: [
+            { name: "Ensifentrine", synonyms: ["Ohtuvayre", "RPL554"], dose: "3 mg nebulised BD (dual PDE3/PDE4 inhibitor; COPD maintenance — first dual bronchodilator+anti-inflammatory inhaled agent)", brands: [] },
+            { name: "Nerandomilast", synonyms: ["Jascayd", "BI 1015550"], dose: "18 mg BD oral (PDE4B-preferential inhibitor; idiopathic pulmonary fibrosis)", brands: [] },
+            { name: "Brensocatib", synonyms: ["Brinsupri", "INS1007"], dose: "10–25 mg OD oral (dipeptidyl peptidase-1 inhibitor; non-cystic fibrosis bronchiectasis)", brands: [] },
+            { name: "Depemokimab", synonyms: ["Exdensur", "GSK3511294"], dose: "100 mg s.c. every 6 months (anti-IL-5; ultra-long-acting; severe eosinophilic asthma)", brands: [] },
+            { name: "Vanzacaftor/tezacaftor/deutivacaftor", synonyms: ["Alyftrek", "VX-522"], dose: "Per prescribing information (next-generation CFTR modulator triple combination; CF with F508del)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── RARE DISEASES & GENETIC DISORDERS (2024–2026 FDA) ──────────────────
+    {
+      id: "20e",
+      name: "Novel Rare Disease and Genetic Disorder Approvals (2024–2026)",
+      synonyms: ["Recent Rare Disease FDA Approvals", "New Orphan Drug Approvals"],
+      description: "Novel drugs for rare diseases, genetic disorders, and orphan indications approved by the FDA in 2024–2026.",
+      subgroups: [
+        {
+          name: "Novel Haematology — Rare Disorders (2024–2026)",
+          drugs: [
+            { name: "Concizumab", synonyms: ["Alhemo"], dose: "0.15–0.25 mg/kg s.c. OD (anti-TFPI antibody; haemophilia A and B prophylaxis)", brands: [] },
+            { name: "Marstacimab", synonyms: ["Hympavzi", "PF-06741086"], dose: "300 mg s.c. loading; 150 mg weekly (anti-TFPI antibody; haemophilia A and B prophylaxis — also listed under haematology)", brands: [] },
+            { name: "Crovalimab", synonyms: ["Piasky", "SKY59"], dose: "Loading 1500 mg i.v. day 1; 1000 mg s.c. days 2,8,15,22; then 340 mg s.c. every 4 weeks (anti-C5 antibody recycling; PNH)", brands: [] },
+            { name: "Danicopan", synonyms: ["Voydeya", "ALXN2040"], dose: "150 mg TDS oral (factor D inhibitor; PNH with extravascular haemolysis; add-on to C5 inhibitor)", brands: [] },
+            { name: "Rusfertide", synonyms: ["Mimrylo", "PTG-300"], dose: "Per prescribing information (hepcidin mimetic; polycythaemia vera erythrocytosis)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Agents for Hereditary Angioedema (2024–2026)",
+          drugs: [
+            { name: "Donidalorsen", synonyms: ["Dawnzera", "BCX8430"], dose: "Per prescribing information (plasma kallikrein inhibitor; hereditary angioedema prophylaxis)", brands: [] },
+            { name: "Garadacimab", synonyms: ["Andembry", "CSL312"], dose: "200 mg s.c. monthly (anti-factor XIIa antibody; hereditary angioedema prophylaxis)", brands: [] },
+            { name: "Sebetralstat", synonyms: ["Ekterly", "KVD900"], dose: "600 mg oral PRN (plasma kallikrein inhibitor; on-demand treatment of acute HAE attacks — first oral on-demand therapy)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel MPS and Metabolic Enzyme Disorders (2024–2026)",
+          drugs: [
+            { name: "Tividenofusp alfa", synonyms: ["Avlayah", "MNXT-IDU"], dose: "Per prescribing information (CNS-penetrant iduronate-2-sulfatase; MPS II Hunter syndrome — designed for CNS delivery)", brands: [] },
+            { name: "Pegzilarginase", synonyms: ["Loargys", "AEB1102"], dose: "0.1 mg/kg i.v. weekly (PEGylated arginase; Arginase 1 deficiency)", brands: [] },
+            { name: "Copper histidinate", synonyms: ["Zycubo", "CuHis"], dose: "Per prescribing information (copper replacement subcutaneous; Menkes disease)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Agents for Endocrine Rare Disorders (2024–2026)",
+          drugs: [
+            { name: "Crinecerfont", synonyms: ["Crenessity", "NBI-74788"], dose: "Adults: 100 mg BD oral; paediatric: weight-based (CRF1 receptor antagonist; classic congenital adrenal hyperplasia — lowers ACTH-driven androgen excess)", brands: [] },
+            { name: "Palopegteriparatide", synonyms: ["Yorvipath", "TransCon PTH"], dose: "18 mcg s.c. OD (long-acting PTH prodrug; hypoparathyroidism)", brands: [] },
+            { name: "Paltusotine", synonyms: ["Palsonify", "CRN00808"], dose: "20 mg OD oral, titrate to 40–80 mg OD (oral somatostatin receptor agonist; acromegaly)", brands: [] },
+            { name: "Navepegritide", synonyms: ["Yuviwel", "TransCon CNP"], dose: "Weight-based s.c. weekly (sustained-release C-type natriuretic peptide; achondroplasia)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Agents for Mitochondrial and Genetic Diseases (2024–2026)",
+          drugs: [
+            { name: "Doxecitine/doxribtimine", synonyms: ["Kygevvi", "EscharTM"], dose: "Per prescribing information (deoxycytidine + thymidine; thymidine kinase 2 deficiency)", brands: [] },
+            { name: "Sepiapterin", synonyms: ["Sephience", "PTC923"], dose: "Per prescribing information (tetrahydrobiopterin precursor; BH4-responsive PKU)", brands: [] },
+            { name: "Garetosmab", synonyms: ["Pasatru", "REGN2477"], dose: "10 mg/kg i.v. every 4 weeks (anti-activin A antibody; fibrodysplasia ossificans progressiva)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Neuromuscular Disease Agents (2024–2026)",
+          drugs: [
+            { name: "Givinostat", synonyms: ["Duvyzat", "ITF2357"], dose: "Per prescribing information (HDAC inhibitor; Duchenne muscular dystrophy; first non-corticosteroid approved)", brands: [] },
+            { name: "Vimseltinib", synonyms: ["Romvimza", "DCC-3014"], dose: "30 mg oral twice weekly (CSF1R inhibitor; tenosynovial giant cell tumour)", brands: [] },
+            { name: "Mirdametinib", synonyms: ["Gomekli", "PD-0325901"], dose: "2 mg BD oral (MEK1/2 inhibitor; NF1-associated plexiform neurofibromas)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Treaments for Fibrodysplasia and Bone Diseases (2024–2026)",
+          drugs: [
+            { name: "Sotatercept", synonyms: ["Winrevair"], dose: "0.3 mg/kg s.c. every 3 weeks (activin receptor ligand trap; PAH — also listed under CVS)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── NEPHROLOGY (2024–2026 FDA) ──────────────────────────────────────────
+    {
+      id: "20f",
+      name: "Novel Nephrology Approvals (2024–2026)",
+      synonyms: ["Recent Renal Drug Approvals", "IgA Nephropathy Drugs"],
+      description: "Novel drugs for kidney diseases, including IgA nephropathy, complement-mediated conditions, and CKD, approved by the FDA in 2024–2026.",
+      subgroups: [
+        {
+          name: "IgA Nephropathy and Proteinuria Reduction (2024–2026)",
+          drugs: [
+            { name: "Sibeprenlimab", synonyms: ["Voyxact", "VIS649"], dose: "9 mg/kg i.v. every 4 weeks (anti-APRIL antibody; IgA nephropathy)", brands: [] },
+            { name: "Atrasentan", synonyms: ["Vanrafia", "ABT-627"], dose: "0.75 mg OD oral (selective ETA receptor antagonist; IgA nephropathy)", brands: [] },
+            { name: "Atacicept", synonyms: ["Trutakna", "RC18"], dose: "75 mg s.c. weekly (TACI-Fc fusion protein; anti-BLyS/APRIL; IgA nephropathy)", brands: [] }
+          ]
+        },
+        {
+          name: "Chronic Kidney Disease — Anaemia (2024–2026)",
+          drugs: [
+            { name: "Vadadustat", synonyms: ["Vafseo", "AKB-6548"], dose: "300 mg OD oral, titrate 150–600 mg (HIF-PH inhibitor; anaemia of CKD)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── RHEUMATOLOGY/IMMUNOLOGY (2024–2026 FDA) ─────────────────────────────
+    {
+      id: "20g",
+      name: "Novel Rheumatology and Immunology Approvals (2024–2026)",
+      synonyms: ["Recent Immunology Drug Approvals", "New Biologic Approvals 2024-2026"],
+      description: "Novel immunological agents for autoimmune, inflammatory, and allergic conditions approved by the FDA in 2024–2026.",
+      subgroups: [
+        {
+          name: "Novel Biologics for Dermatology/Allergy (2024–2026)",
+          drugs: [
+            { name: "Lebrikizumab", synonyms: ["Ebglyss", "TNX-650.67"], dose: "500 mg s.c. loading × 2 (2 weeks apart), then 250 mg every 2 weeks (anti-IL-13; atopic dermatitis)", brands: [] },
+            { name: "Nemolizumab", synonyms: ["Nemluvio", "CD14152"], dose: "30 mg s.c. every 4 weeks (anti-IL-31Rα; prurigo nodularis)", brands: [] },
+            { name: "Remibrutinib", synonyms: ["Rhapsido", "LOU064"], dose: "25 mg BD oral (BTK inhibitor; chronic spontaneous urticaria)", brands: [] },
+            { name: "Rilzabrutinib", synonyms: ["Wayrilz", "PRN1008"], dose: "400 mg BD oral (non-covalent BTK inhibitor; immune thrombocytopenia)", brands: [] },
+            { name: "Brepocitinib", synonyms: ["Lisraya", "PF-06700841"], dose: "Per prescribing information (TYK2/JAK1 inhibitor; dermatomyositis)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Biologics for Autoimmune Neurological Conditions (2024–2026)",
+          drugs: [
+            { name: "Nipocalimab", synonyms: ["Imaavy", "M281"], dose: "30 mg/kg i.v. every 2 weeks, then 15 mg/kg every 2 weeks (anti-FcRn antibody; generalised myasthenia gravis)", brands: [] },
+            { name: "Narsoplimab", synonyms: ["Yartemlea", "OMS721"], dose: "Per prescribing information (MASP-2 inhibitor; HSCT-associated thrombotic microangiopathy)", brands: [] },
+            { name: "Elinzanetant", synonyms: ["Lynkuet", "BAY3427779"], dose: "120 mg OD oral (NK3 receptor antagonist; vasomotor symptoms due to menopause)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── INFECTIOUS DISEASES (2024–2026 FDA) ─────────────────────────────────
+    {
+      id: "20h",
+      name: "Novel Infectious Disease Approvals (2024–2026)",
+      synonyms: ["Recent Anti-infective FDA Approvals", "New Antiviral Approvals"],
+      description: "Novel anti-infective agents approved by the FDA in 2024–2026, including antibiotics, antivirals, and antiviral prophylaxis agents.",
+      subgroups: [
+        {
+          name: "Novel Antibiotics (2024–2026)",
+          drugs: [
+            { name: "Ceftobiprole medocaril", synonyms: ["Zevtera", "BAL5788"], dose: "500 mg i.v. every 8 hr × 3 hr infusion (5th-generation cephalosporin; S. aureus bacteraemia, ABSSSI, CABP)", brands: [] },
+            { name: "Cefepime/enmetazobactam", synonyms: ["Exblifep", "WCK 5222"], dose: "2.5 g i.v. every 8 hr × 3 hr infusion (4th-gen cephalosporin + serine BLI; complicated UTI)", brands: [] },
+            { name: "Cefepime/zidebactam", synonyms: ["Zaynich", "WCK 5222"], dose: "3.75 g (2.5 g/1.25 g) i.v. every 8 hr (cephalosporin + BLI with dual mechanism; complicated UTI including carbapenem-resistant)", brands: [] },
+            { name: "Zoliflodacin", synonyms: ["Nuzolvence"], dose: "3 g oral single dose (spiropyrimidinetrione topoisomerase II inhibitor; uncomplicated gonorrhoea — novel mechanism)", brands: [] },
+            { name: "Gepotidacin", synonyms: ["Blujepa", "GSK2140944"], dose: "1500 mg BD oral × 5 days (triazaacenaphthylene topoisomerase inhibitor; uncomplicated UTI)", brands: [] },
+            { name: "Tebipenem pivoxil", synonyms: ["Utebzi", "SPR994"], dose: "600 mg TDS oral (first oral carbapenem; complicated UTI/pyelonephritis)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Antiviral and Prophylactic Agents (2024–2026)",
+          drugs: [
+            { name: "Ensitrelvir", synonyms: ["Xocova", "S-217622"], dose: "375 mg OD day 1, then 125 mg OD × 4 days (3CL protease inhibitor; COVID-19 post-exposure prophylaxis)", brands: [] },
+            { name: "Clesrovimab", synonyms: ["Enflonsia", "MK-1654"], dose: "300 mg i.m. single dose (anti-RSV mAb; RSV prophylaxis in neonates/infants)", brands: [] },
+            { name: "Bulevirtide", synonyms: ["Hepcludex", "MyrB"], dose: "2 mg s.c. OD (viral entry inhibitor targeting NTCP receptor; hepatitis D virus — first approved anti-HDV drug)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── DERMATOLOGY (2024–2026 FDA) ─────────────────────────────────────────
+    {
+      id: "20i",
+      name: "Novel Dermatology Approvals (2024–2026)",
+      synonyms: ["Recent Dermatology FDA Approvals"],
+      description: "Novel dermatological agents approved by the FDA in 2024–2026.",
+      subgroups: [
+        {
+          name: "Novel Topical Dermatology Agents (2024–2026)",
+          drugs: [
+            { name: "Sofpironium bromide", synonyms: ["Sofdra"], dose: "5% topical gel OD (anticholinergic; primary axillary hyperhidrosis)", brands: [] },
+            { name: "Berdazimer", synonyms: ["Zelsuvmi", "SB206"], dose: "10.3% gel topically twice daily × 12 weeks (nitric oxide-releasing agent; molluscum contagiosum)", brands: [] },
+            { name: "Delgocitinib", synonyms: ["Anzupgo", "Corectim", "JTE-052"], dose: "0.5% ointment BD (topical pan-JAK inhibitor; chronic hand eczema; already approved Japan)", brands: [] },
+            { name: "Difamilast", synonyms: ["Adquey", "MM36"], dose: "1% ointment OD (topical PDE4 inhibitor; mild-moderate atopic dermatitis)", brands: [] },
+            { name: "Deuruxolitinib", synonyms: ["Leqselvi", "CTP-543"], dose: "8 mg BD oral (deuterated ruxolitinib; JAK1/2 inhibitor; severe alopecia areata)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── OPHTHALMOLOGY (2024–2026 FDA) ───────────────────────────────────────
+    {
+      id: "20j",
+      name: "Novel Ophthalmology Approvals (2024–2026)",
+      synonyms: ["Recent Ophthalmology FDA Approvals"],
+      description: "Novel ophthalmic drugs approved by the FDA in 2024–2026.",
+      subgroups: [
+        {
+          name: "Novel Ophthalmic Agents (2024–2026)",
+          drugs: [
+            { name: "Bevacizumab-vikg", synonyms: ["Lytenava"], dose: "1.25 mg (0.05 mL) intravitreal injection monthly (biosimilar bevacizumab; neovascular AMD)", brands: [] },
+            { name: "Aceclidine", synonyms: ["Vizz", "PRX-100"], dose: "0.4% eye drops 2 drops OD (muscarinic agonist; presbyopia — induces pupil constriction)", brands: [] },
+            { name: "Acoltremon", synonyms: ["Tryptyr", "OC-01"], dose: "0.03% nasal spray BD (TRP channel agonist; dry eye disease via nasal-lacrimal stimulation)", brands: [] },
+            { name: "Veligrotug", synonyms: ["Lumvoa", "OHB-607"], dose: "Per prescribing information (anti-IGF-1R antibody; thyroid eye disease)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── MISCELLANEOUS/SPECIAL (2024–2026 FDA) ───────────────────────────────
+    {
+      id: "20k",
+      name: "Novel Miscellaneous Approvals (2024–2026)",
+      synonyms: ["Other Recent FDA Approvals"],
+      description: "Recent FDA-approved novel drugs for conditions not fitting the above categories — including women's health, urology, transplant, imaging, and anaesthesia.",
+      subgroups: [
+        {
+          name: "Novel Women's Health Agents (2024–2026)",
+          drugs: [
+            { name: "Elinzanetant", synonyms: ["Lynkuet"], dose: "120 mg OD oral (NK3R antagonist; vasomotor symptoms of menopause — already listed in rheumatology section)", brands: [] },
+            { name: "Iomeprol", synonyms: ["Iomervu"], dose: "Per prescribing information (iodinated contrast agent for radiography — IV, intra-arterial, intrathecal)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Hepatology Agents (2024–2026)",
+          drugs: [
+            { name: "Linerixibat", synonyms: ["Lynavoy", "GSK2330672"], dose: "90 mg BD oral (ileal bile acid transporter inhibitor; cholestatic pruritus in PBC)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Anaesthesia Agents (2024–2026)",
+          drugs: [
+            { name: "Cipepofol", synonyms: ["Cypsedo", "HSK3486"], dose: "0.4–0.5 mg/kg i.v. induction; 0.4–1.0 mg/kg/hr infusion (propofol analogue; general anaesthesia induction; shorter context-sensitive half-life)", brands: [] }
+          ]
+        },
+        {
+          name: "Transplant and Immune-Mediated Conditions (2024–2026)",
+          drugs: [
+            { name: "Axatilimab", synonyms: ["Niktimvo"], dose: "0.3 mg/kg i.v. every 2 weeks (anti-CSF-1R; chronic graft-versus-host disease — already listed in oncology section)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Hypertension Agents (2024–2026)",
+          drugs: [
+            { name: "Baxdrostat", synonyms: ["Baxfendy", "AZD9977"], dose: "Per prescribing information (aldosterone synthase inhibitor; hypertension — combination use)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel HIV Antiretroviral (2024–2026)",
+          drugs: [
+            { name: "Doravirine/islatravir", synonyms: ["Idvynso", "DOR/ISL"], dose: "1 tablet (100 mg/0.25 mg) OD oral (NNRTI + NRTTI nucleoside; once-daily 2-drug regimen; virologically suppressed HIV-1)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Gynaecology/Oncology (2024–2026)",
+          drugs: [
+            { name: "Vepdegestrant", synonyms: ["Veppanu", "ARV-471"], dose: "200 mg OD oral (oral PROTAC SERD; ERα degrader; ESR1-mutated HR+/HER2- metastatic breast cancer)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ============================================================
+// CHAPTER 21: EMA / PMDA / NMPA SPECIFIC APPROVALS
+// ============================================================
+{
+  id: 21,
+  title: "EMA, PMDA and NMPA-Specific Drug Approvals",
+  description: "Drugs approved by the European Medicines Agency (EMA), Japan PMDA, or China NMPA that have specific approvals, indications, or formulations not mirrored by the US FDA. Includes EU-first approvals, Japan-domestic products, and Chinese domestically-approved novel drugs.",
+  subclasses: [
+
+    // ─── EMA-SPECIFIC / EU-FIRST APPROVALS ──────────────────────────────────
+    {
+      id: "21a",
+      name: "EMA-Specific and EU-First Approvals",
+      synonyms: ["European Medicines Agency Approvals", "EPAR Drugs", "EU-first Approvals"],
+      description: "Drugs that received EMA centralised authorisation either before FDA approval, or with EU-specific indications not yet approved in the US. All approved via EMA centralised procedure.",
+      subgroups: [
+        {
+          name: "EMA Oncology — EU-Specific or EU-First",
+          drugs: [
+            { name: "Olutasidenib", synonyms: ["Rezlidhia"], dose: "150 mg BD oral (IDH1 inhibitor; relapsed/refractory AML with IDH1 mutation; FDA also approved)", brands: [] },
+            { name: "Loncastuximab tesirine", synonyms: ["Zynlonta"], dose: "0.15 mg/kg i.v. every 3 weeks (anti-CD19 ADC; relapsed/refractory DLBCL)", brands: [] },
+            { name: "Mosunetuzumab", synonyms: ["Lunsumio"], dose: "Step-up dosing: 1 mg/2 mg/60 mg i.v. over 3 cycles; then 30 mg every 3 weeks (CD20×CD3 bispecific T-cell engager; follicular lymphoma)", brands: [] },
+            { name: "Glofitamab", synonyms: ["Columvi"], dose: "Step-up 2.5/10/30 mg i.v. every 3 weeks (CD20×CD3 bispecific; relapsed/refractory DLBCL)", brands: [] },
+            { name: "Epcoritamab", synonyms: ["Tepkinly"], dose: "Step-up 0.16/0.8/48 mg s.c. weekly × 12; then every 2 weeks (CD20×CD3 bispecific; DLBCL; FDA also approved)", brands: [] },
+            { name: "Talquetamab", synonyms: ["Talvey"], dose: "0.4 mg/kg s.c. weekly or 0.8 mg/kg every 2 weeks (GPRC5D×CD3 bispecific; multiple myeloma; FDA also approved)", brands: [] },
+            { name: "Mirvetuximab soravtansine", synonyms: ["Elahere"], dose: "6 mg/kg (AIBW) i.v. every 3 weeks (anti-FRα ADC; FRα-positive platinum-resistant ovarian cancer)", brands: [] },
+            { name: "Omidubicel", synonyms: ["Omisirge"], dose: "Infusion of ex vivo expanded cord blood units (enhanced cord blood graft for haematological malignancies; FDA also approved)", brands: [] },
+            { name: "Obecabtagene autoleucel", synonyms: ["Aucatzyl"], dose: "Single CAR-T cell infusion after lymphodepletion (CD19-directed CAR-T; relapsed/refractory B-cell ALL; EMA 2024)", brands: [] }
+          ]
+        },
+        {
+          name: "EMA Cardiovascular — EU-Specific",
+          drugs: [
+            { name: "Obicetrapib", synonyms: ["Obicetrapib"], dose: "10 mg OD oral (CETP inhibitor; LDL-cholesterol reduction; EMA approved 2025)", brands: [] },
+            { name: "Ziltivekimab", synonyms: ["Ziltivekimab"], dose: "15 mg s.c. monthly (anti-IL-6 ligand; cardiovascular risk reduction in CKD with inflammation; EMA under review)", brands: [] },
+            { name: "Milvexian", synonyms: [], dose: "200 mg BD oral (oral Factor XIa inhibitor; stroke prevention; EMA under review)", brands: [] }
+          ]
+        },
+        {
+          name: "EMA Neurology — EU-Specific or EU-First",
+          drugs: [
+            { name: "Tolebrutinib", synonyms: ["Tolebrutinib"], dose: "60 mg OD oral (BTK inhibitor; non-relapsing secondary progressive MS; EMA under review)", brands: [] },
+            { name: "Evobrutinib", synonyms: [], dose: "45 mg BD oral (BTK inhibitor; MS; EMA under review)", brands: [] },
+            { name: "Fenfluramine", synonyms: ["Fintepla"], dose: "0.1 mg/kg BD oral; max 0.35 mg/kg/day (serotonin-releasing agent; Dravet syndrome and Lennox-Gastaut; FDA also approved)", brands: [] },
+            { name: "Cannabidiol", synonyms: ["Epidyolex"], dose: "5 mg/kg BD oral; up to 20 mg/kg/day (purified CBD; Dravet/LGS/TSC seizures; FDA also approved as Epidiolex)", brands: [] }
+          ]
+        },
+        {
+          name: "EMA Endocrine and Metabolic — EU-Specific",
+          drugs: [
+            { name: "Setmelanotide", synonyms: ["Imcivree"], dose: "2–3 mg s.c. OD (MC4R agonist; genetic obesity — POMC/PCSK1/LEPR deficiency; FDA also approved)", brands: [] },
+            { name: "Mazdutide", synonyms: [], dose: "Under investigation (GLP-1/glucagon receptor dual agonist; obesity; China/EMA under review)", brands: [] }
+          ]
+        },
+        {
+          name: "EMA Hepatology — EU-Specific",
+          drugs: [
+            { name: "Odevixibat", synonyms: ["Bylvay"], dose: "40–120 mcg/kg OD oral (IBAT inhibitor; progressive familial intrahepatic cholestasis; FDA also approved)", brands: [] },
+            { name: "Maralixibat", synonyms: ["Livmarli"], dose: "70–280 mcg/kg OD oral (IBAT inhibitor; Alagille syndrome; FDA also approved)", brands: [] }
+          ]
+        },
+        {
+          name: "EMA Rare Diseases — EU-Specific",
+          drugs: [
+            { name: "Avalglucosidase alfa", synonyms: ["Nexviazyme", "Nexviadyme"], dose: "20 mg/kg i.v. every 2 weeks (next-gen ERT; Pompe disease; FDA also approved)", brands: [] },
+            { name: "Arimoclomol", synonyms: ["Miplyffa"], dose: "Per prescribing information (NPC chaperone; EMA also approved 2024)", brands: [] },
+            { name: "Dojolvi", synonyms: ["Triheptanoin"], dose: "Up to 35% of total calories oral (LCHAD/MTP/VLCAD deficiency; FDA also approved)", brands: [] },
+            { name: "Ataluren", synonyms: ["Translarna"], dose: "10 mg/kg morning + 10 mg/kg midday + 20 mg/kg evening oral (nonsense mutation readthrough; Duchenne MD; EMA conditionally approved — not FDA)", brands: [] },
+            { name: "Nusinersen", synonyms: ["Spinraza"], dose: "12 mg intrathecal (SMA; EMA also approved — listed in main Ch17)", brands: [] }
+          ]
+        },
+        {
+          name: "EMA Anti-infective — EU-Specific",
+          drugs: [
+            { name: "Cefepime/enmetazobactam", synonyms: ["Exblifep", "Exblifep EU"], dose: "2.5 g i.v. every 8 hr × 3 hr infusion (gram-negative complicated UTI/AP; EMA 2023; FDA 2024)", brands: [] },
+            { name: "Aztreonam/avibactam", synonyms: ["Emblaveo", "ATM/AVI"], dose: "6.5 g (6/2 g) i.v./day (metallo-beta-lactamase-producing Enterobacterales; EMA 2023 — not yet FDA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "EMA Immunology — EU-Specific",
+          drugs: [
+            { name: "Spesolimab", synonyms: ["Spevigo"], dose: "900 mg i.v. single dose (acute flare); 600 mg s.c. every 4 weeks (prevention) (anti-IL-36R; generalised pustular psoriasis; FDA also approved)", brands: [] },
+            { name: "Izokibep", synonyms: [], dose: "160 mg s.c. every 2 weeks (miniaturised anti-IL-17A; psoriatic arthritis; EMA under review)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── JAPAN PMDA-SPECIFIC ─────────────────────────────────────────────────
+    {
+      id: "21b",
+      name: "Japan PMDA-Specific Approvals",
+      synonyms: ["PMDA Approvals", "Japan-Approved Drugs", "Japanese Domestic Approvals"],
+      description: "Drugs approved by Japan's Pharmaceuticals and Medical Devices Agency (PMDA) that are either Japan-first, Japan-exclusive, or have Japan-specific indications. Includes domestic Japanese pharmaceutical innovations and Japan-specific indication extensions.",
+      subgroups: [
+        {
+          name: "PMDA Oncology — Japan-First or Japan-Specific",
+          drugs: [
+            { name: "Sintilimab", synonyms: ["Tyvyt", "IBI301"], dose: "200 mg i.v. every 3 weeks (anti-PD-1; various cancers; China/Japan; not FDA)", brands: [] },
+            { name: "Tiragolumab", synonyms: ["Tiragolumab"], dose: "", brands: [] },
+            { name: "Futibatinib", synonyms: ["Lytgobi", "TAS-120"], dose: "20 mg OD oral (FGFR1-4 irreversible inhibitor; FGFR2-rearranged cholangiocarcinoma; FDA approved 2023; PMDA also approved)", brands: [] },
+            { name: "Tepotinib", synonyms: ["Tepmetko"], dose: "500 mg OD oral (MET inhibitor; METex14 skipping NSCLC; PMDA approved 2020 — Japan-first; FDA 2021)", brands: [] },
+            { name: "Lurbinectedin", synonyms: ["Zepzelca"], dose: "3.2 mg/m² i.v. every 3 weeks (RNA polymerase II inhibitor; SCLC; FDA approved; PMDA also approved)", brands: [] },
+            { name: "Belantamab mafodotin", synonyms: ["Blenrep"], dose: "2.5 mg/kg i.v. every 3 weeks (anti-BCMA ADC; multiple myeloma; FDA re-approved 2024 after initial withdrawal)", brands: [] },
+            { name: "Zanubrutinib", synonyms: ["Brukinsa", "BGB-3111"], dose: "160 mg BD or 320 mg OD oral (BTK inhibitor; B-cell malignancies; PMDA and FDA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "PMDA Cardiovascular — Japan-Specific",
+          drugs: [
+            { name: "Landiolol", synonyms: ["Onoact", "Rapiblyk"], dose: "1–10 mcg/kg/min i.v. infusion (ultra-short β1-blocker; Japan-developed; PMDA 2002; FDA 2024)", brands: [] },
+            { name: "Beraprost sodium", synonyms: ["Dorner", "Procyrlin"], dose: "40 mcg TDS oral (oral prostacyclin analogue; PAH/peripheral arterial disease; Japan domestic — limited other markets)", brands: [] },
+            { name: "Isosorbide", synonyms: [], dose: "30–60 mL oral (osmotic diuretic; Ménière's disease; Japan-specific indication)", brands: [] },
+            { name: "Tolvaptan", synonyms: ["Samsca", "Jinarc"], dose: "15–60 mg OD oral (vasopressin V2 antagonist; hyponatraemia and ADPKD; PMDA/FDA/EMA all approved)", brands: [] }
+          ]
+        },
+        {
+          name: "PMDA CNS — Japan-Specific",
+          drugs: [
+            { name: "Fezolinetant", synonyms: ["Veoza"], dose: "45 mg OD oral (NK3R antagonist; vasomotor symptoms; PMDA and FDA/EMA approved)", brands: [] },
+            { name: "Lemborexant", synonyms: ["Dayvigo"], dose: "5–10 mg oral at bedtime (dual orexin receptor antagonist; insomnia; PMDA approved 2019 — Japan-first; FDA 2019)", brands: [] },
+            { name: "Blarcamesine", synonyms: ["Anavex 2-73"], dose: "", brands: [] },
+            { name: "Donepezil", synonyms: ["Aricept"], dose: "5–10 mg OD; 23 mg OD (severe AD) (AChEI; developed by Eisai Japan — originally Japan-first)", brands: [] }
+          ]
+        },
+        {
+          name: "PMDA Anti-infective — Japan-Specific",
+          drugs: [
+            { name: "Lascufloxacin", synonyms: ["Lasvic"], dose: "75 mg OD oral × 5–7 days (fluoroquinolone; CABP; Japan-only approval currently)", brands: [] },
+            { name: "Tebipenem pivoxil", synonyms: ["Orapenem"], dose: "150–300 mg TDS oral (oral carbapenem; PMDA Japan 2009; FDA approved 2026 as Utebzi)", brands: [] },
+            { name: "Ensitrelvir", synonyms: ["Xocova"], dose: "375 mg day 1, 125 mg × 4 days oral (SARS-CoV-2 3CL protease inhibitor; Japan PMDA emergency approval 2022; FDA 2026)", brands: [] },
+            { name: "Cefditoren pivoxil", synonyms: ["Spectracef", "Meiact"], dose: "200–400 mg BD oral (3rd-generation oral cephalosporin; Japan-popular; limited EU/US use)", brands: [] }
+          ]
+        },
+        {
+          name: "PMDA Metabolic and Other — Japan-Specific",
+          drugs: [
+            { name: "Dorzagliatin", synonyms: ["Hineva"], dose: "75 mg BD oral (glucokinase activator; type 2 diabetes; China NMPA approved; PMDA under review)", brands: [] },
+            { name: "Udenafil", synonyms: ["Zydena"], dose: "100–200 mg oral PRN (PDE5 inhibitor; ED; South Korea/select Asian markets — not FDA)", brands: [] },
+            { name: "Siponimod", synonyms: ["Mayzent"], dose: "2 mg OD oral (S1P receptor modulator; SPMS; PMDA, FDA, EMA all approved)", brands: [] },
+            { name: "Filgotinib", synonyms: ["Jyseleca"], dose: "200 mg OD oral (JAK1 inhibitor; RA/UC; EMA + PMDA approved; FDA not approved due to male fertility concerns)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── CHINA NMPA-SPECIFIC ─────────────────────────────────────────────────
+    {
+      id: "21c",
+      name: "China NMPA-Specific Approvals",
+      synonyms: ["NMPA Approvals", "CFDA Approvals", "China NDA Approvals", "Chinese Domestic Drugs"],
+      description: "Drugs approved by China's National Medical Products Administration (NMPA, formerly CFDA). Includes domestically developed Chinese oncology drugs, metabolic agents, and novel molecules not available in Western markets.",
+      subgroups: [
+        {
+          name: "NMPA Oncology — China Domestic Innovations",
+          drugs: [
+            { name: "Camrelizumab", synonyms: ["Airuika", "SHR-1210"], dose: "200 mg i.v. every 2–3 weeks (anti-PD-1; multiple indications in China; EMA/FDA not approved)", brands: [] },
+            { name: "Sintilimab", synonyms: ["Tyvyt", "IBI301"], dose: "200 mg i.v. every 3 weeks (anti-PD-1; hepatocellular carcinoma/NSCLC/lymphoma in China)", brands: [] },
+            { name: "Tislelizumab", synonyms: ["Tevimbra", "BGB-A317"], dose: "200 mg i.v. every 3 weeks (anti-PD-1; NMPA approved multiple indications; FDA approved 2024 for oesophageal SCC)", brands: [] },
+            { name: "Penpulimab", synonyms: ["Jiaruoli", "AK105"], dose: "200 mg i.v. every 3 weeks (anti-PD-1; NMPA approved; FDA approved 2025)", brands: [] },
+            { name: "Toripalimab", synonyms: ["Tuoyi", "JS001"], dose: "240 mg i.v. every 3 weeks (anti-PD-1; China domestic + FDA approved 2023 for NPC)", brands: [] },
+            { name: "Sugemalimab", synonyms: ["Cejemly", "CS1001"], dose: "1200 mg i.v. every 3 weeks (anti-PD-L1; China domestic; NMPA approved)", brands: [] },
+            { name: "Zimberelimab", synonyms: ["Zynyz", "AB122"], dose: "360 mg i.v. every 3 weeks (anti-PD-1; FDA approved 2024 for MSS/MSI-H colorectal; China also approved)", brands: [] },
+            { name: "Dalpiciclib", synonyms: ["Lpalisib", "SHR6390"], dose: "150 mg OD × 21 days of 28-day cycle (CDK4/6 inhibitor; HR+/HER2- breast cancer; China domestic)", brands: [] },
+            { name: "Fluzoparib", synonyms: ["Fuzuloparib", "SHR-3162"], dose: "150 mg BD oral (PARP inhibitor; BRCA-mutated ovarian cancer; China domestic)", brands: [] },
+            { name: "Pamiparib", synonyms: ["Pamiparib", "BGB-290"], dose: "60 mg BD oral (PARP inhibitor; ovarian cancer; China domestic)", brands: [] },
+            { name: "Olverembatinib", synonyms: ["Olvembatinib", "HQP1351"], dose: "30–50 mg oral every other day (3rd-gen BCR-ABL inhibitor; T315I+ CML; China domestic)", brands: [] },
+            { name: "Lisaftinib", synonyms: ["Lisaftinib"], dose: "", brands: [] },
+            { name: "Chidamide", synonyms: ["Epidaza", "CS055"], dose: "30 mg twice weekly oral (HDAC inhibitor; peripheral T-cell lymphoma; China domestic + EMA conditional)", brands: [] },
+            { name: "Apatinib", synonyms: ["Rivoceranib", "YN968D1"], dose: "500–850 mg OD oral (VEGFR-2 inhibitor; gastric cancer; China domestic; FDA approved as rivoceranib 2023 for HCC)", brands: [] },
+            { name: "Surufatinib", synonyms: ["Sulanda"], dose: "300 mg OD oral (VEGFR/FGFR/CSF1R inhibitor; pancreatic/extra-pancreatic NETs; China domestic)", brands: [] },
+            { name: "Anlotinib", synonyms: ["Fucaitinib"], dose: "12 mg OD × 14 days of 21-day cycle (multi-kinase inhibitor; NSCLC/STS/thyroid; China domestic)", brands: [] },
+            { name: "Epitinib", synonyms: ["Epitinib"], dose: "160 mg OD oral (EGFR TKI with CNS penetration; NSCLC with brain mets; China domestic)", brands: [] },
+            { name: "Almonertinib", synonyms: ["Ameile", "HS-10296"], dose: "110 mg OD oral (3rd-gen EGFR TKI; T790M+ NSCLC; China domestic)", brands: [] },
+            { name: "Furmonertinib", synonyms: ["Furmonertinib", "AST2818"], dose: "80 mg OD oral (3rd-gen EGFR TKI; China domestic)", brands: [] },
+            { name: "Sunvozertinib", synonyms: ["Zegfrovy", "DZD9008"], dose: "300 mg OD oral (EGFR exon 20 insertion; NMPA approved 2023; FDA 2025)", brands: [] },
+            { name: "Savolitinib", synonyms: ["Orpathys"], dose: "300–600 mg OD oral (MET inhibitor; NSCLC METex14; China domestic + limited other markets)", brands: [] },
+            { name: "Tebotelimab", synonyms: [], dose: "", brands: [] },
+            { name: "Zanubrutinib", synonyms: ["Brukinsa", "BGB-3111"], dose: "160 mg BD or 320 mg OD oral (BTK inhibitor; China-developed; FDA approved 2019+; NMPA approved)", brands: [] },
+            { name: "Orelabrutinib", synonyms: ["Orelabrutinib", "ICP-022"], dose: "150 mg OD oral (covalent BTK inhibitor; MCL/CLL; China domestic)", brands: [] },
+            { name: "Aumolertinib", synonyms: ["Abivertinib", "HS-10296", "Almonertinib"], dose: "110 mg OD oral (3rd-gen EGFR TKI; same as almonertinib — China domestic)", brands: [] }
+          ]
+        },
+        {
+          name: "NMPA Metabolic and Diabetes — China Domestic",
+          drugs: [
+            { name: "Dorzagliatin", synonyms: ["Hineva"], dose: "75 mg BD oral (glucokinase activator; type 2 diabetes; first-in-class NMPA approved 2022)", brands: [] },
+            { name: "Azvudine", synonyms: ["Azvudine", "FNC"], dose: "5 mg OD oral (nucleoside analogue; COVID-19 treatment; NMPA approved 2022; also HIV indication)", brands: [] },
+            { name: "Metreleptin", synonyms: ["Myalept"], dose: "0.06–0.13 mg/kg OD s.c. (leptin analogue; lipodystrophy; FDA approved; NMPA under review)", brands: [] },
+            { name: "Orforglipron", synonyms: ["Foundayo"], dose: "3–36 mg OD oral (oral GLP-1 RA; obesity; FDA 2026; NMPA under review)", brands: [] }
+          ]
+        },
+        {
+          name: "NMPA Cardiovascular — China Domestic",
+          drugs: [
+            { name: "Indobufen", synonyms: ["Ibustrin"], dose: "100–200 mg BD oral (reversible COX-1 inhibitor; antiplatelet; China/Italy approved — not FDA)", brands: [] },
+            { name: "Trimetazidine", synonyms: ["Vastarel"], dose: "35 mg BD oral (metabolic anti-anginal; widely used China/Europe — not FDA approved for heart disease)", brands: [] },
+            { name: "Sacubitril/valsartan", synonyms: ["Entresto", "Eno"], dose: "Start 24/26 mg BD, target 97/103 mg BD (ARNI; HFrEF; NMPA, FDA, EMA all approved)", brands: [] }
+          ]
+        },
+        {
+          name: "NMPA Anti-infective — China Domestic",
+          drugs: [
+            { name: "Azvudine", synonyms: ["FNC"], dose: "5 mg OD oral (nucleoside analogue RT inhibitor; COVID-19 in China; also HIV indication)", brands: [] },
+            { name: "Paxlovid", synonyms: ["Nirmatrelvir/ritonavir"], dose: "300 mg/100 mg BD × 5 days (SARS-CoV-2 protease inhibitor; NMPA, FDA, EMA all approved)", brands: [] }
+          ]
+        },
+        {
+          name: "NMPA CNS — China Domestic",
+          drugs: [
+            { name: "Memomet", synonyms: [], dose: "", brands: [] },
+            { name: "Lisaftinib", synonyms: [], dose: "", brands: [] },
+            { name: "GV971 (sodium oligomannate)", synonyms: ["Oligomannate", "GV-971"], dose: "450 mg BD oral (marine-derived oligosaccharide; Alzheimer's disease; NMPA conditional approval 2019 — controversial; not FDA/EMA)", brands: [] }
+          ]
+        },
+        {
+          name: "NMPA Haematology — China Domestic",
+          drugs: [
+            { name: "Hetrombopag olamine", synonyms: ["Haitepligan"], dose: "2.5–7.5 mg OD oral (TPO receptor agonist; chronic ITP and aplastic anaemia; China domestic)", brands: [] },
+            { name: "Eltromobopag olamine", synonyms: ["Revolade", "Promacta"], dose: "25–75 mg OD oral (TPO-RA; ITP/aplastic anaemia; FDA/EMA/NMPA all approved)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── FDA 2021–2023 NOVEL APPROVALS FILLING GAPS ─────────────────────────
+    {
+      id: "21d",
+      name: "FDA Novel Approvals 2021–2023 (Gap Fill)",
+      synonyms: ["FDA 2021 Approvals", "FDA 2022 Approvals", "FDA 2023 Approvals"],
+      description: "Important novel FDA-approved drugs from 2021–2023 not already covered in the main chapters.",
+      subgroups: [
+        {
+          name: "FDA 2023 Novel Approvals — Key Gaps",
+          drugs: [
+            { name: "Elritercept", synonyms: [], dose: "", brands: [] },
+            { name: "Mirikizumab", synonyms: ["Omvoh"], dose: "300 mg i.v. every 4 weeks × 3; then 200 mg s.c. every 4 weeks (anti-IL-23 p19; UC; FDA 2023; also listed in GI expansion)", brands: [] },
+            { name: "Spesolimab", synonyms: ["Spevigo"], dose: "900 mg i.v. acute flare; 600 mg s.c. monthly (anti-IL-36R; generalised pustular psoriasis; FDA 2022)", brands: [] },
+            { name: "Zuranolone", synonyms: ["Zurzuvae"], dose: "50 mg OD oral × 14 nights (neuroactive steroid GABAA PAM; postpartum depression and MDD; FDA 2023)", brands: [] },
+            { name: "Brexanolone", synonyms: ["Zulresso"], dose: "60 hr continuous i.v. infusion, dose-escalated (neuroactive steroid; postpartum depression; FDA 2019)", brands: [] },
+            { name: "Eplontersen", synonyms: ["Wainua", "ION-682884"], dose: "45 mg s.c. monthly (GalNAc-conjugated ASO; TTR; FDA 2023)", brands: [] },
+            { name: "Inotersen", synonyms: ["Tegsedi"], dose: "284 mg s.c. weekly (ASO; hATTR polyneuropathy; FDA 2018; EMA also approved)", brands: [] },
+            { name: "Tofersen", synonyms: ["Qalsody"], dose: "100 mg intrathecal every 2 weeks × 3, then every 4 weeks (SOD1-ALS ASO; FDA 2023)", brands: [] },
+            { name: "Imetelstat", synonyms: ["Rytelo"], dose: "9.4 mg/kg i.v. every 4 weeks (telomerase inhibitor; MDS; FDA 2024 — already in Ch13 expansion)", brands: [] },
+            { name: "Pirtobrutinib", synonyms: ["Jaypirca", "LOXO-305"], dose: "200 mg OD oral (non-covalent BTK inhibitor; B-cell malignancies; FDA 2023)", brands: [] },
+            { name: "Epcoritamab", synonyms: ["Tepkinly", "GEN3013"], dose: "Step-up 0.16→0.8→48 mg s.c. (CD20×CD3 bispecific; DLBCL; FDA 2023)", brands: [] },
+            { name: "Glofitamab", synonyms: ["Columvi"], dose: "Step-up 2.5→10→30 mg i.v. (CD20×CD3 bispecific; DLBCL; FDA 2023)", brands: [] },
+            { name: "Elranatamab", synonyms: ["Elrexfio"], dose: "76 mg s.c. weekly step-up (BCMA×CD3 bispecific; multiple myeloma; FDA 2023)", brands: [] },
+            { name: "Talazoparib", synonyms: ["Talzenna"], dose: "1 mg OD oral (PARP inhibitor; BRCA-mutated breast cancer; FDA 2018 — already in Ch13)", brands: [] },
+            { name: "Olutasidenib", synonyms: ["Rezlidhia"], dose: "150 mg BD oral (IDH1 inhibitor; relapsed/refractory AML; FDA 2022)", brands: [] },
+            { name: "Oteseconazole", synonyms: ["Vivjoa"], dose: "600 mg OD × 2 days then 450 mg × 7 days then 150 mg weekly (oral antifungal CYP51 inhibitor; VVC; FDA 2022)", brands: [] },
+            { name: "Ibrexafungerp", synonyms: ["Brexafemme"], dose: "300 mg BD × 1 day (glucan synthase inhibitor; vulvovaginal candidiasis; FDA 2021)", brands: [] },
+            { name: "Olorofim", synonyms: ["Mivafungi"], dose: "120 mg OD oral loading × 2 days then 60 mg OD (DHODH inhibitor antifungal; invasive mould infections; EMA 2024; FDA under review)", brands: [] },
+            { name: "Fezolinetant", synonyms: ["Veoza"], dose: "45 mg OD oral (NK3R antagonist; vasomotor symptoms of menopause; FDA 2023; EMA/PMDA also approved)", brands: [] },
+            { name: "Vibegron", synonyms: ["Vibegron", "Gemtesa"], dose: "75 mg OD oral (β3-AR agonist; OAB; FDA 2020; PMDA also approved)", brands: [] },
+            { name: "Lefamulin", synonyms: ["Xenleta"], dose: "150 mg i.v. BD or 600 mg oral BD × 5–7 days (pleuromutilin antibiotic; CABP; FDA 2019)", brands: [] },
+            { name: "Omadacycline", synonyms: ["Nuzyra"], dose: "100 mg i.v./300 mg oral OD (aminomethylcycline tetracycline; CABP/ABSSSI; FDA 2018)", brands: [] },
+            { name: "Rezafungin", synonyms: ["Rezzayo"], dose: "400 mg i.v. week 1; 200 mg weekly thereafter (echinocandin; candidaemia; FDA 2023)", brands: [] },
+            { name: "Vadadustat", synonyms: ["Vafseo"], dose: "300 mg OD oral (HIF-PHI; CKD anaemia; FDA 2024; EMA/PMDA also approved)", brands: [] },
+            { name: "Daprodustat", synonyms: ["Jesduvroq"], dose: "4–24 mg OD oral (HIF-PHI; CKD anaemia; FDA 2023; PMDA Japan also approved)", brands: [] },
+            { name: "Taurolidine", synonyms: [], dose: "Per prescribing info (antimicrobial/antineoplastic; catheter lock solution; various markets)", brands: [] },
+            { name: "Oteseconazole", synonyms: ["Vivjoa"], dose: "600 mg loading then 450 mg × 7 days then 150 mg weekly (CYP51 inhibitor; recurrent VVC; FDA 2022)", brands: [] }
+          ]
+        },
+        {
+          name: "FDA 2022 Novel Approvals — Key Gaps",
+          drugs: [
+            { name: "Teclistamab", synonyms: ["Tecvayli"], dose: "1.5 mg/kg s.c. weekly (BCMA×CD3 bispecific; multiple myeloma; FDA 2022; EMA also approved)", brands: [] },
+            { name: "Mosunetuzumab", synonyms: ["Lunsumio"], dose: "Step-up dosing i.v. (CD20×CD3 bispecific; follicular lymphoma; FDA 2022; EMA also approved)", brands: [] },
+            { name: "Loncastuximab tesirine", synonyms: ["Zynlonta"], dose: "0.15 mg/kg i.v. every 3 weeks (anti-CD19 ADC; DLBCL; FDA 2021; EMA also approved)", brands: [] },
+            { name: "Tebentafusp", synonyms: ["Kimmtrak"], dose: "68 mcg i.v. weekly (gp100×CD3 bispecific; uveal melanoma; FDA 2022 — only systemic therapy for uveal melanoma)", brands: [] },
+            { name: "Nirsevimab", synonyms: ["Beyfortus"], dose: "50–100 mg i.m. single dose (anti-RSV-F mAb; RSV prophylaxis in infants; FDA 2023; EMA 2022)", brands: [] },
+            { name: "Daridorexant", synonyms: ["Quviviq"], dose: "25–50 mg oral at bedtime (DORA; insomnia; FDA 2022; EMA also approved)", brands: [] },
+            { name: "Avacopan", synonyms: ["Tavneos"], dose: "30 mg BD oral (C5aR1 inhibitor; ANCA-associated vasculitis; FDA 2021; EMA also approved)", brands: [] },
+            { name: "Anifrolumab", synonyms: ["Saphnelo"], dose: "300 mg i.v. every 4 weeks (anti-IFNAR1; SLE; FDA 2021; EMA also approved)", brands: [] },
+            { name: "Vonoprazan", synonyms: ["Voquezna"], dose: "10–20 mg OD oral (potassium-competitive acid blocker; GERD/H. pylori; FDA 2023; PMDA 2015 Japan-first)", brands: [] },
+            { name: "Tepotinib", synonyms: ["Tepmetko"], dose: "500 mg OD oral (MET inhibitor; NSCLC METex14; PMDA 2020 Japan-first; FDA 2021)", brands: [] }
+          ]
+        },
+        {
+          name: "FDA 2021 Novel Approvals — Key Gaps",
+          drugs: [
+            { name: "Amivantamab", synonyms: ["Rybrevant"], dose: "1050–1400 mg i.v. every week × 4 then every 2 weeks (EGFR×MET bispecific; NSCLC exon 20 insertion; FDA 2021)", brands: [] },
+            { name: "Sotorasib", synonyms: ["Lumakras", "Lumykras"], dose: "960 mg OD oral (KRAS G12C covalent inhibitor; NSCLC; FDA 2021 — already listed in Ch13)", brands: [] },
+            { name: "Belumosudil", synonyms: ["Rezurock"], dose: "200 mg OD oral (ROCK2 inhibitor; chronic graft-versus-host disease; FDA 2021)", brands: [] },
+            { name: "Infigratinib", synonyms: ["Truseltiq"], dose: "125 mg OD oral × 21 of 28-day cycle (FGFR1-3 inhibitor; FGFR2-rearranged cholangiocarcinoma; FDA 2021)", brands: [] },
+            { name: "Umbralisib", synonyms: ["Ukoniq"], dose: "800 mg OD oral (PI3Kδ/CK1ε inhibitor; marginal zone lymphoma; FDA 2021 — approval later restricted)", brands: [] },
+            { name: "Dostarlimab", synonyms: ["Jemperli"], dose: "500 mg i.v. every 3 weeks × 4; then 1000 mg every 6 weeks (anti-PD-1; endometrial/dMMR solid tumours; FDA 2021; EMA also approved)", brands: [] },
+            { name: "Retifanlimab", synonyms: ["Zynyz"], dose: "500 mg i.v. every 4 weeks (anti-PD-1; MSI-H endometrial/anal cancer; FDA 2023)", brands: [] },
+            { name: "Cemiplimab", synonyms: ["Libtayo"], dose: "350 mg i.v. every 3 weeks (anti-PD-1; CSCC/NSCLC/BCC; FDA 2018; EMA also approved)", brands: [] },
+            { name: "Lonapegsomatropin", synonyms: ["Skytrofa"], dose: "0.24 mg/kg s.c. weekly (long-acting GH prodrug; paediatric GHD; FDA 2021)", brands: [] },
+            { name: "Somatrogon", synonyms: ["Ngenla"], dose: "0.66 mg/kg s.c. weekly (long-acting GH; paediatric GHD; FDA 2023; EMA 2021 EU-first)", brands: [] },
+            { name: "Idecabtagene vicleucel", synonyms: ["Abecma"], dose: "150–450 × 10⁶ CAR+ T cells i.v. infusion (anti-BCMA CAR-T; multiple myeloma; FDA 2021; EMA also approved)", brands: [] },
+            { name: "Ciltacabtagene autoleucel", synonyms: ["Carvykti"], dose: "0.5–1.0 × 10⁶ CAR+ T cells/kg i.v. (anti-BCMA CAR-T; multiple myeloma; FDA 2022; EMA also approved)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ============================================================
+// CHAPTER 22: COMPREHENSIVE GAP FILL
+// ============================================================
+{
+  id: 22,
+  title: "Comprehensive Drug Coverage — Multi-Authority Gap Fill",
+  description: "Approved drugs from FDA, EMA, PMDA and NMPA not captured in earlier chapters. Spans anticoagulants, biologics, gene therapies, vaccines, vitamins, contrast agents, reversal agents, and miscellaneous therapeutic categories with established global regulatory approval.",
+  subclasses: [
+
+    // ── VACCINES (limited — key ones only) ──────────────────────────────────
+    {
+      id: "22a",
+      name: "Key Therapeutic and Preventive Biologics",
+      synonyms: ["mRNA Therapies", "Therapeutic Vaccines", "Preventive Immunotherapy"],
+      description: "Selected biologics with established regulatory approvals including mRNA-based agents, therapeutic cancer vaccines, and preventive agents beyond the traditional vaccine scope.",
+      subgroups: [
+        {
+          name: "mRNA-Based Therapeutics",
+          drugs: [
+            { name: "mRNA-1273 (Spikevax)", synonyms: ["Moderna COVID-19 vaccine", "Elasomeran"], dose: "100 mcg (0.5 mL) i.m. primary series; 50 mcg booster (COVID-19 prevention; EMA/FDA/PMDA/NMPA all authorised)", brands: [] },
+            { name: "BNT162b2 (Comirnaty)", synonyms: ["Pfizer-BioNTech COVID-19 vaccine", "Tozinameran"], dose: "30 mcg (0.3 mL) i.m. primary series; updated variant-adapted formulations for boosters (COVID-19 prevention; FDA/EMA/PMDA authorised)", brands: [] },
+            { name: "mRNA-4157/V940", synonyms: ["Individualized neoantigen therapy", "mRNA-4157"], dose: "1 mg i.m. every 3 weeks × 9 doses with pembrolizumab (personalised mRNA cancer vaccine; FDA Breakthrough Therapy; Phase 3 melanoma)", brands: [] }
+          ]
+        },
+        {
+          name: "Therapeutic Cancer Vaccines and CAR-T Products",
+          drugs: [
+            { name: "Sipuleucel-T", synonyms: ["Provenge"], dose: "3 infusions at 2-week intervals (autologous cellular immunotherapy; castration-resistant prostate cancer; FDA approved)", brands: [] },
+            { name: "Talimogene laherparepvec", synonyms: ["T-VEC", "Imlygic"], dose: "Up to 4 mL intralesional; 10⁶ PFU/mL initial, then 10⁸ PFU/mL (oncolytic herpes virus; melanoma; FDA/EMA approved)", brands: [] },
+            { name: "Lisocabtagene maraleucel", synonyms: ["Liso-cel", "Breyanzi"], dose: "Single i.v. infusion (anti-CD19 CAR-T; relapsed/refractory LBCL; FDA 2021; EMA also approved)", brands: [] },
+            { name: "Axicabtagene ciloleucel", synonyms: ["Axi-cel", "Yescarta"], dose: "Single i.v. infusion 2 × 10⁶ CAR+ T cells/kg (anti-CD19 CAR-T; DLBCL/FL; FDA/EMA approved)", brands: [] },
+            { name: "Tisagenlecleucel", synonyms: ["Kymriah"], dose: "Single i.v. infusion (anti-CD19 CAR-T; ALL/DLBCL; FDA/EMA approved)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ── CARDIOVASCULAR EXTENDED ──────────────────────────────────────────────
+    {
+      id: "22b",
+      name: "Cardiovascular — Extended Coverage",
+      synonyms: ["Additional Cardiovascular Drugs", "Extended CVS Coverage"],
+      description: "Additional cardiovascular drugs with multi-authority approval not fully detailed in earlier chapters.",
+      subgroups: [
+        {
+          name: "Mineralocorticoid Receptor Antagonists",
+          drugs: [
+            { name: "Spironolactone", synonyms: ["Aldactone", "Spiromide"], dose: "25–100 mg OD–BD oral (steroidal MRA; HF/HTN/primary aldosteronism)", brands: [] },
+            { name: "Eplerenone", synonyms: ["Inspra", "Elecor"], dose: "25–50 mg OD oral (selective steroidal MRA; HFrEF post-MI; HTN)", brands: [] },
+            { name: "Finerenone", synonyms: ["Kerendia"], dose: "10–20 mg OD oral (non-steroidal MRA; CKD + T2DM; FDA/EMA/PMDA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Digoxin Alternatives and Inotropes",
+          drugs: [
+            { name: "Milrinone", synonyms: ["Primacor"], dose: "50 mcg/kg i.v. over 10 min loading; 0.375–0.75 mcg/kg/min infusion (PDE3 inhibitor; acute decompensated HF)", brands: [] },
+            { name: "Levosimendan", synonyms: ["Simdax"], dose: "0.1–0.2 mcg/kg/min i.v. infusion × 24 hr (calcium sensitiser; acute decompensated HF; EMA/many markets; not FDA approved)", brands: [] },
+            { name: "Nesiritide", synonyms: ["Natrecor"], dose: "2 mcg/kg i.v. bolus then 0.01 mcg/kg/min infusion (recombinant BNP; acute decompensated HF; FDA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Additional Antiarrhythmics",
+          drugs: [
+            { name: "Vernakalant", synonyms: ["Brinavess"], dose: "3 mg/kg i.v. over 10 min; repeat 2 mg/kg if needed (atrial-selective; acute conversion of AF; EMA approved — not FDA)", brands: [] },
+            { name: "Dronedarone", synonyms: ["Multaq"], dose: "400 mg BD oral with meals (multichannel antiarrhythmic; non-permanent AF; FDA/EMA approved)", brands: [] },
+            { name: "Ibutilide", synonyms: ["Corvert"], dose: "1 mg i.v. over 10 min; repeat once if needed (Ik channel opener; acute AF/AFL conversion; FDA approved)", brands: [] },
+            { name: "Dofetilide", synonyms: ["Tikosyn"], dose: "125–500 mcg BD oral (dose by renal function) (IKr blocker; AF/AFL; FDA approved)", brands: [] },
+            { name: "Flecainide", synonyms: ["Tambocor"], dose: "50–200 mg BD oral; 2 mg/kg i.v. (Class IC sodium channel blocker; AF/SVT; FDA/EMA approved)", brands: [] },
+            { name: "Propafenone", synonyms: ["Rythmol"], dose: "150–300 mg TDS oral (Class IC; AF/VT; FDA/EMA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Vasodilators and Antihypertensives",
+          drugs: [
+            { name: "Hydralazine", synonyms: ["Apresoline"], dose: "10–50 mg QID oral; 10–20 mg i.v./i.m. (arterial vasodilator; hypertension/HFrEF)", brands: [] },
+            { name: "Minoxidil", synonyms: ["Loniten", "Regaine"], dose: "5–40 mg OD oral (hypertension); 2–5% topical (androgenetic alopecia)", brands: [] },
+            { name: "Sacubitril/valsartan", synonyms: ["Entresto"], dose: "24/26 mg BD, titrate to 97/103 mg BD oral (ARNI; HFrEF — listed also in CVS Ch7)", brands: [] },
+            { name: "Nitroprusside", synonyms: ["Nipride"], dose: "0.3–10 mcg/kg/min i.v. infusion (arteriovenous vasodilator; hypertensive emergencies)", brands: [] }
+          ]
+        },
+        {
+          name: "Hyperlipidaemia — Additional Agents",
+          drugs: [
+            { name: "Bempedoic acid", synonyms: ["Nexletol", "Nilemdo"], dose: "180 mg OD oral (ATP-citrate lyase inhibitor; LDL reduction; FDA/EMA approved)", brands: [] },
+            { name: "Bempedoic acid/ezetimibe", synonyms: ["Nexlizet", "Nustendi"], dose: "180/10 mg OD oral combination tablet (FDA/EMA approved)", brands: [] },
+            { name: "Ezetimibe", synonyms: ["Ezetrol", "Zetia"], dose: "10 mg OD oral (NPC1L1 inhibitor; cholesterol absorption inhibitor)", brands: [] },
+            { name: "Mipomersen", synonyms: ["Kynamro"], dose: "200 mg s.c. weekly (APOB ASO; homozygous familial hypercholesterolaemia; FDA approved)", brands: [] },
+            { name: "Lomitapide", synonyms: ["Juxtapid", "Lojuxta"], dose: "5–60 mg OD oral (MTP inhibitor; homozygous FH; FDA/EMA approved)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ── CNS EXTENDED ─────────────────────────────────────────────────────────
+    {
+      id: "22c",
+      name: "CNS — Extended Coverage",
+      synonyms: ["Additional CNS Drugs", "Extended Neurology Coverage"],
+      description: "Additional CNS drugs with established regulatory approval not fully covered in Chapter 6.",
+      subgroups: [
+        {
+          name: "Antiepileptics — Additional Agents",
+          drugs: [
+            { name: "Brivaracetam", synonyms: ["Briviact"], dose: "25–100 mg BD oral/i.v. (SV2A ligand; focal seizures; FDA/EMA approved)", brands: [] },
+            { name: "Cenobamate", synonyms: ["Xcopri", "Ontozry"], dose: "12.5 mg OD titrated to 100–400 mg OD oral (INaP blocker + GABAA PAM; focal seizures; FDA/EMA approved)", brands: [] },
+            { name: "Eslicarbazepine acetate", synonyms: ["Aptiom", "Zebinix"], dose: "400–1200 mg OD oral (voltage-gated sodium channel blocker; focal seizures; FDA/EMA approved)", brands: [] },
+            { name: "Perampanel", synonyms: ["Fycompa"], dose: "2–12 mg OD oral at bedtime (AMPA receptor antagonist; focal/generalised seizures; FDA/EMA approved)", brands: [] },
+            { name: "Fenfluramine", synonyms: ["Fintepla"], dose: "0.1 mg/kg BD; max 0.35 mg/kg/day (serotonin-releasing; Dravet syndrome; FDA/EMA approved)", brands: [] },
+            { name: "Stiripentol", synonyms: ["Diacomit"], dose: "50 mg/kg/day oral in 2–3 divided doses (GABAA enhancer; Dravet syndrome; FDA/EMA approved)", brands: [] },
+            { name: "Vigabatrin", synonyms: ["Sabril", "Kigabeq"], dose: "500 mg BD–1500 mg BD oral (GABA transaminase inhibitor; infantile spasms/complex partial seizures; FDA/EMA approved)", brands: [] },
+            { name: "Rufinamide", synonyms: ["Banzel", "Inovelon"], dose: "400 mg BD to 1600 mg BD oral (sodium channel modulator; Lennox-Gastaut; FDA/EMA approved)", brands: [] },
+            { name: "Felbamate", synonyms: ["Felbatol"], dose: "1200–3600 mg/day oral in 3–4 divided doses (multiple mechanisms; LGS/focal seizures; restricted use due to aplastic anaemia/liver failure)", brands: [] },
+            { name: "Cannabidiol", synonyms: ["Epidiolex", "Epidyolex"], dose: "5 mg/kg BD oral; up to 20 mg/kg/day (Dravet/LGS/TSC seizures; FDA/EMA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Antipsychotics — Additional Agents",
+          drugs: [
+            { name: "Paliperidone", synonyms: ["Invega", "Xeplion"], dose: "3–12 mg OD oral; 25–150 mg i.m. monthly (extended-release; schizophrenia; FDA/EMA approved)", brands: [] },
+            { name: "Iloperidone", synonyms: ["Fanapt"], dose: "1–12 mg BD oral (FDA approved; schizophrenia)", brands: [] },
+            { name: "Lurasidone", synonyms: ["Latuda"], dose: "40–160 mg OD oral with food (FDA/Canada/Japan; schizophrenia/bipolar depression)", brands: [] },
+            { name: "Asenapine", synonyms: ["Saphris", "Sycrest"], dose: "5–10 mg sublingual BD (schizophrenia/bipolar mania; FDA/EMA approved)", brands: [] },
+            { name: "Cariprazine", synonyms: ["Vraylar", "Reagila"], dose: "1.5–6 mg OD oral (D3/D2 partial agonist; schizophrenia/bipolar; FDA/EMA approved)", brands: [] },
+            { name: "Brexpiprazole", synonyms: ["Rexulti"], dose: "2–4 mg OD oral (D2 partial agonist; schizophrenia/adjunct MDD; FDA approved)", brands: [] },
+            { name: "Lumateperone", synonyms: ["Caplyta"], dose: "42 mg OD oral (serotonin-dopamine-glutamate modulator; schizophrenia/bipolar depression; FDA approved)", brands: [] },
+            { name: "Pimavanserin", synonyms: ["Nuplazid"], dose: "34 mg OD oral (5-HT2A inverse agonist; Parkinson's disease psychosis; FDA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Antidepressants — Additional Agents",
+          drugs: [
+            { name: "Vilazodone", synonyms: ["Viibryd"], dose: "10–40 mg OD oral with food (SSRI + 5-HT1A partial agonist; MDD; FDA approved)", brands: [] },
+            { name: "Vortioxetine", synonyms: ["Trintellix", "Brintellix"], dose: "5–20 mg OD oral (multimodal; MDD; FDA/EMA approved)", brands: [] },
+            { name: "Agomelatine", synonyms: ["Valdoxan", "Thymanax"], dose: "25–50 mg at bedtime (MT1/MT2 agonist + 5-HT2C antagonist; MDD; EMA approved — not FDA)", brands: [] },
+            { name: "Esketamine", synonyms: ["Spravato"], dose: "56–84 mg intranasal twice weekly × 4 weeks; then weekly/biweekly (NMDA antagonist; treatment-resistant depression; FDA/EMA approved)", brands: [] },
+            { name: "Levomilnacipran", synonyms: ["Fetzima"], dose: "40–120 mg OD oral (SNRI; MDD; FDA approved)", brands: [] },
+            { name: "Gepirone", synonyms: ["Exxua"], dose: "18.2–72.6 mg OD oral ER (5-HT1A partial agonist; MDD; FDA 2023)", brands: [] },
+            { name: "Mirtazapine", synonyms: ["Remeron", "Zispin"], dose: "15–45 mg OD at bedtime (NaSSA; MDD; FDA/EMA approved)", brands: [] },
+            { name: "Nefazodone", synonyms: ["Serzone"], dose: "100–600 mg/day in 2 doses (5-HT2 antagonist+SERT inhibitor; MDD; limited use due to hepatotoxicity)", brands: [] },
+            { name: "Reboxetine", synonyms: ["Edronax"], dose: "4–10 mg/day in 2 doses (selective NRI; MDD; EMA approved — not FDA)", brands: [] }
+          ]
+        },
+        {
+          name: "Anxiolytics — Additional Agents",
+          drugs: [
+            { name: "Buspirone", synonyms: ["Buspar"], dose: "5–60 mg/day in 2–3 divided doses oral (5-HT1A partial agonist; GAD; FDA/EMA approved)", brands: [] },
+            { name: "Pregabalin", synonyms: ["Lyrica"], dose: "75–600 mg/day in 2–3 divided doses (α2δ ligand; GAD/neuropathic pain/fibromyalgia/epilepsy; FDA/EMA approved)", brands: [] },
+            { name: "Gabapentin", synonyms: ["Neurontin"], dose: "300–3600 mg/day in 3 divided doses (α2δ ligand; epilepsy/neuropathic pain; FDA/EMA approved)", brands: [] },
+            { name: "Gabapentin enacarbil", synonyms: ["Horizant"], dose: "600 mg BD oral with food (prodrug; RLS/PHN; FDA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Drugs for Substance Use Disorders",
+          drugs: [
+            { name: "Acamprosate", synonyms: ["Campral"], dose: "666 mg TDS oral (NMDA modulator; alcohol dependence maintenance; FDA/EMA approved)", brands: [] },
+            { name: "Disulfiram", synonyms: ["Antabuse"], dose: "250–500 mg OD oral (aldehyde dehydrogenase inhibitor; alcohol aversion therapy)", brands: [] },
+            { name: "Buprenorphine", synonyms: ["Subutex", "Temgesic"], dose: "4–24 mg sublingual OD (opioid partial agonist; opioid use disorder/pain)", brands: [] },
+            { name: "Buprenorphine/naloxone", synonyms: ["Suboxone", "Zubsolv"], dose: "4/1–24/6 mg sublingual OD (OUD maintenance; FDA/EMA approved)", brands: [] },
+            { name: "Methadone", synonyms: ["Physeptone", "Dolophine"], dose: "20–120 mg OD oral (opioid agonist; OUD/pain)", brands: [] },
+            { name: "Lofexidine", synonyms: ["Lucemyra", "BritLofex"], dose: "0.54 mg QID oral × 14 days (α2 agonist; opioid withdrawal; FDA/EMA approved)", brands: [] },
+            { name: "Nalmefene", synonyms: ["Selincro"], dose: "18 mg PRN oral (opioid antagonist; alcohol use disorder; EMA approved — not FDA)", brands: [] }
+          ]
+        },
+        {
+          name: "Neuropathic Pain and Migraine Preventives",
+          drugs: [
+            { name: "Duloxetine", synonyms: ["Cymbalta", "Duzela"], dose: "30–120 mg OD oral (SNRI; depression/anxiety/neuropathic pain/fibromyalgia; FDA/EMA approved)", brands: [] },
+            { name: "Amitriptyline", synonyms: ["Elavil", "Tryptomer"], dose: "10–150 mg OD at bedtime (TCA; neuropathic pain/migraine prevention/depression)", brands: [] },
+            { name: "Topiramate", synonyms: ["Topamax"], dose: "25–200 mg BD oral (migraine prevention/epilepsy/obesity; FDA/EMA approved)", brands: [] },
+            { name: "Valproate", synonyms: ["Depakote", "Epilim"], dose: "500–2000 mg/day oral/i.v. (migraine prevention/epilepsy/bipolar; FDA/EMA approved — teratogenic warning)", brands: [] },
+            { name: "Ziconotide", synonyms: ["Prialt"], dose: "0.1–19.2 mcg/day intrathecal infusion (N-type calcium channel blocker; refractory chronic pain; FDA/EMA approved)", brands: [] },
+            { name: "Tapentadol", synonyms: ["Nucynta", "Palexia"], dose: "50–250 mg BD oral ER (MOR agonist + NRI; chronic pain; FDA/EMA approved)", brands: [] },
+            { name: "Buprenorphine transdermal", synonyms: ["Butrans", "BuTrans"], dose: "5–20 mcg/hr patch weekly (chronic pain; FDA/EMA approved)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ── ENDOCRINOLOGY EXTENDED ───────────────────────────────────────────────
+    {
+      id: "22d",
+      name: "Endocrinology and Metabolism — Extended Coverage",
+      synonyms: ["Additional Endocrine Drugs", "Extended Hormonal Coverage"],
+      description: "Additional endocrine and metabolic drugs approved across multiple authorities.",
+      subgroups: [
+        {
+          name: "Thyroid and Parathyroid — Additional",
+          drugs: [
+            { name: "Cinacalcet", synonyms: ["Sensipar", "Mimpara"], dose: "30–180 mg OD oral (calcimimetic; secondary HPT/parathyroid carcinoma; FDA/EMA approved)", brands: [] },
+            { name: "Etelcalcetide", synonyms: ["Parsabiv"], dose: "5–15 mg i.v. 3×/week (calcimimetic; secondary HPT on haemodialysis; FDA/EMA approved)", brands: [] },
+            { name: "Sevelamer carbonate", synonyms: ["Renvela"], dose: "800–1600 mg TDS with meals oral (phosphate binder; CKD)", brands: [] },
+            { name: "Burosumab", synonyms: ["Crysvita"], dose: "0.8 mg/kg s.c. every 4 weeks; paediatric: 0.8–2 mg/kg every 2 weeks (anti-FGF23 antibody; X-linked hypophosphataemia; FDA/EMA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Adrenal Disorders",
+          drugs: [
+            { name: "Mifepristone", synonyms: ["Korlym", "Mifegyne"], dose: "300–1200 mg OD oral (Cushing's syndrome: GR antagonist; medical termination: antiprogesterone; FDA approved)", brands: [] },
+            { name: "Osilodrostat", synonyms: ["Isturisa"], dose: "2–30 mg BD oral (11β-hydroxylase inhibitor; Cushing's disease; FDA/EMA approved)", brands: [] },
+            { name: "Pasireotide", synonyms: ["Signifor", "Signifor LAR"], dose: "0.6–0.9 mg s.c. BD (SST2/3/4/5 agonist; Cushing's disease; FDA/EMA approved)", brands: [] },
+            { name: "Metyrapone", synonyms: ["Metopirone"], dose: "250–6000 mg/day oral in 4–6 divided doses (11β-hydroxylase inhibitor; diagnostic/Cushing's; FDA/EMA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Growth Disorders — Additional Agents",
+          drugs: [
+            { name: "Somatrogon", synonyms: ["Ngenla"], dose: "0.66 mg/kg s.c. weekly (long-acting GH fusion protein; paediatric GHD; EMA 2021; FDA 2023)", brands: [] },
+            { name: "Lonapegsomatropin", synonyms: ["Skytrofa"], dose: "0.24 mg/kg s.c. weekly (long-acting GH prodrug TransCon; paediatric GHD; FDA 2021)", brands: [] },
+            { name: "Vosoritide", synonyms: ["Voxzogo"], dose: "15 mcg/kg s.c. OD (CNP analogue; achondroplasia in paediatric patients; FDA/EMA approved)", brands: [] },
+            { name: "Setmelanotide", synonyms: ["Imcivree"], dose: "2–3 mg s.c. OD titrated (MC4R agonist; genetic obesity POMC/PCSK1/LEPR deficiency; FDA/EMA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Fertility and Reproductive Hormones — Additional",
+          drugs: [
+            { name: "Clomifene", synonyms: ["Clomid", "Serophene"], dose: "50–150 mg OD oral × 5 days (SERM; ovulation induction)", brands: [] },
+            { name: "Letrozole (fertility)", synonyms: ["Femara"], dose: "2.5–7.5 mg OD oral × 5 days (aromatase inhibitor; off-label ovulation induction)", brands: [] },
+            { name: "Progesterone", synonyms: ["Utrogestan", "Crinone"], dose: "100–400 mg OD vaginal/oral (luteal support/IVF/preterm birth prevention; FDA/EMA approved)", brands: [] },
+            { name: "Dydrogesterone", synonyms: ["Duphaston"], dose: "10–40 mg/day oral (oral progestogen; threatened miscarriage/luteal phase support; EMA/PMDA approved — not FDA)", brands: [] },
+            { name: "Hydroxyprogesterone caproate", synonyms: ["Makena", "Proluton Depot"], dose: "250 mg i.m. weekly (preterm birth prevention; FDA — withdrawn 2023 due to lack of efficacy)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ── HAEMATOLOGY EXTENDED ─────────────────────────────────────────────────
+    {
+      id: "22e",
+      name: "Haematology — Extended Coverage",
+      synonyms: ["Additional Haematology Drugs", "Extended Blood Drug Coverage"],
+      description: "Additional haematological agents with established regulatory approvals.",
+      subgroups: [
+        {
+          name: "Anticoagulants — Additional Agents",
+          drugs: [
+            { name: "Danaparoid", synonyms: ["Orgaran"], dose: "1250–2500 units i.v./s.c. BD–TDS (heparinoid; HIT; EMA approved — not FDA)", brands: [] },
+            { name: "Lepirudin", synonyms: ["Refludan"], dose: "0.4 mg/kg i.v. bolus; 0.15 mg/kg/hr infusion (recombinant hirudin; HIT; withdrawn — replaced by argatroban/bivalirudin)", brands: [] },
+            { name: "Tinzaparin", synonyms: ["Innohep"], dose: "175 units/kg OD s.c. (LMWH; DVT/PE treatment; FDA/EMA approved)", brands: [] },
+            { name: "Dalteparin", synonyms: ["Fragmin"], dose: "100–200 units/kg OD s.c. (LMWH; VTE treatment; FDA/EMA approved)", brands: [] },
+            { name: "Bemiparin", synonyms: ["Hibor", "Zibor"], dose: "2500–7500 units s.c. OD (LMWH; VTE prevention/treatment; EMA approved — not FDA)", brands: [] }
+          ]
+        },
+        {
+          name: "Antifibrinolytics and Haemostatics",
+          drugs: [
+            { name: "Tranexamic acid", synonyms: ["Cyklokapron", "Lysteda"], dose: "1–1.5 g TDS oral; 10–15 mg/kg i.v. 8 hourly (antifibrinolytic; trauma/surgery/menorrhagia; FDA/EMA approved)", brands: [] },
+            { name: "Aminocaproic acid", synonyms: ["Amicar"], dose: "5 g i.v. over 1 hr then 1 g/hr; 5 g oral then 1 g/hr (antifibrinolytic; haemorrhage; FDA approved)", brands: [] },
+            { name: "Desmopressin", synonyms: ["DDAVP", "Stimate"], dose: "0.3 mcg/kg i.v. over 15–30 min (VWD/mild haemophilia A; FDA/EMA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Iron — Parenteral Preparations",
+          drugs: [
+            { name: "Ferric carboxymaltose", synonyms: ["Ferinject", "Injectafer"], dose: "500–1500 mg i.v. over 15–30 min (iron deficiency anaemia; FDA/EMA approved)", brands: [] },
+            { name: "Ferric derisomaltose", synonyms: ["Monoferric", "Isomaltoside 1000"], dose: "Up to 20 mg/kg single i.v. dose (iron deficiency; FDA/EMA approved)", brands: [] },
+            { name: "Low molecular weight iron dextran", synonyms: ["INFeD", "CosmoFer"], dose: "Total dose infusion based on formula (iron deficiency; FDA/EMA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Thalassaemia and Sickle Cell — Additional",
+          drugs: [
+            { name: "Luspatercept", synonyms: ["Reblozyl"], dose: "1 mg/kg s.c. every 3 weeks (activin receptor ligand trap; anaemia in MDS and beta-thalassaemia; FDA/EMA approved)", brands: [] },
+            { name: "Mitapivat", synonyms: ["Pyrukynd"], dose: "5–50 mg BD oral (pyruvate kinase activator; haemolytic anaemia in PK deficiency/thalassaemia; FDA/EMA approved)", brands: [] },
+            { name: "Betibeglogene spartacus", synonyms: ["Zynteglo"], dose: "Single i.v. infusion post-conditioning (gene therapy; beta-thalassaemia; FDA/EMA approved)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ── GASTROENTEROLOGY EXTENDED ────────────────────────────────────────────
+    {
+      id: "22f",
+      name: "Gastroenterology — Extended Coverage",
+      synonyms: ["Additional GI Drugs", "Extended Gastroenterology Coverage"],
+      description: "Additional gastrointestinal drugs with established multi-authority approval.",
+      subgroups: [
+        {
+          name: "Gut Motility and Secretion",
+          drugs: [
+            { name: "Linaclotide", synonyms: ["Linzess", "Constella"], dose: "72–290 mcg OD oral (GC-C agonist; IBS-C/chronic idiopathic constipation; FDA/EMA approved)", brands: [] },
+            { name: "Plecanatide", synonyms: ["Trulance"], dose: "3 mg OD oral (GC-C agonist; CIC/IBS-C; FDA approved)", brands: [] },
+            { name: "Prucalopride", synonyms: ["Resolor", "Motegrity"], dose: "1–2 mg OD oral (5-HT4 agonist; chronic constipation; FDA/EMA approved)", brands: [] },
+            { name: "Lubiprostone", synonyms: ["Amitiza"], dose: "8–24 mcg BD oral with food (ClC-2 chloride channel activator; CIC/IBS-C/OIC; FDA approved)", brands: [] },
+            { name: "Tegaserod", synonyms: ["Zelnorm"], dose: "6 mg BD oral (5-HT4 partial agonist; IBS-C; FDA reapproved 2019 — limited use)", brands: [] },
+            { name: "Eluxadoline", synonyms: ["Viberzi", "Truberzi"], dose: "75–100 mg BD oral with food (mixed opioid agonist/antagonist; IBS-D; FDA/EMA approved)", brands: [] },
+            { name: "Alosetron", synonyms: ["Lotronex"], dose: "0.5–1 mg BD oral (5-HT3 antagonist; IBS-D in women; FDA — restricted use)", brands: [] }
+          ]
+        },
+        {
+          name: "Helicobacter pylori Eradication",
+          drugs: [
+            { name: "Vonoprazan", synonyms: ["Voquezna", "Takecab"], dose: "20–40 mg OD oral (PCAB; H. pylori eradication/GERD; Japan PMDA 2014 — Japan-first; FDA 2023)", brands: [] },
+            { name: "Bismuth subcitrate", synonyms: ["De-Nol", "Bismuth tripotassium dicitrate"], dose: "120 mg QID (mucosal protection/H. pylori quadruple therapy)", brands: [] },
+            { name: "Pylera", synonyms: ["Bismuth subcitrate/metronidazole/tetracycline"], dose: "3 capsules QID × 10 days with omeprazole (H. pylori quadruple therapy; FDA/EMA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Pancreatitis and Pancreatic Exocrine Insufficiency",
+          drugs: [
+            { name: "Pancrelipase", synonyms: ["Creon", "Zenpep", "Pancrease"], dose: "500–2500 lipase units/kg/meal oral (pancreatic enzyme replacement; FDA/EMA approved)", brands: [] },
+            { name: "Pegvaliase", synonyms: ["Palynziq"], dose: "2.5 mg s.c. weekly titrated to 40 mg/day (PAL enzyme substitute; PKU; EMA approved)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ── RHEUMATOLOGY AND BONE EXTENDED ───────────────────────────────────────
+    {
+      id: "22g",
+      name: "Rheumatology and Bone — Extended Coverage",
+      synonyms: ["Additional Rheumatology Drugs", "Extended Bone Drug Coverage"],
+      description: "Additional rheumatological and bone metabolism drugs with multi-authority regulatory approval.",
+      subgroups: [
+        {
+          name: "Gout — Additional Uricosurics and Agents",
+          drugs: [
+            { name: "Benzbromarone", synonyms: ["Desuric", "Narcaricin"], dose: "50–200 mg OD oral (URAT1 inhibitor; gout; EMA some markets; PMDA Japan — not FDA due to hepatotoxicity risk)", brands: [] },
+            { name: "Lesinurad", synonyms: ["Zurampic", "Duzallo"], dose: "200 mg OD oral morning with XOI (URAT1/OAT4 inhibitor; gout; FDA 2015 — withdrawn 2019 in US, still available other markets)", brands: [] }
+          ]
+        },
+        {
+          name: "Vasculitis and Rare Immune Diseases",
+          drugs: [
+            { name: "Avacopan", synonyms: ["Tavneos"], dose: "30 mg BD oral (C5aR1 antagonist; ANCA vasculitis; FDA/EMA approved 2021)", brands: [] },
+            { name: "Belimumab", synonyms: ["Benlysta"], dose: "10 mg/kg i.v. every 4 weeks or 200 mg s.c. weekly (anti-BLyS; SLE/lupus nephritis; FDA/EMA approved)", brands: [] },
+            { name: "Anifrolumab", synonyms: ["Saphnelo"], dose: "300 mg i.v. every 4 weeks (anti-IFNAR1; SLE; FDA/EMA approved 2021)", brands: [] },
+            { name: "Voclosporin", synonyms: ["Lupkynis"], dose: "23.7 mg BD oral (calcineurin inhibitor; lupus nephritis; FDA/EMA approved)", brands: [] },
+            { name: "Nidanilant", synonyms: [], dose: "", brands: [] }
+          ]
+        },
+        {
+          name: "Osteoporosis — Complete Coverage",
+          drugs: [
+            { name: "Abaloparatide", synonyms: ["Tymlos"], dose: "80 mcg s.c. OD (PTHrP analogue; osteoporosis; FDA approved 2017; EMA not approved)", brands: [] },
+            { name: "Romosozumab", synonyms: ["Evenity"], dose: "210 mg s.c. monthly × 12 months (anti-sclerostin; osteoporosis; FDA/EMA/PMDA approved 2019–2020)", brands: [] }
+          ]
+        },
+        {
+          name: "Sjögren's Syndrome, Myositis, and Other Rare Autoimmune",
+          drugs: [
+            { name: "Ianalumab", synonyms: ["Iscalimab"], dose: "", brands: [] },
+            { name: "Izokibep", synonyms: [], dose: "160 mg s.c. every 2 weeks (mini-IL-17A antibody; PsA; EMA under review)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ── INFECTIOUS DISEASE EXTENDED ─────────────────────────────────────────
+    {
+      id: "22h",
+      name: "Infectious Disease — Extended Coverage",
+      synonyms: ["Additional Anti-infective Drugs", "Extended Antibiotic Coverage"],
+      description: "Additional anti-infective agents covering antifungals, antivirals, and antibacterials with established multi-authority approval.",
+      subgroups: [
+        {
+          name: "Additional Antivirals — Herpes and CMV",
+          drugs: [
+            { name: "Amenamevir", synonyms: ["Amenalief"], dose: "200 mg OD oral × 7 days (helicase-primase inhibitor; herpes zoster; Japan PMDA approved — not FDA)", brands: [] },
+            { name: "Pritelivir", synonyms: [], dose: "", brands: [] }
+          ]
+        },
+        {
+          name: "Additional Antibiotics — Oral and Inhaled",
+          drugs: [
+            { name: "Fosfomycin trometamol", synonyms: ["Monurol", "Fosfocine"], dose: "3 g oral single dose (phosphoenolpyruvate analogue; uncomplicated UTI; FDA/EMA approved)", brands: [] },
+            { name: "Fosfomycin i.v.", synonyms: ["Infectofos", "Fosfomycin sodium"], dose: "8–24 g/day i.v. in 2–3 divided doses (complicated UTI/systemic; EMA — not FDA i.v.)", brands: [] },
+            { name: "Temocillin", synonyms: ["Negaban"], dose: "1–2 g i.v./i.m. BD (6-amidino penicillin; ESBL-producing Gram-negatives; Belgium/UK markets — not FDA)", brands: [] },
+            { name: "Mupirocin", synonyms: ["Bactroban"], dose: "2% ointment/cream topically TDS × 5–10 days (isoleucyl-tRNA synthetase inhibitor; topical MRSA/impetigo; FDA/EMA approved)", brands: [] },
+            { name: "Retapamulin", synonyms: ["Altabax", "Altargo"], dose: "1% ointment topically BD × 5 days (pleuromutilin; impetigo; FDA/EMA approved)", brands: [] },
+            { name: "Ozenoxacin", synonyms: ["Xepi", "Ozanex"], dose: "1% cream topically BD × 5 days (quinolone; impetigo; FDA approved)", brands: [] },
+            { name: "Delafloxacin", synonyms: ["Baxdela"], dose: "300 mg i.v. BD or 450 mg oral BD (fluoroquinolone; ABSSSI/CABP; FDA approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Antifungals — Additional Agents",
+          drugs: [
+            { name: "Oteseconazole", synonyms: ["Vivjoa"], dose: "600 mg OD × 2 then 450 mg × 7 then 150 mg weekly (CYP51 inhibitor; recurrent VVC; FDA 2022)", brands: [] },
+            { name: "Ibrexafungerp", synonyms: ["Brexafemme"], dose: "300 mg BD × 1 day (glucan synthase inhibitor; VVC; FDA 2021)", brands: [] },
+            { name: "Olorofim", synonyms: ["Mivafungi"], dose: "120 mg loading OD × 2 then 60 mg OD (DHODH inhibitor; rare mould infections; EMA 2024)", brands: [] },
+            { name: "Opelconazole", synonyms: [], dose: "8 mg/mL inhaled BD (novel inhaled triazole antifungal; invasive pulmonary aspergillosis; EMA under review)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-malarial — Additional Agents",
+          drugs: [
+            { name: "Ganaplacide/lumefantrine", synonyms: ["Ganaplacide"], dose: "Phase 3 (PI4K inhibitor; uncomplicated malaria)", brands: [] },
+            { name: "Cipargamin", synonyms: ["KAF156"], dose: "Phase 3 (PfPI4K inhibitor; malaria)", brands: [] },
+            { name: "Artenimol/piperaquine", synonyms: ["Eurartesim"], dose: "40/320 mg OD × 3 days (EMA approved dihydroartemisinin/piperaquine — same as DHA/PPQ in Ch12)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ── PULMONOLOGY EXTENDED ─────────────────────────────────────────────────
+    {
+      id: "22i",
+      name: "Pulmonology — Extended Coverage",
+      synonyms: ["Additional Respiratory Drugs", "Extended Pulmonology Coverage"],
+      description: "Additional respiratory drugs with established regulatory approvals.",
+      subgroups: [
+        {
+          name: "LABA/LAMA/ICS Combination Inhalers",
+          drugs: [
+            { name: "Glycopyrronium/formoterol/beclomethasone", synonyms: ["Trimbow", "Breztri Aerosphere"], dose: "2 puffs BD inhaled (LAMA/LABA/ICS triple; COPD; EMA/FDA approved)", brands: [] },
+            { name: "Fluticasone furoate/vilanterol", synonyms: ["Relvar Ellipta", "Breo Ellipta"], dose: "100/25 mcg or 200/25 mcg OD inhaled (ICS/LABA; COPD/asthma; FDA/EMA approved)", brands: [] },
+            { name: "Umeclidinium/vilanterol", synonyms: ["Anoro Ellipta", "Laventair Ellipta"], dose: "62.5/25 mcg OD inhaled (LAMA/LABA; COPD; FDA/EMA approved)", brands: [] },
+            { name: "Fluticasone furoate/umeclidinium/vilanterol", synonyms: ["Trelegy Ellipta"], dose: "100/62.5/25 mcg OD inhaled (ICS/LAMA/LABA triple; COPD/asthma; FDA/EMA approved)", brands: [] },
+            { name: "Indacaterol/glycopyrronium", synonyms: ["Ultibro Breezhaler", "Utibron Neohaler"], dose: "110/50 mcg OD inhaled (LABA/LAMA; COPD; EMA/FDA approved)", brands: [] },
+            { name: "Aclidinium/formoterol", synonyms: ["Duaklir Genuair"], dose: "340/12 mcg BD inhaled (LAMA/LABA; COPD; EMA approved)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ── NEPHROLOGY/UROLOGY EXTENDED ──────────────────────────────────────────
+    {
+      id: "22j",
+      name: "Nephrology and Urology — Extended Coverage",
+      synonyms: ["Additional Renal Drugs", "Extended Urology Coverage"],
+      description: "Additional nephrology and urology drugs with established regulatory approvals.",
+      subgroups: [
+        {
+          name: "Kidney Transplant and CKD — Additional",
+          drugs: [
+            { name: "Tolvaptan", synonyms: ["Jinarc", "Jynarque", "Samsca"], dose: "45–90 mg/day oral in 2 divided doses for ADPKD; 15–60 mg for hyponatraemia (AVP V2 antagonist; FDA/EMA/PMDA approved)", brands: [] },
+            { name: "Sparsentan", synonyms: ["Filspari", "Dupixent"], dose: "400 mg OD oral (dual ETAR/AT1 receptor antagonist; IgA nephropathy; FDA 2023; EMA 2024)", brands: [] }
+          ]
+        },
+        {
+          name: "Prostate Cancer — Additional Agents",
+          drugs: [
+            { name: "Olaparib (prostate)", synonyms: ["Lynparza"], dose: "300 mg BD oral (PARP inhibitor; HRR gene-mutated mCRPC; FDA/EMA approved)", brands: [] },
+            { name: "Rucaparib (prostate)", synonyms: ["Rubraca"], dose: "600 mg BD oral (PARP inhibitor; BRCA-mutated mCRPC; FDA withdrawn 2023 — EMA still active)", brands: [] },
+            { name: "Lutetium-177 PSMA-617", synonyms: ["Pluvicto", "177Lu-PSMA-617"], dose: "7.4 GBq (200 mCi) i.v. every 6 weeks × 6 cycles (radioligand therapy; mCRPC; FDA/EMA approved 2022)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ============================================================
+// CHAPTER 23: REGULATORY GAP FILL — ALL AUTHORITIES
+// ============================================================
+{
+  id: 23,
+  title: "Regulatory Gap Fill — FDA, EMA, MHRA, PMDA, MFDS and NMPA Missing Drugs",
+  description: "Drugs identified as approved by at least one major regulatory authority (US FDA, EU EMA, UK MHRA, Japan PMDA, South Korea MFDS, or China NMPA) but not previously covered in the extension. Organised by authority of primary approval.",
+  subclasses: [
+
+    // ─── FDA GAPS (2024-2026) ─────────────────────────────────────────────────
+    {
+      id: "23a",
+      name: "FDA Recent Approvals — Gap Fill",
+      synonyms: ["FDA Missing Drugs", "FDA 2024 2025 2026 Gaps"],
+      description: "Novel drugs approved by the US FDA in 2024–2026 not previously captured in the extension database.",
+      subgroups: [
+        {
+          name: "FDA 2024 Novel Approvals — Missing",
+          drugs: [
+            { name: "Mavorixafor", synonyms: ["Xolremdi", "X4P-001"], dose: "400 mg OD oral (CXCR4 antagonist; WHIM syndrome — warts, hypogammaglobulinaemia, infections, myelokathexis)", brands: [] },
+            { name: "LetibotulinumtoxinA", synonyms: ["Letybo"], dose: "20 units per treatment session intradermal/IM (botulinum toxin type A; glabellar lines — cosmetic)", brands: [] }
+          ]
+        },
+        {
+          name: "FDA 2026 Novel Approvals — Missing",
+          drugs: [
+            { name: "Camizestrant", synonyms: ["Etcamah", "AZD9833"], dose: "75 mg OD oral (oral SERD — selective oestrogen receptor degrader; ESR1-mutated HR+/HER2- metastatic breast cancer)", brands: [] },
+            { name: "Gadoquatrane", synonyms: ["Ambelvist", "BAY1747846"], dose: "0.05 mmol/kg i.v. bolus (manganese-based MRI contrast agent; first non-gadolinium MRI contrast approved by FDA)", brands: [] },
+            { name: "Icotrokinra", synonyms: ["Icotyde", "Icotydem", "izokibep-derived IL-17C antagonist"], dose: "Per prescribing information (anti-IL-17C antibody; moderate-to-severe plaque psoriasis ≥12 years)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── EMA / EU GAPS ───────────────────────────────────────────────────────
+    {
+      id: "23b",
+      name: "EMA-Specific and EU-First Approvals — Gap Fill",
+      synonyms: ["EMA Missing Drugs", "EU-Specific Drug Gaps", "MHRA Missing"],
+      description: "Drugs approved by the European Medicines Agency (EMA) or UK MHRA that were not captured in the main EMA expansion chapter.",
+      subgroups: [
+        {
+          name: "EMA Oncology — Not Yet FDA Approved",
+          drugs: [
+            { name: "Volrustomig", synonyms: ["Zoevra", "AZD2936", "MEDI5752"], dose: "300 mg i.v. every 3 weeks (PD-1 × TIGIT bispecific monoclonal antibody; unresectable/metastatic PD-L1-positive NSCLC — first approved PD-1/TIGIT bispecific globally; EMA 2024; MHRA 2024)", brands: [] },
+            { name: "Melfaralan flufenamide", synonyms: ["Pepaxti", "melflufen", "J1"], dose: "40 mg i.v. day 1 of 28-day cycle (peptide-drug conjugate delivering melphalan; relapsed/refractory multiple myeloma; EMA 2023 — FDA withdrew approval 2021 due to survival concern in certain subgroup)", brands: [] },
+            { name: "Tafasitamab", synonyms: ["Minjuvi", "MOR208"], dose: "12 mg/kg i.v. weekly × 3 cycles, then every 2 weeks (anti-CD19 mAb; relapsed/refractory DLBCL with lenalidomide; EMA 2021; FDA 2020 as Monjuvi)", brands: [] },
+            { name: "Brexucabtagene autoleucel", synonyms: ["Tecartus", "KTE-X19"], dose: "Single i.v. infusion 2 × 10⁶ anti-CD19 CAR-T cells/kg (mantle cell lymphoma and B-cell ALL; EMA 2021; FDA 2020)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── JAPAN PMDA GAPS ─────────────────────────────────────────────────────
+    {
+      id: "23c",
+      name: "Japan PMDA — Gap Fill",
+      synonyms: ["PMDA Missing Drugs", "Japan Domestic Drug Gaps"],
+      description: "Japan PMDA-approved drugs not previously included in the extension. Includes Japan-domestic drugs and PMDA-first approvals.",
+      subgroups: [
+        {
+          name: "PMDA Cardiovascular — Japan Domestic",
+          drugs: [
+            { name: "Benidipine", synonyms: ["Coniel", "benidipine hydrochloride"], dose: "2–8 mg OD oral (dihydropyridine calcium channel blocker with L/N/T triple-channel activity; hypertension and angina; Japan domestic — widely prescribed in Japan and China; not FDA/EMA)", brands: [] }
+          ]
+        },
+        {
+          name: "PMDA Oncology — PMDA-First or PMDA-Specific",
+          drugs: [
+            { name: "Avadomide", synonyms: ["CC-122", "iberdomide precursor"], dose: "Per prescribing information (cereblon E3 ligase modulator/CELMoD; relapsed/refractory DLBCL; Japan PMDA 2024 — Japan-first approval)", brands: [] },
+            { name: "Fruquintinib", synonyms: ["Fruzaqla", "HMPL-013"], dose: "5 mg OD oral × 21 days of 28-day cycle (highly selective VEGFR-1/2/3 inhibitor; metastatic colorectal cancer 3rd-line+; China NMPA 2018 — first approval; Japan PMDA 2020; FDA 2023)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── SOUTH KOREA MFDS GAPS ───────────────────────────────────────────────
+    {
+      id: "23d",
+      name: "South Korea MFDS — Domestic Drug Approvals",
+      synonyms: ["Korea MFDS Drugs", "Korean Domestic Drug Approvals", "MFDS Missing"],
+      description: "Drugs approved by South Korea's Ministry of Food and Drug Safety (MFDS) that represent domestic Korean pharmaceutical innovations not available in Western markets. South Korea has a robust domestic pharmaceutical industry.",
+      subgroups: [
+        {
+          name: "Korea DPP-4 Inhibitors — Domestic",
+          drugs: [
+            { name: "Gemigliptin", synonyms: ["Zemiglo", "LC15-0444"], dose: "50 mg OD oral (selective DPP-4 inhibitor; type 2 diabetes mellitus; MFDS 2012 — first Korean-developed DPP-4 inhibitor; widely used in Asia)", brands: [] },
+            { name: "Evogliptin", synonyms: ["Suganon", "DA-1229"], dose: "5 mg OD oral (selective DPP-4 inhibitor; type 2 diabetes mellitus; MFDS 2015 — Korean domestic development)", brands: [] }
+          ]
+        },
+        {
+          name: "Korea PPARγ Agonist — Domestic",
+          drugs: [
+            { name: "Lobeglitazone", synonyms: ["Duvie", "CJ-12918"], dose: "0.5 mg OD oral (PPARγ agonist, thiazolidinedione class; type 2 diabetes mellitus; MFDS 2013 — Korean-developed TZD with lower fluid retention vs. older agents)", brands: [] }
+          ]
+        },
+        {
+          name: "Korea P-CAB Agents",
+          drugs: [
+            { name: "Tegoprazan", synonyms: ["K-CAB", "CJ-12420"], dose: "50 mg OD oral (potassium-competitive acid blocker; GERD, erosive oesophagitis, H. pylori eradication; MFDS 2018 — Korea-first; also approved China, Vietnam, select Asian markets; FDA not approved)", brands: [] },
+            { name: "Fexuprazan", synonyms: ["Keprazan", "HK-0001"], dose: "40 mg OD oral (next-generation potassium-competitive acid blocker; GERD; MFDS 2022 — second Korean-developed P-CAB; some Asian markets)", brands: [] }
+          ]
+        },
+        {
+          name: "Korea Antibiotics — Domestic",
+          drugs: [
+            { name: "Cefdinir", synonyms: ["Omnicef", "Cefzon", "Sefdin"], dose: "300 mg BD or 600 mg OD oral (3rd-generation oral cephalosporin; respiratory tract infections, skin infections; FDA 1997; Japan 1991; Korea widely used — capturing here for completeness as ophthalmic/systemic broad-use agent)", brands: [] }
+          ]
+        },
+        {
+          name: "Korea Ophthalmic — Domestic",
+          drugs: [
+            { name: "Olopatadine ophthalmic", synonyms: ["Patanol", "Pataday", "Olopatadine HCl eye drops"], dose: "0.1% drops BD (Patanol); 0.2% drops OD (Pataday); 0.7% drops OD (Pazeo) (selective H1 antihistamine + mast cell stabiliser; allergic conjunctivitis; FDA 1996 ophthalmic; Korea/Japan/multi-market — capturing specific ophthalmic formulation separately)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── CHINA NMPA GAPS ─────────────────────────────────────────────────────
+    {
+      id: "23e",
+      name: "China NMPA — Domestic Innovation Gap Fill",
+      synonyms: ["NMPA Missing Drugs", "China Domestic Drug Gaps", "Chinese Pharmaceutical Innovation"],
+      description: "Chinese domestically-developed drugs approved by China's National Medical Products Administration (NMPA) not captured in the main NMPA expansion. China has become a major centre of pharmaceutical innovation, particularly in oncology.",
+      subgroups: [
+        {
+          name: "NMPA Oncology Immunotherapy — Domestic Innovations",
+          drugs: [
+            { name: "Serplulimab", synonyms: ["Hansizhuang", "SCT-I10A"], dose: "4.5 mg/kg i.v. every 3 weeks (anti-PD-1 IgG4 mAb; MSI-H/dMMR solid tumours, oesophageal SCC; NMPA 2022 — China domestic; FDA/EMA not approved)", brands: [] },
+            { name: "Envafolimab", synonyms: ["Enweida", "KN035"], dose: "150 mg s.c. weekly (anti-PD-L1 single-domain antibody/nanobody; MSI-H/dMMR solid tumours; NMPA 2021 — world's first approved anti-PD-L1 nanobody; subcutaneous administration — unique feature)", brands: [] },
+            { name: "Ligufalimab", synonyms: ["Jienuo", "AK117"], dose: "Per prescribing information (anti-CD47 mAb; relapsed/refractory T-cell lymphoma; NMPA 2023 — first globally approved anti-CD47 monoclonal antibody)", brands: [] }
+          ]
+        },
+        {
+          name: "NMPA HER2-Targeted — Domestic Innovations",
+          drugs: [
+            { name: "Pyrotinib", synonyms: ["Arthercitinib", "Zifaxin", "SHR1258"], dose: "400 mg OD oral (irreversible pan-ErbB TKI — blocks EGFR/HER2/HER4; HER2-positive advanced breast cancer; NMPA 2018 — China domestic; FDA/EMA not approved)", brands: [] },
+            { name: "Inetetamab", synonyms: ["Herkessi", "SCT200"], dose: "8 mg/kg i.v. loading, then 6 mg/kg every 3 weeks (anti-HER2 mAb targeting unique epitope; HER2-positive breast and gastric cancer; NMPA 2020 — China domestic)", brands: [] },
+            { name: "Disitamab vedotin", synonyms: ["Aidixi", "RC48", "RC48-ADC"], dose: "2 mg/kg i.v. every 2 weeks (anti-HER2 antibody-drug conjugate with MMAE payload; HER2-overexpressing gastric and urothelial cancer; NMPA 2021 — China domestic; FDA Breakthrough Therapy designation for multiple indications)", brands: [] }
+          ]
+        },
+        {
+          name: "NMPA Gastroenterology — Domestic and Asia-Market",
+          drugs: [
+            { name: "Tegoprazan", synonyms: ["K-CAB"], dose: "50 mg OD oral (potassium-competitive acid blocker; GERD/H. pylori; Korea-first 2018; NMPA 2022 — also listed under Korea MFDS)", brands: [] }
+          ]
+        },
+        {
+          name: "NMPA Haematology Oncology — Domestic",
+          drugs: [
+            { name: "Fruquintinib", synonyms: ["Elunate", "Fruzaqla", "HMPL-013"], dose: "5 mg OD oral × 21 days of 28-day cycle (highly selective pan-VEGFR inhibitor; 3rd-line+ metastatic colorectal cancer; NMPA 2018 — first global approval; Japan PMDA 2020; FDA 2023 — also listed under PMDA section)", brands: [] }
+          ]
+        }
+      ]
+    },
+
+    // ─── MULTI-AUTHORITY DRUGS THAT WERE SIMPLY MISSED ───────────────────────
+    {
+      id: "23f",
+      name: "Multi-Authority Approved Drugs — Missed in Earlier Chapters",
+      synonyms: ["Additional Missed Drugs", "Widely Approved Missed Drugs"],
+      description: "Drugs with multi-authority approval across FDA, EMA, and other regulators that were inadvertently missed during the main expansion phases.",
+      subgroups: [
+        {
+          name: "Oncology — Widely Approved Missed Drugs",
+          drugs: [
+            { name: "Selumetinib", synonyms: ["Koselugo", "AZD6244"], dose: "25 mg/m² BD oral (MEK1/2 inhibitor; NF1-associated plexiform neurofibromas ≥2 years; FDA 2020; EMA 2021; PMDA 2021)", brands: [] },
+            { name: "Belumosudil", synonyms: ["Rezurock", "KD025"], dose: "200 mg OD oral (selective ROCK2 inhibitor; chronic graft-versus-host disease; FDA 2021; EMA under review)", brands: [] },
+            { name: "Loncastuximab tesirine", synonyms: ["Zynlonta", "ADCT-402"], dose: "0.15 mg/kg i.v. every 3 weeks (anti-CD19 ADC; relapsed/refractory DLBCL; FDA 2021; EMA 2022)", brands: [] },
+            { name: "Tebentafusp", synonyms: ["Kimmtrak", "IMCgp100"], dose: "68 mcg i.v. weekly (ImmTAC — gp100-peptide/HLA-A*02:01 × CD3 bispecific; uveal melanoma; FDA 2022; EMA 2022 — only systemic therapy approved for uveal melanoma)", brands: [] },
+            { name: "Lurbinectedin", synonyms: ["Zepzelca", "PM1183"], dose: "3.2 mg/m² i.v. every 3 weeks (synthetic alkaloid RNA polymerase II inhibitor; metastatic SCLC; FDA 2020; EMA 2021; PMDA)", brands: [] },
+            { name: "Lisocabtagene maraleucel", synonyms: ["Liso-cel", "Breyanzi"], dose: "Single i.v. infusion (anti-CD19 CAR-T cell therapy; relapsed/refractory large B-cell lymphoma; FDA 2021; EMA 2022)", brands: [] },
+            { name: "Retifanlimab", synonyms: ["Zynyz", "INCMGA00012"], dose: "500 mg i.v. every 4 weeks (anti-PD-1 mAb; MSI-H endometrial carcinoma; anal cancer; FDA 2023; EMA 2023)", brands: [] },
+            { name: "Olutasidenib", synonyms: ["Rezlidhia", "FT-2102"], dose: "150 mg BD oral (IDH1 mutant-selective inhibitor; relapsed/refractory IDH1-mutated AML; FDA 2022; EMA 2024)", brands: [] }
+          ]
+        },
+        {
+          name: "CNS — Widely Approved Missed Drugs",
+          drugs: [
+            { name: "Zuranolone", synonyms: ["Zurzuvae", "SAGE-217"], dose: "50 mg OD oral × 14 nights (neuroactive steroid GABA-A receptor positive allosteric modulator; postpartum depression and major depressive disorder; FDA 2023; EMA 2024)", brands: [] },
+            { name: "Brexanolone", synonyms: ["Zulresso", "SAGE-547"], dose: "60-hour continuous i.v. infusion (escalated per protocol: 30→60→90 mcg/kg/hr) (neuroactive steroid; postpartum depression; first PPD-specific drug; FDA 2019)", brands: [] },
+            { name: "Eptinezumab", synonyms: ["Vyepti", "ALD403"], dose: "100–300 mg i.v. every 3 months (anti-CGRP mAb; preventive migraine treatment — unique i.v. formulation; FDA 2020; EMA 2023)", brands: [] },
+            { name: "Cenobamate", synonyms: ["Xcopri", "Ontozry", "YKP3089"], dose: "12.5 mg OD titrated every 2 weeks to 100–400 mg OD oral (INaP blocker + GABA-A PAM; focal-onset seizures; FDA 2019; EMA 2021)", brands: [] },
+            { name: "Brivaracetam", synonyms: ["Briviact", "UCB34714"], dose: "25–100 mg BD oral or i.v. (selective high-affinity SV2A ligand; focal-onset seizures; FDA 2016; EMA 2016)", brands: [] },
+            { name: "Eslicarbazepine acetate", synonyms: ["Aptiom", "Zebinix"], dose: "400–1600 mg OD oral (voltage-gated sodium channel blocker — prodrug of eslicarbazepine; focal seizures; FDA 2013; EMA 2009)", brands: [] },
+            { name: "Perampanel", synonyms: ["Fycompa"], dose: "2–12 mg OD oral at bedtime (first-in-class AMPA receptor antagonist; focal and generalised seizures; FDA 2012; EMA 2012)", brands: [] },
+            { name: "Fenfluramine", synonyms: ["Fintepla"], dose: "0.1 mg/kg BD oral; max 0.35 mg/kg/day (serotonin-releasing and sigma-1 receptor agonist; Dravet syndrome and Lennox-Gastaut seizures; FDA 2020; EMA 2020; PMDA 2023)", brands: [] },
+            { name: "Stiripentol", synonyms: ["Diacomit"], dose: "50 mg/kg/day oral in 2–3 doses (GABA-A PAM + inhibits cytochrome P450; Dravet syndrome — adjunct to clobazam+valproate; EMA 2007; FDA 2018; PMDA)", brands: [] },
+            { name: "Rufinamide", synonyms: ["Banzel", "Inovelon"], dose: "400–3200 mg/day oral in 2 divided doses (sodium channel modulator; Lennox-Gastaut syndrome; FDA 2008; EMA 2007; PMDA)", brands: [] },
+            { name: "Lofexidine", synonyms: ["Lucemyra", "BritLofex"], dose: "0.54 mg QID oral × ≤14 days (central α2-adrenoceptor agonist; opioid withdrawal symptom management; FDA 2018; MHRA licensed in UK historically)", brands: [] },
+            { name: "Pimavanserin", synonyms: ["Nuplazid", "ACP-103"], dose: "34 mg OD oral (selective 5-HT2A inverse agonist; hallucinations and delusions in Parkinson's disease psychosis; FDA 2016 — first drug specifically for PD psychosis)", brands: [] },
+            { name: "Lumateperone", synonyms: ["Caplyta", "ITI-007"], dose: "42 mg OD oral (multimodal: 5-HT2A antagonist + dopamine D2 modulator + GluN2B phosphoregulator; schizophrenia and bipolar depression; FDA 2019/2021)", brands: [] },
+            { name: "Cariprazine", synonyms: ["Vraylar", "Reagila"], dose: "1.5–6 mg OD oral (D3/D2 partial agonist with preference for D3; schizophrenia, bipolar mania, bipolar depression; FDA 2015; EMA 2017)", brands: [] }
+          ]
+        },
+        {
+          name: "Cardiovascular — Missed Drugs",
+          drugs: [
+            { name: "Dronedarone", synonyms: ["Multaq", "SR33589"], dose: "400 mg BD oral with morning and evening meals (multichannel antiarrhythmic — all Vaughan-Williams classes; non-permanent AF; FDA 2009; EMA 2009)", brands: [] },
+            { name: "Vernakalant", synonyms: ["Brinavess", "RSD1235"], dose: "3 mg/kg i.v. over 10 min; repeat 2 mg/kg if no conversion after 15 min (atria-selective sodium/potassium channel blocker; rapid cardioversion of recent-onset AF; EMA 2010 — not FDA approved due to safety concerns in HF)", brands: [] },
+            { name: "Ibutilide", synonyms: ["Corvert"], dose: "1 mg i.v. over 10 min; may repeat once (IKr activator/sodium channel activator; acute termination of AF/AFL; FDA 1995)", brands: [] },
+            { name: "Dofetilide", synonyms: ["Tikosyn"], dose: "125–500 mcg BD oral (dose based on renal function and QTc) (IKr blocker; maintenance of sinus rhythm in AF/AFL; FDA 1999 — REMS required)", brands: [] },
+            { name: "Propafenone", synonyms: ["Rythmol", "Arythmol"], dose: "150–300 mg TDS oral; 225–425 mg BD (SR) oral (Class IC sodium channel blocker + weak β-blocker; AF/VT/SVT; FDA 1989; EMA)", brands: [] },
+            { name: "Levosimendan", synonyms: ["Simdax", "OR-1259"], dose: "0.05–0.2 mcg/kg/min i.v. infusion × 24 hr (calcium sensitiser + PDE III inhibitor + KATP channel opener; acute decompensated heart failure; EMA/PMDA/many markets — not FDA approved)", brands: [] },
+            { name: "Nesiritide", synonyms: ["Natrecor"], dose: "2 mcg/kg i.v. bolus then 0.01 mcg/kg/min infusion (recombinant human BNP; acute decompensated heart failure; FDA 2001)", brands: [] },
+            { name: "Bempedoic acid", synonyms: ["Nexletol", "Nilemdo", "ETC-1002"], dose: "180 mg OD oral (ATP-citrate lyase inhibitor; LDL-C reduction in statin-intolerant patients; FDA 2020; EMA 2020)", brands: [] },
+            { name: "Bempedoic acid/ezetimibe", synonyms: ["Nexlizet", "Nustendi"], dose: "180/10 mg OD oral (combination tablet; hypercholesterolaemia; FDA 2020; EMA 2020)", brands: [] },
+            { name: "Lomitapide", synonyms: ["Juxtapid", "Lojuxta"], dose: "5 mg OD oral titrated to 60 mg OD (MTP inhibitor; homozygous familial hypercholesterolaemia; FDA 2012; EMA 2013)", brands: [] },
+            { name: "Mipomersen", synonyms: ["Kynamro"], dose: "200 mg s.c. weekly (APOB ASO; homozygous FH; FDA 2013 — EMA refused; withdrawn from US market 2019)", brands: [] },
+            { name: "Eplerenone", synonyms: ["Inspra", "Elecor"], dose: "25–50 mg OD oral (selective mineralocorticoid receptor antagonist; post-MI HFrEF and hypertension; FDA 2002; EMA)", brands: [] },
+            { name: "Milrinone", synonyms: ["Primacor"], dose: "50 mcg/kg i.v. over 10 min; then 0.375–0.75 mcg/kg/min infusion (PDE3 inhibitor with positive inotropic and vasodilator effects; acute decompensated heart failure; FDA 1987)", brands: [] },
+            { name: "Nitroprusside", synonyms: ["Nipride", "Nitropress", "Sodium nitroprusside"], dose: "0.3–10 mcg/kg/min i.v. infusion (arteriovenous vasodilator via NO release; hypertensive emergencies; acute HF — multi-authority approval)", brands: [] }
+          ]
+        },
+        {
+          name: "GI and Hepatology — Missed Drugs",
+          drugs: [
+            { name: "Vonoprazan", synonyms: ["Voquezna", "Takecab", "TAK-438"], dose: "10–20 mg OD oral; 20 mg BD for H. pylori eradication (potassium-competitive acid blocker; GERD and H. pylori eradication; Japan PMDA 2014 — Japan-first; FDA 2023; also approved Korea, China, other Asian markets)", brands: [] },
+            { name: "Linaclotide", synonyms: ["Linzess", "Constella", "MD-1100"], dose: "72 mcg OD (IBS-C adjunct); 145 mcg OD (IBS-C); 290 mcg OD (CIC) oral 30 min before first meal (GCC agonist; IBS-C and chronic idiopathic constipation; FDA 2012; EMA 2012)", brands: [] },
+            { name: "Plecanatide", synonyms: ["Trulance"], dose: "3 mg OD oral (GCC agonist uroguanylin analogue; CIC and IBS-C; FDA 2017)", brands: [] },
+            { name: "Prucalopride", synonyms: ["Resolor", "Motegrity", "R108512"], dose: "1–2 mg OD oral (highly selective 5-HT4 agonist; chronic constipation; FDA 2018; EMA 2009 — EMA approved 9 years before FDA)", brands: [] },
+            { name: "Eluxadoline", synonyms: ["Viberzi", "Truberzi", "JNJ-27018966"], dose: "75–100 mg BD oral with food (μ-opioid receptor agonist + δ-opioid antagonist + κ-agonist; IBS-D; FDA 2015; EMA 2017)", brands: [] },
+            { name: "Lubiprostone", synonyms: ["Amitiza"], dose: "8 mcg BD (IBS-C in women) or 24 mcg BD (CIC/OIC) oral with food (ClC-2 chloride channel activator; FDA 2006/2008)", brands: [] },
+            { name: "Sparsentan", synonyms: ["Filspari", "RE-021"], dose: "400 mg OD oral (dual endothelin receptor/angiotensin II receptor antagonist; IgA nephropathy with proteinuria; FDA 2023; EMA 2024)", brands: [] },
+            { name: "Odevixibat", synonyms: ["Bylvay", "A4250"], dose: "40–120 mcg/kg OD oral (ileal bile acid transporter inhibitor; progressive familial intrahepatic cholestasis types 1 and 2; FDA 2021; EMA 2021)", brands: [] },
+            { name: "Maralixibat", synonyms: ["Livmarli", "SHP625"], dose: "70–280 mcg/kg OD oral (IBAT inhibitor; Alagille syndrome cholestatic pruritus; FDA 2021; EMA 2022)", brands: [] }
+          ]
+        },
+        {
+          name: "Rheumatology and Immunology — Missed Drugs",
+          drugs: [
+            { name: "Avacopan", synonyms: ["Tavneos", "CCX168"], dose: "30 mg BD oral (selective C5a receptor antagonist; ANCA-associated vasculitis in combination with rituximab or cyclophosphamide; FDA 2021; EMA 2022)", brands: [] },
+            { name: "Anifrolumab", synonyms: ["Saphnelo", "MEDI3506"], dose: "300 mg i.v. every 4 weeks (anti-IFNAR1 mAb — blocks type I interferon signalling; moderate-severe SLE; FDA 2021; EMA 2022)", brands: [] },
+            { name: "Voclosporin", synonyms: ["Lupkynis", "ISA247"], dose: "23.7 mg BD oral (enhanced calcineurin inhibitor with rapid linear PK; active lupus nephritis; FDA 2021; EMA 2022)", brands: [] },
+            { name: "Spesolimab", synonyms: ["Spevigo", "BI 655130"], dose: "900 mg i.v. single dose (acute flare); 600 mg s.c. every 4 weeks (prevention) (anti-IL-36R mAb; generalised pustular psoriasis; FDA 2022; EMA 2023)", brands: [] }
+          ]
+        },
+        {
+          name: "Haematology — Missed Drugs",
+          drugs: [
+            { name: "Luspatercept", synonyms: ["Reblozyl", "ACE-536"], dose: "1 mg/kg s.c. every 3 weeks; max 1.75 mg/kg (activin receptor type IIB ligand trap; anaemia in MDS and beta-thalassaemia; FDA 2019/2020; EMA 2020)", brands: [] },
+            { name: "Betibeglogene spartacus", synonyms: ["Zynteglo", "bb2121 beta-globin"], dose: "Single i.v. infusion after myeloablative conditioning (lentiviral gene therapy adding functional beta-globin gene; transfusion-dependent beta-thalassaemia; FDA 2022; EMA 2019)", brands: [] },
+            { name: "Tranexamic acid", synonyms: ["Cyklokapron", "Lysteda", "TXA"], dose: "1–1.5 g TDS oral; 10–15 mg/kg i.v. every 8 hr (competitive inhibitor of plasminogen activation — antifibrinolytic; trauma/surgical haemorrhage/menorrhagia; FDA/EMA/PMDA/NMPA)", brands: [] },
+            { name: "Aminocaproic acid", synonyms: ["Amicar", "epsilon-aminocaproic acid"], dose: "5 g i.v. over 1 hr loading; then 1–1.25 g/hr; 5 g oral then 1 g/hr (antifibrinolytic; uncontrolled bleeding from fibrinolysis; FDA approved)", brands: [] },
+            { name: "Ferric carboxymaltose", synonyms: ["Ferinject", "Injectafer", "FCM"], dose: "500–1000 mg i.v. over 15–30 min; max 1500 mg/course (high-dose i.v. iron with minimal risk of anaphylaxis; IDA; FDA 2013; EMA 2007)", brands: [] },
+            { name: "Ferric derisomaltose", synonyms: ["Monoferric", "Isomaltoside 1000", "Diafer"], dose: "500–1500 mg i.v. per course; single infusion up to 20 mg/kg (high-dose single infusion i.v. iron; IDA; FDA 2020; EMA 2009 — EMA approved 11 years before FDA)", brands: [] }
+          ]
+        },
+        {
+          name: "Pulmonology — Missed Drugs",
+          drugs: [
+            { name: "Glycopyrronium/formoterol/beclomethasone", synonyms: ["Trimbow", "Breztri Aerosphere"], dose: "2 puffs BD inhaled (LAMA/LABA/ICS triple therapy; COPD; EMA 2017; FDA 2020; PMDA)", brands: [] },
+            { name: "Fluticasone furoate/vilanterol", synonyms: ["Relvar Ellipta", "Breo Ellipta"], dose: "100/25 mcg or 200/25 mcg OD inhaled (ICS/LABA; asthma and COPD; FDA 2013/2015; EMA 2013)", brands: [] },
+            { name: "Umeclidinium/vilanterol", synonyms: ["Anoro Ellipta", "Laventair Ellipta"], dose: "62.5/25 mcg OD inhaled (LAMA/LABA combination; COPD; FDA 2013; EMA 2013)", brands: [] },
+            { name: "Fluticasone furoate/umeclidinium/vilanterol", synonyms: ["Trelegy Ellipta"], dose: "100/62.5/25 mcg OD inhaled (ICS/LAMA/LABA triple; COPD maintenance and asthma; FDA 2017; EMA 2017)", brands: [] },
+            { name: "Indacaterol/glycopyrronium", synonyms: ["Ultibro Breezhaler", "Utibron Neohaler"], dose: "110/50 mcg OD inhaled (LABA/LAMA combination; COPD; EMA 2013; FDA 2015)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-infectives — Missed Drugs",
+          drugs: [
+            { name: "Fosfomycin oral", synonyms: ["Monurol", "Fosfocine", "fosfomycin trometamol"], dose: "3 g oral single dose dissolved in water (cell wall synthesis inhibitor — phosphoenolpyruvate analogue; uncomplicated lower UTI; FDA 1996; EMA widely approved)", brands: [] },
+            { name: "Mupirocin", synonyms: ["Bactroban", "Centany", "pseudomonic acid"], dose: "2% ointment/cream topically TDS × 5–10 days; 2% nasal ointment BD × 5 days (isoleucyl-tRNA synthetase inhibitor; skin infections/impetigo; MRSA nasal decolonisation; FDA 1987/2000; EMA)", brands: [] },
+            { name: "Retapamulin", synonyms: ["Altabax", "Altargo"], dose: "1% ointment topically BD × 5 days (pleuromutilin class; impetigo and skin infections; FDA 2007; EMA 2007)", brands: [] },
+            { name: "Temocillin", synonyms: ["Negaban", "BRL17421"], dose: "1–2 g i.v./i.m. every 12 hr (6-amidino penicillin stable to most β-lactamases including ESBLs; Gram-negative infections — particularly ESBL-producing Enterobacterales; Belgium/UK/other European markets — not FDA)", brands: [] },
+            { name: "Ozenoxacin", synonyms: ["Xepi", "Ozanex"], dose: "1% cream topically BD × 5 days (quinolone; impetigo; FDA 2017)", brands: [] },
+            { name: "Bulevirtide", synonyms: ["Hepcludex", "MyrB", "Myrcludex B"], dose: "2 mg s.c. OD (viral entry inhibitor targeting NTCP receptor; chronic hepatitis D virus infection; EMA 2020 conditional; FDA 2026 — first approved anti-HDV drug globally)", brands: [] }
+          ]
+        },
+        {
+          name: "Nephrology and Urology — Missed Drugs",
+          drugs: [
+            { name: "Tolvaptan", synonyms: ["Jinarc", "Jynarque", "Samsca", "OPC-41061"], dose: "15–60 mg/day in 2 doses for hyponatraemia (Samsca); 45/15 mg titrated to 90/30 mg or 60/30 mg daily for ADPKD (Jinarc/Jynarque) oral (vasopressin V2 receptor antagonist — aquaretic; hyponatraemia and ADPKD; FDA/EMA/PMDA all approved)", brands: [] },
+            { name: "Sparsentan", synonyms: ["Filspari", "RE-021"], dose: "400 mg OD oral (dual endothelin-A receptor and angiotensin II type 1 receptor antagonist; IgA nephropathy; FDA 2023; EMA 2024 — also listed under GI section as overlap)", brands: [] }
+          ]
+        },
+        {
+          name: "Endocrinology and Metabolism — Missed Drugs",
+          drugs: [
+            { name: "Osilodrostat", synonyms: ["Isturisa", "LCI699"], dose: "2 mg BD oral, titrated to 30 mg BD (11β-hydroxylase inhibitor; Cushing's disease; FDA 2020; EMA 2020)", brands: [] },
+            { name: "Pasireotide", synonyms: ["Signifor", "Signifor LAR", "SOM230"], dose: "s.c.: 0.6–0.9 mg BD; LAR i.m.: 10–40 mg every 4 weeks (multi-receptor somatostatin analogue SST1/2/3/5; Cushing's disease and acromegaly; FDA 2012/2014; EMA)", brands: [] },
+            { name: "Metyrapone", synonyms: ["Metopirone"], dose: "250 mg–6 g/day oral in divided doses (11β-hydroxylase inhibitor; diagnostic testing and treatment of Cushing's syndrome; FDA; EMA approved for treatment in EU)", brands: [] },
+            { name: "Somatrogon", synonyms: ["Ngenla", "MOD-4023"], dose: "0.66 mg/kg s.c. weekly (long-acting GH fusion protein with C-terminal peptides of hCG; paediatric GHD; EMA 2021 — EU-first; FDA 2023)", brands: [] },
+            { name: "Vosoritide", synonyms: ["Voxzogo", "BMN 111"], dose: "15 mcg/kg s.c. OD (C-type natriuretic peptide analogue; achondroplasia in children with open growth plates; FDA 2021; EMA 2021)", brands: [] },
+            { name: "Setmelanotide", synonyms: ["Imcivree", "RM-493"], dose: "2–3 mg s.c. OD titrated (MC4R agonist; obesity due to POMC/PCSK1/LEPR deficiency or Bardet-Biedl syndrome; FDA 2020/2022; EMA 2021)", brands: [] },
+            { name: "Burosumab", synonyms: ["Crysvita", "KRN23"], dose: "0.8 mg/kg s.c. every 4 weeks (adult); 0.8–2 mg/kg s.c. every 2 weeks (paediatric) (anti-FGF23 mAb; X-linked hypophosphataemia; FDA 2018; EMA 2018)", brands: [] },
+            { name: "Cinacalcet", synonyms: ["Sensipar", "Mimpara", "AMG 073"], dose: "30–180 mg OD oral (calcimimetic allosteric CaSR activator; secondary hyperparathyroidism in CKD on dialysis; parathyroid carcinoma; FDA 2004; EMA 2004)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ============================================================
+// CHAPTER 24: DRUG CLASS COMPLETENESS — CILNIDIPINE AND ALL GAPS
+// ============================================================
+{
+  id: 24,
+  title: "Drug Class Completeness — Classical and Regional Drug Coverage",
+  description: "Classical drugs and regional market approvals filling gaps in established pharmacological classes — calcium channel blockers (including cilnidipine), ARBs, ACE inhibitors, diuretics, antibiotics, antifungals, antiulcer agents, and Asian-market antidiabetics.",
+  subclasses: [
+    {
+      id: "24a",
+      name: "Calcium Channel Blockers — Complete Coverage",
+      synonyms: ["CCBs", "Dihydropyridines", "Calcium Antagonists"],
+      description: "Complete coverage of the calcium channel blocker class. Dihydropyridines act primarily on vascular smooth muscle (peripheral vasodilators); phenylalkylamines and benzothiazepines have additional cardiac effects. Cilnidipine is unique as a dual L/N-type blocker with sympatholytic properties.",
+      subgroups: [
+        {
+          name: "Dihydropyridines — Cilnidipine (L/N-type)",
+          drugs: [
+            { name: "Cilnidipine", synonyms: ["Cilacar", "Cinod", "Atelec", "Cinalong"], dose: "5–20 mg OD oral (dual L-type and N-type calcium channel blocker; hypertension — unique N-type blockade reduces sympathetic noradrenaline release and reflex tachycardia; PMDA 1995; NMPA; MFDS; widely used India/Japan/China/Korea; not FDA/EMA)", brands: [] }
+          ]
+        },
+        {
+          name: "Dihydropyridines — 2nd Generation",
+          drugs: [
+            { name: "Nicardipine", synonyms: ["Cardene", "Perdipine"], dose: "20–40 mg TDS oral; 5–15 mg/hr i.v. infusion (IV for hypertensive urgency/perioperative; FDA/EMA/PMDA approved)", brands: [] },
+            { name: "Nimodipine", synonyms: ["Nimotop", "Nymalize"], dose: "60 mg every 4 hr oral or nasogastric × 21 days; 0.5–2 mg/hr i.v. (cerebral vasospasm after subarachnoid haemorrhage; FDA/EMA/PMDA)", brands: [] },
+            { name: "Isradipine", synonyms: ["DynaCirc", "Prescal"], dose: "2.5–10 mg BD oral (hypertension; FDA/EMA)", brands: [] },
+            { name: "Nitrendipine", synonyms: ["Bayotensin", "Nitrepin"], dose: "10–20 mg OD–BD oral (hypertension; EMA/PMDA — not FDA)", brands: [] },
+            { name: "Lacidipine", synonyms: ["Motens", "Lacipil"], dose: "4–6 mg OD oral (hypertension; EMA — not FDA)", brands: [] },
+            { name: "Lercanidipine", synonyms: ["Zanidip", "Lercapin"], dose: "10–20 mg OD oral (long-acting; hypertension; EMA/PMDA — not FDA)", brands: [] },
+            { name: "Barnidipine", synonyms: ["Vasexten", "Libradin"], dose: "10–20 mg OD oral (hypertension; EMA/PMDA — not FDA)", brands: [] },
+            { name: "Manidipine", synonyms: ["Calslot", "Iperten"], dose: "10–20 mg OD oral (hypertension; EMA/PMDA/NMPA — not FDA)", brands: [] },
+            { name: "Azelnidipine", synonyms: ["Calblock", "AZD-520"], dose: "8–16 mg OD oral (hypertension; PMDA — Japan-developed; not FDA/EMA)", brands: [] },
+            { name: "Efonidipine", synonyms: ["Landel"], dose: "20–40 mg OD–BD oral (dual L/T-type CCB; hypertension/angina; PMDA Japan — not FDA/EMA)", brands: [] },
+            { name: "Pranidipine", synonyms: ["Acalas"], dose: "2–4 mg OD oral (hypertension; PMDA Japan — not FDA/EMA)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "24b",
+      name: "ARBs — Complete Coverage",
+      synonyms: ["Angiotensin II Receptor Blockers", "Sartans — Complete List"],
+      description: "Complete coverage of approved angiotensin II type-1 receptor blocker (sartan) class. All FDA and EMA approved except fimasartan (Korea-only).",
+      subgroups: [
+        {
+          name: "ARBs — Missing Members",
+          drugs: [
+            { name: "Irbesartan", synonyms: ["Avapro", "Aprovel"], dose: "150–300 mg OD oral (hypertension; diabetic nephropathy in T2DM; FDA/EMA approved)", brands: [] },
+            { name: "Candesartan cilexetil", synonyms: ["Atacand", "Blopress"], dose: "4–32 mg OD oral (hypertension and HFrEF; FDA/EMA/PMDA approved)", brands: [] },
+            { name: "Olmesartan medoxomil", synonyms: ["Benicar", "Olmetec"], dose: "10–40 mg OD oral (hypertension; FDA/EMA approved)", brands: [] },
+            { name: "Eprosartan", synonyms: ["Teveten"], dose: "400–800 mg OD–BD oral (hypertension; FDA/EMA — less commonly used)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "24c",
+      name: "ACE Inhibitors — Complete Coverage",
+      synonyms: ["ACEIs Complete", "Angiotensin Converting Enzyme Inhibitors Full List"],
+      description: "Complete coverage of the ACE inhibitor drug class — all FDA and EMA approved unless noted.",
+      subgroups: [
+        {
+          name: "ACE Inhibitors — Missing Members",
+          drugs: [
+            { name: "Perindopril", synonyms: ["Aceon", "Coversyl", "Prestalia"], dose: "4–16 mg OD oral (hypertension; stable CAD; heart failure; FDA/EMA/PMDA)", brands: [] },
+            { name: "Quinapril", synonyms: ["Accupril", "Accupro"], dose: "5–80 mg OD–BD oral (hypertension; heart failure; FDA/EMA)", brands: [] },
+            { name: "Fosinopril", synonyms: ["Monopril", "Staril"], dose: "10–80 mg OD oral (dual hepatic/renal elimination — useful in renal impairment; hypertension; heart failure; FDA/EMA)", brands: [] },
+            { name: "Benazepril", synonyms: ["Lotensin", "Cibacen"], dose: "5–80 mg OD–BD oral (hypertension; FDA/EMA)", brands: [] },
+            { name: "Trandolapril", synonyms: ["Mavik", "Gopten"], dose: "0.5–4 mg OD oral (hypertension; post-MI LV dysfunction; FDA/EMA)", brands: [] },
+            { name: "Moexipril", synonyms: ["Univasc", "Femipres"], dose: "7.5–30 mg OD–BD oral (hypertension; FDA — withdrawn US market; EMA some markets)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "24d",
+      name: "Diuretics — Complete Coverage",
+      synonyms: ["Diuretics Complete", "Water Pills Full Classification"],
+      description: "Complete coverage of clinically used diuretics not covered in Chapter 8.",
+      subgroups: [
+        {
+          name: "Thiazide-like Diuretics — Missing Members",
+          drugs: [
+            { name: "Metolazone", synonyms: ["Zaroxolyn", "Metolacor"], dose: "2.5–20 mg OD oral (thiazide-like; synergistic with loop diuretics in resistant oedema; FDA/EMA)", brands: [] },
+            { name: "Xipamide", synonyms: ["Diurexan", "Aquaphor"], dose: "20–80 mg OD oral (thiazide-like; hypertension/oedema; EMA — not FDA)", brands: [] },
+            { name: "Torasemide", synonyms: ["Torem", "Demadex", "Torvast"], dose: "5–200 mg OD oral; 5–20 mg i.v. (loop diuretic — longer t½ than furosemide; FDA/EMA)", brands: [] },
+            { name: "Piretanide", synonyms: ["Arelix", "Tauliz"], dose: "3–12 mg OD oral (loop diuretic; EMA some markets — not FDA)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "24e",
+      name: "Antibiotics — Classical Gaps",
+      synonyms: ["Classical Antibiotics Missing", "Beta-lactam Gaps"],
+      description: "Established antibiotics approved across FDA/EMA/PMDA that were missing from the main antibacterial chapters.",
+      subgroups: [
+        {
+          name: "Penicillins — Missing Members",
+          drugs: [
+            { name: "Cloxacillin", synonyms: ["Cloxapen", "Orbenin"], dose: "250–500 mg QID oral; 250 mg–1 g QID i.m./i.v. (penicillinase-resistant penicillin; staphylococcal infections; EMA/PMDA/NMPA — not FDA; flucloxacillin more common in UK/EU)", brands: [] },
+            { name: "Flucloxacillin", synonyms: ["Floxapen", "Fluclox"], dose: "250–500 mg QID oral; 250 mg–2 g QID i.v. (isoxazolyl penicillin; MSSA infections; EMA/MHRA — not FDA)", brands: [] },
+            { name: "Dicloxacillin", synonyms: ["Dynapen", "Dycill"], dose: "125–500 mg QID oral (penicillinase-resistant; MSSA; FDA — withdrawn in some markets)", brands: [] },
+            { name: "Oxacillin", synonyms: ["Prostaphlin", "Bactocill"], dose: "250 mg–2 g every 4–6 hr i.v./i.m. (penicillinase-resistant; MSSA bacteraemia; FDA approved)", brands: [] },
+            { name: "Pivmecillinam", synonyms: ["Selexid", "Penomax"], dose: "200–400 mg TDS–QID oral (prodrug of mecillinam; amdinocillin; uncomplicated UTI; EMA/PMDA — not FDA)", brands: [] }
+          ]
+        },
+        {
+          name: "Oral Cephalosporins — Missing Members",
+          drugs: [
+            { name: "Cefadroxil", synonyms: ["Duricef", "Baxan"], dose: "500 mg–1 g BD oral (1st-generation; skin/soft tissue/UTI; FDA/EMA approved)", brands: [] },
+            { name: "Cefradine", synonyms: ["Velosef", "Sefril"], dose: "250–500 mg QID oral (1st-generation; skin/respiratory/UTI; FDA/EMA)", brands: [] },
+            { name: "Cefprozil", synonyms: ["Cefzil"], dose: "250–500 mg BD oral (2nd-generation; respiratory/skin infections; FDA — withdrawn US; EMA some markets)", brands: [] },
+            { name: "Ceftibuten", synonyms: ["Cedax"], dose: "400 mg OD oral (3rd-generation; pharyngitis/otitis/UTI; FDA approved)", brands: [] },
+            { name: "Cefditoren pivoxil", synonyms: ["Spectracef", "Meiact"], dose: "200–400 mg BD oral with food (3rd-generation; community respiratory/skin infections; FDA/PMDA — popular Japan)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "24f",
+      name: "Antifungals — Topical and Regional",
+      synonyms: ["Topical Antifungals Missing", "Regional Antifungal Coverage"],
+      description: "Additional topical antifungal agents approved across EMA, PMDA and other authorities.",
+      subgroups: [
+        {
+          name: "Topical Azole and Other Antifungals",
+          drugs: [
+            { name: "Bifonazole", synonyms: ["Mycospor", "Bifon"], dose: "1% cream/solution topically OD (imidazole; dermatophytosis/candidiasis; EMA/PMDA — not FDA)", brands: [] },
+            { name: "Fenticonazole", synonyms: ["Lomexin", "Fenizolan"], dose: "2% cream topically OD; 600 mg vaginal pessary (vulvovaginal candidiasis; EMA — not FDA)", brands: [] },
+            { name: "Sertaconazole", synonyms: ["Ertaczo", "Zalain"], dose: "2% cream topically BD × 4 weeks; 300 mg vaginal pessary (imidazole; tinea/vulvovaginal candidiasis; FDA/EMA)", brands: [] },
+            { name: "Luliconazole", synonyms: ["Luzu", "Lulizole"], dose: "1% cream topically OD × 1–2 weeks (imidazole; tinea pedis/cruris/corporis; FDA 2013; PMDA)", brands: [] },
+            { name: "Amorolfine", synonyms: ["Loceryl", "Curanail"], dose: "5% nail lacquer once or twice weekly (morpholine; onychomycosis; EMA — not FDA)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "24g",
+      name: "Antiulcer Drugs — Japan/Asia Specific",
+      synonyms: ["Gastric Mucosal Protective Agents", "Japan Antiulcer Drugs"],
+      description: "Antiulcer agents widely used in Japan, China, and Asian markets. These gastroprotective drugs have EMA/PMDA approvals but are generally not FDA-approved.",
+      subgroups: [
+        {
+          name: "Gastric Mucosal Protective Agents — Asia",
+          drugs: [
+            { name: "Rebamipide", synonyms: ["Mucosta", "Rebagen"], dose: "100 mg TDS oral (gastric mucosa protector — stimulates prostaglandin E2 and mucous production; peptic ulcer/gastritis; PMDA 1990; NMPA; MFDS — not FDA/EMA; very widely used in Japan, China, Korea)", brands: [] },
+            { name: "Polaprezinc", synonyms: ["Promac", "L-CAM"], dose: "75 mg BD oral (zinc-carnosine chelate complex; gastric mucosal repair; peptic ulcer; PMDA 1994 — Japan; not FDA/EMA)", brands: [] },
+            { name: "Ecabet sodium", synonyms: ["Gastrom"], dose: "1 g BD oral (terpenoid; gastric mucosal protector; H. pylori inhibition; PMDA Japan — not FDA/EMA)", brands: [] },
+            { name: "Cetraxate", synonyms: ["Neuer"], dose: "200 mg TDS oral (thrombotic acid derivative; gastric mucosal protector; PMDA Japan — not FDA/EMA)", brands: [] },
+            { name: "Irsogladine maleate", synonyms: ["Gaslon N"], dose: "4 mg BD oral (phosphodiesterase inhibitor gastric cytoprotective; PMDA 1989 Japan — not FDA/EMA)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "24h",
+      name: "DPP-4 Inhibitors — Asia-Specific Members",
+      synonyms: ["Gliptins Asia", "Asian DPP-4 Inhibitors"],
+      description: "DPP-4 inhibitors developed and approved primarily in Asian markets — Japan, South Korea, and China — complementing the globally approved gliptins already in Chapter 4.",
+      subgroups: [
+        {
+          name: "Asia-Specific DPP-4 Inhibitors",
+          drugs: [
+            { name: "Trelagliptin", synonyms: ["Zafatek"], dose: "100 mg once weekly oral (ultra-long-acting DPP-4 inhibitor; type 2 diabetes; PMDA 2015 — Japan-first weekly gliptin; not FDA/EMA)", brands: [] },
+            { name: "Omarigliptin", synonyms: ["Marizev"], dose: "25 mg once weekly oral (once-weekly DPP-4 inhibitor; type 2 diabetes; PMDA 2015 Japan; not FDA/EMA)", brands: [] },
+            { name: "Teneligliptin", synonyms: ["Tenelia", "Helyxa"], dose: "20–40 mg OD oral (DPP-4 inhibitor; type 2 diabetes; PMDA 2012 Japan; MFDS Korea — not FDA/EMA)", brands: [] },
+            { name: "Anagliptin", synonyms: ["Suiny"], dose: "100 mg BD oral (DPP-4 inhibitor; type 2 diabetes; PMDA 2012 Japan — not FDA/EMA)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "24i",
+      name: "Central Antihypertensives — Complete Coverage",
+      synonyms: ["Imidazoline Receptor Agonists", "Alpha-2 Agonists Antihypertensive"],
+      description: "Additional centrally-acting antihypertensive drugs targeting imidazoline receptors or alpha-2 receptors, approved in Europe and other markets.",
+      subgroups: [
+        {
+          name: "Imidazoline Receptor Agonists",
+          drugs: [
+            { name: "Moxonidine", synonyms: ["Physiotens", "Cynt"], dose: "0.2–0.6 mg OD oral (selective I1 imidazoline receptor agonist; hypertension; EMA/PMDA — not FDA)", brands: [] },
+            { name: "Rilmenidine", synonyms: ["Albarel", "Hyperium"], dose: "1 mg OD–BD oral (I1 imidazoline agonist; hypertension; EMA — not FDA)", brands: [] }
+          ]
+        },
+        {
+          name: "Alpha-1 Antagonist with Central Effects",
+          drugs: [
+            { name: "Urapidil", synonyms: ["Ebrantil", "Eupressyl"], dose: "30–60 mg BD–TDS oral; 25–50 mg slow i.v. (α1-adrenoceptor antagonist + 5-HT1A agonist; hypertension; EMA/PMDA — not FDA)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+}
+];
+
+const CVS_EXPANSION = {
+  id: 7,
+  additionalSubclasses: [
+    {
+      id: "7e",
+      name: "PCSK9 Inhibitors",
+      synonyms: ["Proprotein Convertase Subtilisin/Kexin Type 9 Inhibitors", "Anti-PCSK9 Agents"],
+      description: "PCSK9 is a serine protease that targets LDL receptors for lysosomal degradation. Its inhibition — by subcutaneous monoclonal antibodies (evolocumab, alirocumab) or by GalNAc-conjugated siRNA (inclisiran) that suppresses hepatic PCSK9 synthesis — increases LDL receptor recycling and achieves LDL-cholesterol reductions of 50–60% on top of statin therapy.",
+      subgroups: [
+        {
+          name: "Anti-PCSK9 Monoclonal Antibodies",
+          drugs: [
+            { name: "Evolocumab", synonyms: ["Repatha"], dose: "140 mg s.c. every 2 weeks or 420 mg s.c. monthly", brands: [] },
+            { name: "Alirocumab", synonyms: ["Praluent"], dose: "75–150 mg s.c. every 2 weeks or 300 mg every 4 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "PCSK9 siRNA",
+          drugs: [
+            { name: "Inclisiran", synonyms: ["Leqvio"], dose: "284 mg s.c. at day 1, 3 months, then every 6 months", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "7f",
+      name: "Neprilysin Inhibitors / ARNI",
+      synonyms: ["Angiotensin Receptor-Neprilysin Inhibitors", "ARNI", "Sacubitril-Valsartan"],
+      description: "Sacubitril/valsartan (the first angiotensin receptor-neprilysin inhibitor, ARNI) exerts dual action: valsartan blocks the renin-angiotensin-aldosterone system while sacubitrilat inhibits neprilysin, augmenting natriuretic peptide activity. This combination reduces cardiac preload, afterload, and fibrosis, with cardiovascular mortality benefit demonstrated over ACE inhibitor therapy in the PARADIGM-HF trial.",
+      subgroups: [
+        {
+          name: "ARNI",
+          drugs: [
+            { name: "Sacubitril/valsartan", synonyms: ["LCZ696", "Entresto"], dose: "Start 24/26 mg BD, target 97/103 mg BD oral", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "7g",
+      name: "SGLT-2 Inhibitors (Cardiovascular/Heart Failure Use)",
+      synonyms: ["Gliflozins (CVS)", "SGLT-2i for Heart Failure"],
+      description: "Sodium-glucose cotransporter-2 inhibitors were initially developed as glucose-lowering agents but have demonstrated compelling benefits in heart failure and chronic kidney disease independent of glycaemic effects. Their cardiorenal protective mechanisms include haemodynamic offloading (osmotic diuresis, natriuresis), metabolic substrate shift, reduced inflammation and fibrosis, and direct renal tubular effects.",
+      subgroups: [
+        {
+          name: "SGLT-2 Inhibitors (HF/CKD Indication)",
+          drugs: [
+            { name: "Empagliflozin", synonyms: ["Jardiance"], dose: "10 mg OD oral (HF/CKD; diabetes: 10–25 mg OD)", brands: [] },
+            { name: "Dapagliflozin", synonyms: ["Forxiga", "Farxiga"], dose: "10 mg OD oral (HFrEF, HFpEF, CKD)", brands: [] },
+            { name: "Canagliflozin", synonyms: ["Invokana"], dose: "100–300 mg OD oral (CKD/T2DM)", brands: [] },
+            { name: "Sotagliflozin", synonyms: ["Inpefa"], dose: "200 mg OD oral (HF post-hospitalisation)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "7h",
+      name: "Soluble Guanylate Cyclase Stimulators",
+      synonyms: ["sGC Stimulators", "Pulmonary Hypertension Drugs"],
+      description: "Soluble guanylate cyclase stimulators amplify cyclic GMP signalling independently of endogenous nitric oxide availability. Riociguat is approved for PAH and chronic thromboembolic pulmonary hypertension; vericiguat addresses the cardio-renal axis in heart failure with reduced ejection fraction by improving ventricular and vascular function.",
+      subgroups: [
+        {
+          name: "sGC Stimulators",
+          drugs: [
+            { name: "Riociguat", synonyms: ["Adempas"], dose: "Start 0.5–1 mg TDS, titrate to max 2.5 mg TDS oral", brands: [] },
+            { name: "Vericiguat", synonyms: ["Verquvo"], dose: "Start 2.5 mg OD, target 10 mg OD oral (HFrEF)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "7i",
+      name: "Drugs for Pulmonary Arterial Hypertension (PAH)",
+      synonyms: ["PAH Drugs", "Pulmonary Vasodilators"],
+      description: "Pulmonary arterial hypertension pharmacotherapy targets three established pathophysiological pathways. Endothelin receptor antagonists (bosentan, ambrisentan, macitentan) inhibit vasoconstriction and smooth muscle proliferation; PDE-5 inhibitors (sildenafil, tadalafil) and sGC stimulators amplify vasodilatory cyclic GMP; prostacyclin analogues and receptor agonists (selexipag) counteract the prostacyclin deficiency characteristic of PAH.",
+      subgroups: [
+        {
+          name: "Endothelin Receptor Antagonists (ERAs)",
+          drugs: [
+            { name: "Bosentan", synonyms: ["Tracleer"], dose: "62.5 mg BD x4 weeks, then 125 mg BD oral", brands: [] },
+            { name: "Ambrisentan", synonyms: ["Letairis", "Volibris"], dose: "5–10 mg OD oral", brands: [] },
+            { name: "Macitentan", synonyms: ["Opsumit"], dose: "10 mg OD oral", brands: [] }
+          ]
+        },
+        {
+          name: "Phosphodiesterase-5 (PDE-5) Inhibitors (PAH)",
+          drugs: [
+            { name: "Sildenafil", synonyms: ["Revatio (PAH)", "Viagra (ED)"], dose: "20 mg TDS oral (PAH); 25–100 mg oral (ED)", brands: [] },
+            { name: "Tadalafil", synonyms: ["Adcirca (PAH)", "Cialis (ED)"], dose: "40 mg OD oral (PAH); 5–20 mg oral (ED)", brands: [] },
+            { name: "Vardenafil", synonyms: ["Levitra", "Staxyn"], dose: "10 mg oral PRN (ED; also used off-label for PAH)", brands: [] }
+          ]
+        },
+        {
+          name: "Prostacyclin Analogues / Prostacyclin Receptor Agonists",
+          drugs: [
+            { name: "Epoprostenol", synonyms: ["Prostacyclin", "Flolan", "Veletri"], dose: "Start 2 ng/kg/min i.v. infusion; titrate based on response", brands: [] },
+            { name: "Treprostinil", synonyms: ["Remodulin", "Tyvaso", "Orenitram"], dose: "Start 1.25–2.5 ng/kg/min s.c./i.v.; 18–54 mcg inhaled QID; 0.25 mg BD oral", brands: [] },
+            { name: "Iloprost", synonyms: ["Ventavis"], dose: "2.5–5 mcg inhaled 6–9x daily", brands: [] },
+            { name: "Beraprost", synonyms: [], dose: "40 mcg TDS oral (Japan/Asia approval)", brands: [] },
+            { name: "Selexipag", synonyms: ["Uptravi"], dose: "Start 200 mcg BD, titrate to max 1600 mcg BD oral", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "7j",
+      name: "Newer Antianginal and Anti-ischaemic Drugs",
+      synonyms: ["Late Sodium Current Inhibitors", "If-Channel Blockers"],
+      description: "Two mechanistically distinct agents supplement traditional antianginal therapy. Ivabradine selectively inhibits the cardiac If current in the sinoatrial node, reducing heart rate without impairing contractility or vascular tone — beneficial in stable angina and heart failure. Ranolazine inhibits the late inward sodium current in ischaemic cardiomyocytes, reducing calcium overload and improving diastolic function.",
+      subgroups: [
+        {
+          name: "If-Channel Blockers (Sinus Node Inhibitors)",
+          drugs: [
+            { name: "Ivabradine", synonyms: ["Procoralan", "Corlanor"], dose: "2.5–7.5 mg BD oral (heart failure/angina)", brands: [] }
+          ]
+        },
+        {
+          name: "Late Sodium Channel Inhibitors",
+          drugs: [
+            { name: "Ranolazine", synonyms: ["Ranexa"], dose: "500–1000 mg BD oral (chronic angina)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "7k",
+      name: "Newer Antihypertensives",
+      synonyms: ["Novel Antihypertensive Agents"],
+      description: "Newer antihypertensive agents address residual uncontrolled hypertension through novel mechanisms. Direct renin inhibitors (aliskiren) act at the first step of the RAAS cascade. Aldosterone synthase inhibitors (lorundrostat, baxdrostat) and the endothelin receptor antagonist aprocitentan are specifically positioned for resistant hypertension not controlled by conventional multidrug regimens.",
+      subgroups: [
+        {
+          name: "Aldosterone Synthase Inhibitors",
+          drugs: [
+            { name: "Lorundrostat", synonyms: [], dose: "", brands: [] },
+            { name: "Baxdrostat", synonyms: [], dose: "", brands: [] }
+          ]
+        },
+        {
+          name: "Endothelin Antagonists (Hypertension)",
+          drugs: [
+            { name: "Aprocitentan", synonyms: ["Tryvio"], dose: "12.5 mg OD oral (resistant hypertension)", brands: [] }
+          ]
+        },
+        {
+          name: "ARBs (Additional)",
+          drugs: [
+            { name: "Azilsartan medoxomil", synonyms: ["Edarbi", "Ipreziv"], dose: "40–80 mg OD oral", brands: [] },
+            { name: "Fimasartan", synonyms: [], dose: "60–120 mg OD oral (South Korea/China approval)", brands: [] }
+          ]
+        },
+        {
+          name: "Direct Renin Inhibitors",
+          drugs: [
+            { name: "Aliskiren", synonyms: ["Tekturna", "Rasilez"], dose: "150–300 mg OD oral", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "7l",
+      name: "Antithrombotic / Thrombolytic Drugs",
+      synonyms: ["Thrombolytics", "Fibrinolytics", "Clot-Busting Drugs"],
+      description: "Thrombolytic (fibrinolytic) agents catalyse the conversion of plasminogen to plasmin, which degrades fibrin clots. Recombinant tissue plasminogen activators (alteplase, tenecteplase, reteplase) are fibrin-selective; streptokinase and urokinase are non-specific. They are used in acute ST-elevation myocardial infarction, ischaemic stroke, and massive pulmonary embolism where mechanical intervention is unavailable.",
+      subgroups: [
+        {
+          name: "Thrombolytics (tPA and derivatives)",
+          drugs: [
+            { name: "Alteplase", synonyms: ["tPA", "rt-PA", "Actilyse", "Activase"], dose: "0.9 mg/kg i.v. (max 90 mg) over 60 min (ischaemic stroke); 100 mg i.v. over 2 hr (PE/MI)", brands: [] },
+            { name: "Tenecteplase", synonyms: ["TNK-tPA", "TNKase", "Metalyse"], dose: "0.25–0.5 mg/kg i.v. single bolus (STEMI)", brands: [] },
+            { name: "Reteplase", synonyms: ["Retavase"], dose: "10 units i.v. x2 doses 30 min apart (STEMI)", brands: [] },
+            { name: "Streptokinase", synonyms: ["SK", "Streptase"], dose: "1.5 million units i.v. over 60 min (STEMI)", brands: [] },
+            { name: "Urokinase", synonyms: [], dose: "4400 IU/kg i.v. loading, then 4400 IU/kg/hr x12 hr (PE)", brands: [] }
+          ]
+        },
+        {
+          name: "Antiplatelet GP IIb/IIIa Inhibitors",
+          drugs: [
+            { name: "Abciximab", synonyms: ["ReoPro"], dose: "0.25 mg/kg i.v. bolus, then 0.125 mcg/kg/min infusion x12 hr (PCI)", brands: [] },
+            { name: "Eptifibatide", synonyms: ["Integrilin"], dose: "180 mcg/kg i.v. bolus x2, then 2 mcg/kg/min infusion (ACS/PCI)", brands: [] },
+            { name: "Tirofiban", synonyms: ["Aggrastat"], dose: "25 mcg/kg i.v. bolus, then 0.15 mcg/kg/min infusion (ACS/PCI)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+const CNS_EXPANSION = {
+  id: 6,
+  additionalSubclasses: [
+    {
+      id: "6h",
+      name: "Drugs for Multiple Sclerosis",
+      synonyms: ["MS Disease-Modifying Therapies", "DMTs for MS"],
+      description: "Multiple sclerosis disease-modifying therapy works by reducing the frequency and severity of immune attacks on myelin. The therapeutic landscape ranges from injectable interferons and glatiramer acetate, through oral agents that sequester or deplete lymphocytes (sphingosine-1-phosphate receptor modulators, fumarates, cladribine), to high-efficacy anti-CD20 monoclonal antibodies and alemtuzumab for aggressive disease.",
+      subgroups: [
+        {
+          name: "Injectable DMTs — Interferons",
+          drugs: [
+            { name: "Interferon beta-1a", synonyms: ["IFN-β1a", "Avonex", "Rebif"], dose: "30 mcg i.m. weekly (Avonex); 22–44 mcg s.c. 3x/week (Rebif)", brands: [] },
+            { name: "Interferon beta-1b", synonyms: ["IFN-β1b", "Betaseron", "Extavia", "Betaferon"], dose: "250 mcg s.c. every other day", brands: [] },
+            { name: "Peginterferon beta-1a", synonyms: ["Plegridy"], dose: "125 mcg s.c. every 2 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Injectable DMTs — Other",
+          drugs: [
+            { name: "Glatiramer acetate", synonyms: ["Copaxone", "Glatopa"], dose: "20 mg s.c. OD or 40 mg s.c. 3x/week", brands: [] },
+            { name: "Ofatumumab", synonyms: ["Kesimpta"], dose: "20 mg s.c. weeks 0,1,2 then monthly", brands: [] },
+            { name: "Natalizumab", synonyms: ["Tysabri"], dose: "300 mg i.v. every 4 weeks", brands: [] },
+            { name: "Ocrelizumab", synonyms: ["Ocrevus"], dose: "300 mg i.v. x2 doses 2 weeks apart; then 600 mg every 6 months", brands: [] },
+            { name: "Ublituximab", synonyms: ["Briumvi"], dose: "150 mg i.v. then 450 mg i.v. 2 weeks later; then 450 mg every 24 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Oral DMTs",
+          drugs: [
+            { name: "Fingolimod", synonyms: ["Gilenya"], dose: "0.5 mg OD oral (S1P receptor modulator)", brands: [] },
+            { name: "Siponimod", synonyms: ["Mayzent"], dose: "2 mg OD oral (titrated over 5 days; SPMS)", brands: [] },
+            { name: "Ozanimod", synonyms: ["Zeposia"], dose: "0.92 mg OD oral (titrated over 7 days)", brands: [] },
+            { name: "Ponesimod", synonyms: ["Ponvory"], dose: "20 mg OD oral (titrated over 14 days)", brands: [] },
+            { name: "Dimethyl fumarate", synonyms: ["Tecfidera", "DMF"], dose: "120 mg BD x7 days, then 240 mg BD oral", brands: [] },
+            { name: "Diroximel fumarate", synonyms: ["Vumerity"], dose: "231 mg BD x7 days, then 462 mg BD oral", brands: [] },
+            { name: "Monomethyl fumarate", synonyms: ["Bafiertam"], dose: "190 mg BD x7 days, then 190 mg TDS oral", brands: [] },
+            { name: "Teriflunomide", synonyms: ["Aubagio"], dose: "7–14 mg OD oral", brands: [] },
+            { name: "Cladribine tablets", synonyms: ["Mavenclad"], dose: "3.5 mg/kg total dose divided over 2 years (weeks 1–2 of years 1 and 2)", brands: [] }
+          ]
+        },
+        {
+          name: "High-Efficacy / Induction DMTs",
+          drugs: [
+            { name: "Alemtuzumab", synonyms: ["Lemtrada"], dose: "12 mg/day i.v. x5 days (year 1); x3 days (year 2)", brands: [] },
+            { name: "Mitoxantrone", synonyms: ["Novantrone"], dose: "12 mg/m² i.v. every 3 months (max cumulative 140 mg/m²)", brands: [] },
+            { name: "Ublituximab", synonyms: ["Briumvi"], dose: "See above", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "6i",
+      name: "Drugs for Alzheimer's Disease and Dementia",
+      synonyms: ["Anti-Alzheimer Drugs", "Cognitive Enhancers (Dementia)", "Amyloid-Targeting Therapies"],
+      description: "Dementia pharmacology addresses the cholinergic deficit of Alzheimer's disease through acetylcholinesterase inhibitors (donepezil, rivastigmine, galantamine), and excitotoxic damage through the NMDA receptor antagonist memantine. Anti-amyloid monoclonal antibodies (lecanemab, donanemab) represent a mechanistic shift toward disease modification by reducing amyloid-beta plaque burden in early Alzheimer's disease.",
+      subgroups: [
+        {
+          name: "Acetylcholinesterase Inhibitors (Dementia) — already in Ch.1 but listed here for completeness",
+          drugs: [
+            { name: "Donepezil", synonyms: ["Aricept"], dose: "5 mg OD at bedtime; increase to 10 mg OD after 4–6 weeks; 23 mg OD available for moderate-severe", brands: [] },
+            { name: "Rivastigmine", synonyms: ["Exelon"], dose: "1.5 mg BD titrated to 6 mg BD oral; 4.6–13.3 mg/24 hr patch", brands: [] },
+            { name: "Galantamine", synonyms: ["Reminyl", "Razadyne"], dose: "4–12 mg BD oral; 8–24 mg OD (extended release)", brands: [] }
+          ]
+        },
+        {
+          name: "NMDA Receptor Antagonists",
+          drugs: [
+            { name: "Memantine", synonyms: ["Namenda", "Axura", "Ebixa"], dose: "Start 5 mg OD; target 10 mg BD oral", brands: [] },
+            { name: "Memantine/donepezil", synonyms: ["Namzaric"], dose: "Fixed combination 28/10 mg OD (evening)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-Amyloid Monoclonal Antibodies",
+          drugs: [
+            { name: "Lecanemab", synonyms: ["Leqembi"], dose: "10 mg/kg i.v. every 2 weeks (early Alzheimer's)", brands: [] },
+            { name: "Donanemab", synonyms: ["Kisunla"], dose: "700 mg i.v. every 4 weeks x3 doses, then 1400 mg every 4 weeks", brands: [] },
+            { name: "Aducanumab", synonyms: ["Aduhelm"], dose: "10 mg/kg i.v. every 4 weeks (controversially FDA-approved; withdrawn from most markets)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "6j",
+      name: "Drugs for Sleep Disorders",
+      synonyms: ["Hypnotics (New Classes)", "Orexin Receptor Antagonists", "Melatonin Receptor Agonists"],
+      description: "Insomnia pharmacotherapy has evolved beyond GABA-ergic agents. Dual orexin receptor antagonists (suvorexant, lemborexant, daridorexant) block wake-promoting orexin signalling to facilitate sleep onset and maintenance without suppressing REM sleep. Melatonin receptor agonists (ramelteon, tasimelteon) synchronise the circadian clock rather than producing sedation.",
+      subgroups: [
+        {
+          name: "Dual Orexin Receptor Antagonists (DORAs)",
+          drugs: [
+            { name: "Suvorexant", synonyms: ["Belsomra"], dose: "10–20 mg oral at bedtime", brands: [] },
+            { name: "Lemborexant", synonyms: ["Dayvigo"], dose: "5–10 mg oral at bedtime", brands: [] },
+            { name: "Daridorexant", synonyms: ["Quviviq"], dose: "25–50 mg oral 30 min before bedtime", brands: [] }
+          ]
+        },
+        {
+          name: "Melatonin Receptor Agonists",
+          drugs: [
+            { name: "Ramelteon", synonyms: ["Rozerem"], dose: "8 mg oral 30 min before bedtime", brands: [] },
+            { name: "Tasimelteon", synonyms: ["Hetlioz"], dose: "20 mg oral before target bedtime (non-24-hour sleep disorder)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "6k",
+      name: "Drugs for ADHD",
+      synonyms: ["Attention Deficit Hyperactivity Disorder Drugs", "Psychostimulants (ADHD)"],
+      description: "ADHD pharmacotherapy centres on increasing prefrontal catecholamine availability. Stimulants — amphetamines and methylphenidate — enhance dopamine and noradrenaline signalling through reuptake inhibition and release. Non-stimulant options include the selective noradrenaline reuptake inhibitor atomoxetine, the selective noradrenaline reuptake inhibitor viloxazine, and alpha-2 adrenoceptor agonists (guanfacine, clonidine) that modulate prefrontal network activity.",
+      subgroups: [
+        {
+          name: "Stimulants",
+          drugs: [
+            { name: "Methylphenidate", synonyms: ["Ritalin", "Concerta", "Rubifen"], dose: "5–20 mg BD–TDS (IR); 18–72 mg OD (ER oral)", brands: [] },
+            { name: "Dexmethylphenidate", synonyms: ["Focalin"], dose: "2.5–10 mg BD (IR); 5–30 mg OD (ER)", brands: [] },
+            { name: "Amphetamine mixed salts", synonyms: ["Adderall"], dose: "5–30 mg OD–BD oral", brands: [] },
+            { name: "Lisdexamfetamine", synonyms: ["Vyvanse", "Elvanse"], dose: "20–70 mg OD oral (prodrug)", brands: [] },
+            { name: "Dexamphetamine", synonyms: ["Dexedrine"], dose: "5–10 mg BD–TDS oral", brands: [] }
+          ]
+        },
+        {
+          name: "Non-Stimulants",
+          drugs: [
+            { name: "Atomoxetine", synonyms: ["Strattera"], dose: "0.5 mg/kg/day initial; target 1.2 mg/kg/day (max 100 mg/day)", brands: [] },
+            { name: "Viloxazine", synonyms: ["Qelbree"], dose: "100–400 mg OD oral (non-stimulant SNRI-like)", brands: [] },
+            { name: "Guanfacine ER", synonyms: ["Intuniv", "Tenex"], dose: "1–7 mg OD oral (alpha-2 agonist)", brands: [] },
+            { name: "Clonidine ER", synonyms: ["Kapvay"], dose: "0.1–0.4 mg BD oral (alpha-2 agonist)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "6l",
+      name: "Drugs for Migraine (Newer — CGRP Pathway)",
+      synonyms: ["CGRP Antagonists", "Anti-CGRP Monoclonal Antibodies", "Gepants", "Ditans"],
+      description: "CGRP pathway modulation has transformed migraine pharmacotherapy. Monoclonal antibodies targeting CGRP itself (fremanezumab, galcanezumab, eptinezumab) or its receptor (erenumab) are administered parenterally for prophylaxis. Small-molecule CGRP receptor antagonists — gepants — provide both acute treatment (ubrogepant, rimegepant) and preventive benefit, without the vasoconstrictive risks of triptans.",
+      subgroups: [
+        {
+          name: "Anti-CGRP Monoclonal Antibodies (Prophylaxis)",
+          drugs: [
+            { name: "Erenumab", synonyms: ["Aimovig"], dose: "70–140 mg s.c. monthly", brands: [] },
+            { name: "Fremanezumab", synonyms: ["Ajovy"], dose: "225 mg s.c. monthly or 675 mg every 3 months", brands: [] },
+            { name: "Galcanezumab", synonyms: ["Emgality"], dose: "240 mg s.c. loading, then 120 mg monthly", brands: [] },
+            { name: "Eptinezumab", synonyms: ["Vyepti"], dose: "100–300 mg i.v. every 3 months", brands: [] }
+          ]
+        },
+        {
+          name: "Gepants — CGRP Receptor Antagonists (Acute and Preventive)",
+          drugs: [
+            { name: "Ubrogepant", synonyms: ["Ubrelvy"], dose: "50–100 mg oral PRN (acute migraine)", brands: [] },
+            { name: "Rimegepant", synonyms: ["Nurtec ODT"], dose: "75 mg oral ODT PRN or every other day (dual acute/preventive)", brands: [] },
+            { name: "Zavegepant", synonyms: ["Zavzpret"], dose: "10 mg intranasal PRN (acute migraine)", brands: [] }
+          ]
+        },
+        {
+          name: "Lasmiditan — 5-HT1F Agonist (Ditan)",
+          drugs: [
+            { name: "Lasmiditan", synonyms: ["Reyvow"], dose: "50–200 mg oral PRN (acute migraine; no vasoconstriction)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "6m",
+      name: "Drugs for Spinal Muscular Atrophy (SMA) and Rare Neurological Diseases",
+      synonyms: ["SMA Drugs", "Gene Therapy CNS", "Antisense Oligonucleotides (CNS)"],
+      description: "Spinal muscular atrophy therapeutics target SMN protein deficiency through distinct mechanisms: nusinersen, an intrathecal antisense oligonucleotide, promotes SMN2 exon inclusion; risdiplam is an orally bioavailable small molecule with the same splicing-modifier effect; onasemnogene abeparvovec delivers a functional SMN1 gene via AAV9. Huntington's disease drugs suppress chorea; ALS treatments address motor neurone degeneration through glutamate modulation, free radical scavenging, and antisense strategies.",
+      subgroups: [
+        {
+          name: "SMA Drugs",
+          drugs: [
+            { name: "Nusinersen", synonyms: ["Spinraza"], dose: "12 mg intrathecal on days 1,15,29,64; then every 4 months", brands: [] },
+            { name: "Risdiplam", synonyms: ["Evrysdi"], dose: "0.2–0.25 mg/kg/day oral (age/weight-based)", brands: [] },
+            { name: "Onasemnogene abeparvovec", synonyms: ["Zolgensma"], dose: "1.1×10¹⁴ vg/kg i.v. single infusion (gene therapy, AAV9)", brands: [] }
+          ]
+        },
+        {
+          name: "Huntington's Disease",
+          drugs: [
+            { name: "Tetrabenazine", synonyms: ["Nitoman", "Xenazine"], dose: "12.5–100 mg/day oral (chorea suppression)", brands: [] },
+            { name: "Deutetrabenazine", synonyms: ["Austedo"], dose: "6–48 mg/day in 2 divided doses oral", brands: [] },
+            { name: "Valbenazine", synonyms: ["Ingrezza"], dose: "40–80 mg OD oral (tardive dyskinesia/Huntington's chorea)", brands: [] }
+          ]
+        },
+        {
+          name: "ALS (Amyotrophic Lateral Sclerosis)",
+          drugs: [
+            { name: "Riluzole", synonyms: ["Rilutek"], dose: "50 mg BD oral (fasted)", brands: [] },
+            { name: "Edaravone", synonyms: ["Radicava", "Radicut"], dose: "60 mg i.v. OD x14 days, then 10-day drug-free period", brands: [] },
+            { name: "Tofersen", synonyms: ["Qalsody"], dose: "100 mg intrathecal every 2 weeks x3 doses, then every 4 weeks (SOD1-ALS)", brands: [] },
+            { name: "Sodium phenylbutyrate/taurursodiol", synonyms: ["AMX0035", "Relyvrio", "Albrioza"], dose: "1 sachet (3g/1g) OD x3 weeks, then BD oral", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+const BLOOD_EXPANSION = {
+  id: 9,
+  additionalSubclasses: [
+    {
+      id: "9e",
+      name: "Erythropoiesis-Stimulating Agents (ESAs)",
+      synonyms: ["Erythropoietins", "EPO analogues"],
+      description: "Erythropoiesis-stimulating agents bind and activate erythropoietin receptors on erythroid progenitors in the bone marrow. Short-acting epoetins (alfa, beta, theta) require 3x weekly dosing; longer-acting darbepoetin alfa and methoxy-PEG-epoetin beta allow weekly or monthly administration. HIF-prolyl hydroxylase inhibitors represent an orally bioavailable alternative that upregulates endogenous erythropoietin gene transcription.",
+      subgroups: [
+        {
+          name: "Erythropoiesis-Stimulating Agents",
+          drugs: [
+            { name: "Epoetin alfa", synonyms: ["Eprex", "Procrit", "Epogen"], dose: "50–300 IU/kg s.c./i.v. 3x/week (CKD); adjust by haemoglobin", brands: [] },
+            { name: "Epoetin beta", synonyms: ["NeoRecormon"], dose: "60–120 IU/kg i.v. 3x/week", brands: [] },
+            { name: "Epoetin theta", synonyms: ["Eporatio", "Biopoin"], dose: "Similar to epoetin alfa", brands: [] },
+            { name: "Darbepoetin alfa", synonyms: ["Aranesp", "NESP"], dose: "0.45 mcg/kg s.c./i.v. weekly or 0.75 mcg/kg every 2 weeks (CKD)", brands: [] },
+            { name: "Methoxy polyethylene glycol-epoetin beta", synonyms: ["Mircera", "CERA"], dose: "0.6 mcg/kg s.c./i.v. every 2 weeks; then once monthly", brands: [] },
+            { name: "Roxadustat", synonyms: ["Evrenzo", "Aibek"], dose: "70–200 mg TDS oral (HIF-PH inhibitor; approved EMA/China/Japan, not FDA)", brands: [] },
+            { name: "Daprodustat", synonyms: ["Jesduvroq"], dose: "4–24 mg OD oral (HIF-PH inhibitor)", brands: [] },
+            { name: "Vadadustat", synonyms: ["Vafseo"], dose: "300–600 mg OD oral (HIF-PH inhibitor; EMA approved)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "9f",
+      name: "Colony-Stimulating Factors",
+      synonyms: ["G-CSF", "GM-CSF", "Haematopoietic Growth Factors"],
+      description: "Colony-stimulating factors act on haematopoietic progenitor cells to accelerate lineage-specific differentiation. G-CSF preparations (filgrastim, pegfilgrastim, lenograstim) stimulate neutrophil production and are standard prophylaxis against febrile neutropenia following myelosuppressive chemotherapy. Thrombopoietin receptor agonists (romiplostim, eltrombopag, avatrombopag) stimulate megakaryocyte differentiation to raise platelet counts in immune thrombocytopenia and aplastic anaemia.",
+      subgroups: [
+        {
+          name: "G-CSF (Granulocyte Colony-Stimulating Factors)",
+          drugs: [
+            { name: "Filgrastim", synonyms: ["Neupogen", "rG-CSF"], dose: "5 mcg/kg/day s.c./i.v. (start 24 hr after chemotherapy)", brands: [] },
+            { name: "Pegfilgrastim", synonyms: ["Neulasta", "Neulastim"], dose: "6 mg s.c. single dose per chemotherapy cycle", brands: [] },
+            { name: "Lenograstim", synonyms: ["Granocyte", "rhG-CSF"], dose: "150 mcg/m²/day s.c.", brands: [] },
+            { name: "Lipegfilgrastim", synonyms: ["Lonquex"], dose: "6 mg s.c. once per chemotherapy cycle (EMA)", brands: [] }
+          ]
+        },
+        {
+          name: "Thrombopoiesis-Stimulating Agents (TPO-RAs)",
+          drugs: [
+            { name: "Romiplostim", synonyms: ["Nplate"], dose: "1–10 mcg/kg s.c. weekly (ITP)", brands: [] },
+            { name: "Eltrombopag", synonyms: ["Promacta", "Revolade"], dose: "25–75 mg OD oral (ITP); 100 mg OD (aplastic anaemia)", brands: [] },
+            { name: "Avatrombopag", synonyms: ["Doptelet"], dose: "20–60 mg OD oral x5 days before procedure (CLD/ITP)", brands: [] },
+            { name: "Lusutrombopag", synonyms: ["Mulpleta"], dose: "3 mg OD oral x7 days (CLD before procedure; Japan/FDA)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "9g",
+      name: "Drugs for Sickle Cell Disease",
+      synonyms: ["Anti-sickling Drugs", "SCD Drugs"],
+      description: "Sickle cell disease pharmacotherapy has expanded substantially. Hydroxyurea remains the foundational disease-modifying agent, upregulating foetal haemoglobin to reduce sickling. Voxelotor stabilises oxyhaemoglobin to prevent polymerisation. Crizanlizumab reduces endothelial adhesion by blocking P-selectin. Gene therapies — including the first CRISPR-based therapeutic (exagamglogene autotemcel) — offer the prospect of functional cure.",
+      subgroups: [
+        {
+          name: "SCD Disease-Modifying Drugs",
+          drugs: [
+            { name: "Hydroxyurea", synonyms: ["Hydroxycarbamide", "Droxia", "Siklos"], dose: "15–35 mg/kg/day oral (titrated; increases HbF)", brands: [] },
+            { name: "Voxelotor", synonyms: ["Oxbryta"], dose: "1500 mg OD oral (Hb polymerisation inhibitor)", brands: [] },
+            { name: "Crizanlizumab", synonyms: ["Adakveo"], dose: "5 mg/kg i.v. at weeks 0,2; then every 4 weeks", brands: [] },
+            { name: "L-glutamine", synonyms: ["Endari"], dose: "0.3 g/kg BD oral (max 30 g/day)", brands: [] },
+            { name: "Mitapivat", synonyms: ["Pyrukynd"], dose: "5–50 mg BD oral (pyruvate kinase activator; sickle cell/thalassaemia)", brands: [] },
+            { name: "Exagamglogene autotemcel", synonyms: ["Casgevy"], dose: "Single infusion after myeloablative conditioning (CRISPR gene therapy)", brands: [] },
+            { name: "Lovotibeglogene autotemcel", synonyms: ["Lyfgenia"], dose: "Single i.v. infusion (gene therapy, lentiviral)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "9h",
+      name: "Anticoagulants — Factor-Specific Inhibitors",
+      synonyms: ["Factor Xa Inhibitors", "Direct Thrombin Inhibitors", "Novel Oral Anticoagulants", "NOACs", "DOACs"],
+      description: "Direct oral anticoagulants provide predictable pharmacokinetics without routine monitoring. Direct factor Xa inhibitors (rivaroxaban, apixaban, edoxaban) and direct thrombin inhibitors (dabigatran) have largely replaced warfarin for atrial fibrillation stroke prevention and venous thromboembolism management. Specific reversal agents (idarucizumab for dabigatran; andexanet alfa for factor Xa inhibitors) address major bleeding scenarios.",
+      subgroups: [
+        {
+          name: "Direct Factor Xa Inhibitors",
+          drugs: [
+            { name: "Rivaroxaban", synonyms: ["Xarelto"], dose: "15–20 mg OD with evening meal (AF/VTE treatment); 10 mg OD (VTE prevention)", brands: [] },
+            { name: "Apixaban", synonyms: ["Eliquis"], dose: "10 mg BD x7 days then 5 mg BD (VTE treatment); 5 mg BD (AF)", brands: [] },
+            { name: "Edoxaban", synonyms: ["Lixiana", "Savaysa"], dose: "60 mg OD (AF/VTE); 30 mg OD (CrCl 15–50 mL/min or ≤60 kg)", brands: [] },
+            { name: "Betrixaban", synonyms: ["Bevyxxa"], dose: "160 mg loading, then 80 mg OD (extended VTE prophylaxis in medically ill patients)", brands: [] },
+            { name: "Fondaparinux", synonyms: ["Arixtra"], dose: "2.5 mg s.c. OD (prophylaxis); 5–10 mg s.c. OD (treatment, weight-based)", brands: [] }
+          ]
+        },
+        {
+          name: "Direct Thrombin Inhibitors",
+          drugs: [
+            { name: "Dabigatran etexilate", synonyms: ["Pradaxa"], dose: "150 mg BD (AF); 220 mg OD (VTE prophylaxis post-orthopaedic surgery)", brands: [] },
+            { name: "Bivalirudin", synonyms: ["Angiomax", "Angiox"], dose: "0.75 mg/kg i.v. bolus, then 1.75 mg/kg/hr infusion (PCI)", brands: [] },
+            { name: "Argatroban", synonyms: [], dose: "2 mcg/kg/min i.v. infusion (HIT)", brands: [] },
+            { name: "Desirudin", synonyms: [], dose: "15 mg s.c. BD (VTE prophylaxis post-hip replacement; EMA)", brands: [] }
+          ]
+        },
+        {
+          name: "Reversal Agents for Anticoagulants",
+          drugs: [
+            { name: "Idarucizumab", synonyms: ["Praxbind"], dose: "5 g i.v. (2 x 2.5 g doses) — reversal of dabigatran", brands: [] },
+            { name: "Andexanet alfa", synonyms: ["Ondexxya", "AndexXa"], dose: "400–800 mg i.v. bolus then 4–8 mg/min infusion x2 hr — reversal of Factor Xa inhibitors", brands: [] },
+            { name: "Ciraparantag", synonyms: ["Aripazine"], dose: "", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+const ANTIBACTERIAL_EXPANSION = {
+  id: 11,
+  additionalSubclasses: [
+    {
+      id: "11h",
+      name: "Reserve Antibiotics / Novel Beta-Lactam Combinations",
+      synonyms: ["Last-Resort Antibiotics", "Novel Beta-Lactam/Beta-Lactamase Inhibitor Combinations", "BL/BLI Combinations"],
+      description: "Novel beta-lactam/beta-lactamase inhibitor combinations have restored therapeutic options against carbapenem-resistant and extended-spectrum beta-lactamase-producing Gram-negative pathogens. Ceftazidime-avibactam, ceftolozane-tazobactam, meropenem-vaborbactam, and cefiderocol each have distinct spectra addressing different resistance mechanisms. Lipoglycopeptides (dalbavancin, oritavancin) with extended half-lives simplify Gram-positive therapy; novel oxazolidinone tedizolid provides activity against MRSA and VRE.",
+      subgroups: [
+        {
+          name: "Novel Cephalosporin/BLI Combinations",
+          drugs: [
+            { name: "Ceftazidime/avibactam", synonyms: ["Avycaz", "Zavicefta"], dose: "2.5 g (2 g/0.5 g) i.v. every 8 hr x8 hr infusion (MDR Gram-negatives, KPC-KP)", brands: [] },
+            { name: "Ceftolozane/tazobactam", synonyms: ["Zerbaxa"], dose: "1.5 g (1 g/0.5 g) i.v. every 8 hr (MDR P. aeruginosa)", brands: [] },
+            { name: "Imipenem/cilastatin/relebactam", synonyms: ["Recarbrio"], dose: "1.25 g (500/500/250 mg) i.v. every 6 hr (MDR Gram-negatives)", brands: [] },
+            { name: "Meropenem/vaborbactam", synonyms: ["Vabomere"], dose: "4 g (2 g/2 g) i.v. every 8 hr x3 hr infusion (KPC-producing Enterobacterales)", brands: [] },
+            { name: "Aztreonam/avibactam", synonyms: ["Emblaveo", "Azavicta"], dose: "6.5 g (6 g/2 g) i.v./day as continuous or intermittent (MBL-producing Enterobacterales)", brands: [] },
+            { name: "Cefiderocol", synonyms: ["Fetcroja", "Fetroja"], dose: "2 g i.v. every 8 hr x3 hr infusion (siderophore cephalosporin; XDR Gram-negatives)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Glycopeptides / Lipoglycopeptides (MRSA/VRE)",
+          drugs: [
+            { name: "Daptomycin", synonyms: ["Cubicin"], dose: "4–6 mg/kg i.v. OD (skin); 6–10 mg/kg OD (bacteraemia/endocarditis)", brands: [] },
+            { name: "Vancomycin", synonyms: [], dose: "15–20 mg/kg i.v. every 8–12 hr (AUC-guided dosing: AUC/MIC 400–600)", brands: [] },
+            { name: "Teicoplanin", synonyms: [], dose: "400–800 mg i.v./i.m. loading x3 doses then OD maintenance", brands: [] },
+            { name: "Telavancin", synonyms: ["Vibativ"], dose: "10 mg/kg i.v. OD (MRSA HAP/cSSSI)", brands: [] },
+            { name: "Dalbavancin", synonyms: ["Xydalba", "Dalvance"], dose: "1500 mg i.v. single dose or 1000 mg then 500 mg 1 week later (long-acting, ABSSSI)", brands: [] },
+            { name: "Oritavancin", synonyms: ["Orbactiv", "Kimyrsa"], dose: "1200 mg i.v. single dose (ABSSSI)", brands: [] }
+          ]
+        },
+        {
+          name: "Novel Oxazolidinones",
+          drugs: [
+            { name: "Linezolid", synonyms: ["Zyvox", "Zyvoxid"], dose: "600 mg BD oral/i.v. (MRSA/VRE)", brands: [] },
+            { name: "Tedizolid", synonyms: ["Sivextro"], dose: "200 mg OD oral/i.v. x6 days (ABSSSI)", brands: [] },
+            { name: "Contezolid", synonyms: [], dose: "800 mg BD oral x6 days (China NMPA-approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Polymyxins (Last-Resort for XDR Gram-negatives)",
+          drugs: [
+            { name: "Colistin", synonyms: ["Polymyxin E", "Colistimethate sodium", "CMS"], dose: "9 MIU i.v. loading then 4.5 MIU i.v. every 12 hr (dose by renal function)", brands: [] },
+            { name: "Polymyxin B", synonyms: [], dose: "1.5–3 mg/kg/day i.v. in 2 divided doses", brands: [] }
+          ]
+        },
+        {
+          name: "Other Novel Antibacterials",
+          drugs: [
+            { name: "Rifaximin", synonyms: ["Xifaxan", "Normix"], dose: "200 mg TDS x3 days (traveller's diarrhoea); 550 mg BD (hepatic encephalopathy)", brands: [] },
+            { name: "Fidaxomicin", synonyms: ["Dificlir", "Dificid"], dose: "200 mg BD oral x10 days (C. difficile infection)", brands: [] },
+            { name: "Omadacycline", synonyms: ["Nuzyra"], dose: "100 mg i.v. OD or 300 mg oral OD x2 days then 300 mg OD (CABP/ABSSSI)", brands: [] },
+            { name: "Eravacycline", synonyms: ["Xerava"], dose: "1 mg/kg i.v. BD (cIAI)", brands: [] },
+            { name: "Delafloxacin", synonyms: ["Baxdela"], dose: "300 mg i.v. BD or 450 mg oral BD (ABSSSI/CABP)", brands: [] },
+            { name: "Lascufloxacin", synonyms: [], dose: "75 mg OD oral x5 days (Japan-approved CABP)", brands: [] },
+            { name: "Lefamulin", synonyms: ["Xenleta"], dose: "150 mg i.v. BD or 600 mg oral BD x5–7 days (CABP; pleuromutilin)", brands: [] },
+            { name: "Gepotidacin", synonyms: ["Blujepa"], dose: "1500 mg BD oral x5 days (uncomplicated UTI)", brands: [] },
+            { name: "Zoliflodacin", synonyms: [], dose: "3 g single oral dose (gonorrhoea)", brands: [] },
+            { name: "Tebipenem pivoxil", synonyms: ["Orapenem"], dose: "300–600 mg TDS oral (Japan-approved; oral carbapenem)", brands: [] },
+            { name: "Sulopenem etzadroxil/probenecid", synonyms: ["Sulopenem"], dose: "500 mg/500 mg BD oral (uncomplicated UTI)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "11i",
+      name: "Anti-Mycobacterial Drugs (Drug-Resistant TB and Non-TB Mycobacteria)",
+      synonyms: ["MDR-TB Drugs", "XDR-TB Drugs", "NTM Drugs"],
+      description: "Multidrug-resistant tuberculosis requires regimens including newer agents with novel mechanisms. Bedaquiline inhibits mycobacterial ATP synthase; delamanid and pretomanid disrupt mycobacterial cell wall lipid synthesis through nitroimidazole reduction; linezolid is repurposed as a backbone agent. The BPaL(M) regimen — bedaquiline, pretomanid, linezolid, ± moxifloxacin — has shortened XDR-TB treatment duration dramatically.",
+      subgroups: [
+        {
+          name: "New Anti-TB Drugs (MDR/XDR-TB)",
+          drugs: [
+            { name: "Bedaquiline", synonyms: ["Sirturo"], dose: "400 mg OD x2 weeks, then 200 mg TDS (Mon-Wed-Fri) x22 weeks", brands: [] },
+            { name: "Delamanid", synonyms: ["Deltyba"], dose: "100 mg BD oral x24 weeks (EMA; nitroimidazole)", brands: [] },
+            { name: "Pretomanid", synonyms: ["PA-824"], dose: "200 mg OD oral (in BPaL/BPaLM regimen for XDR-TB)", brands: [] },
+            { name: "Linezolid", synonyms: [], dose: "600 mg OD–BD oral (part of MDR-TB regimens)", brands: [] },
+            { name: "Clofazimine", synonyms: [], dose: "100 mg OD oral (part of MDR-TB regimens)", brands: [] }
+          ]
+        },
+        {
+          name: "NTM (Non-Tuberculous Mycobacterial) Drugs",
+          drugs: [
+            { name: "Amikacin liposome inhalation suspension", synonyms: ["ALIS", "Arikayce"], dose: "590 mg inhaled OD (M. avium complex lung disease; add-on)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "11j",
+      name: "Drugs for Sexually Transmitted Infections (STIs)",
+      synonyms: ["STI Drugs", "Anti-STI Drugs"],
+      description: "Sexually transmitted infection pharmacotherapy is challenged by antimicrobial resistance, particularly in Neisseria gonorrhoeae. Current WHO guidance recommends ceftriaxone monotherapy for gonorrhoea. Syphilis remains exquisitely sensitive to benzathine benzylpenicillin. Novel agents including zoliflodacin (a topoisomerase II inhibitor with a novel mechanism) are in development to address ceftriaxone-resistant gonorrhoea.",
+      subgroups: [
+        {
+          name: "Drugs for Gonorrhoea",
+          drugs: [
+            { name: "Ceftriaxone", synonyms: [], dose: "500 mg i.m. single dose (uncomplicated gonorrhoea; WHO 2016+ recommendation)", brands: [] },
+            { name: "Azithromycin", synonyms: [], dose: "1 g single oral dose (historically with ceftriaxone; now largely replaced due to resistance)", brands: [] },
+            { name: "Cefixime", synonyms: [], dose: "400 mg single oral dose (alternative)", brands: [] },
+            { name: "Zoliflodacin", synonyms: [], dose: "3 g single oral dose (novel; approved in some regions)", brands: [] }
+          ]
+        },
+        {
+          name: "Drugs for Syphilis",
+          drugs: [
+            { name: "Benzathine benzylpenicillin", synonyms: ["Benzathine penicillin G"], dose: "2.4 MU i.m. single dose (primary/secondary/early latent); weekly x3 (late latent)", brands: [] },
+            { name: "Doxycycline", synonyms: [], dose: "100 mg BD x14 days (penicillin allergy, early syphilis)", brands: [] }
+          ]
+        },
+        {
+          name: "Drugs for Chlamydia / PID",
+          drugs: [
+            { name: "Azithromycin", synonyms: [], dose: "1 g single oral dose (chlamydia)", brands: [] },
+            { name: "Doxycycline", synonyms: [], dose: "100 mg BD x7 days (chlamydia)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+const ENDOCRINE_EXPANSION = {
+  id: 4,
+  additionalSubclasses: [
+    {
+      id: "4e",
+      name: "Drugs for Osteoporosis and Bone Diseases",
+      synonyms: ["Antiresorptive Drugs", "Bone-Modifying Agents", "Osteoporosis Treatments"],
+      description: "Bone pharmacotherapy targets the coupling between osteoclastic resorption and osteoblastic formation. Bisphosphonates adsorb to hydroxyapatite and inhibit osteoclast farnesyl pyrophosphate synthase; denosumab blocks RANKL-mediated osteoclast activation. Anabolic agents (teriparatide, abaloparatide — PTH receptor agonists; romosozumab — sclerostin inhibitor) stimulate bone formation and are used in patients at very high fracture risk.",
+      subgroups: [
+        {
+          name: "Bisphosphonates",
+          drugs: [
+            { name: "Alendronic acid", synonyms: ["Alendronate", "Fosamax"], dose: "10 mg OD oral or 70 mg weekly oral", brands: [] },
+            { name: "Risedronate", synonyms: ["Actonel"], dose: "5 mg OD oral or 35 mg weekly or 150 mg monthly", brands: [] },
+            { name: "Ibandronate", synonyms: ["Boniva", "Bonviva"], dose: "150 mg oral monthly or 3 mg i.v. every 3 months", brands: [] },
+            { name: "Zoledronic acid", synonyms: ["Zoledronate", "Reclast", "Aclasta"], dose: "5 mg i.v. infusion annually (osteoporosis); 4 mg i.v. every 3–4 weeks (bone metastases)", brands: [] },
+            { name: "Pamidronate", synonyms: ["Aredia"], dose: "30–90 mg i.v. every 4 weeks (Paget's, bone metastases)", brands: [] },
+            { name: "Etidronate", synonyms: ["Didronel"], dose: "400 mg OD oral x14 days/3 months (cyclical, Paget's)", brands: [] }
+          ]
+        },
+        {
+          name: "Anabolic Bone Agents",
+          drugs: [
+            { name: "Teriparatide", synonyms: ["PTH(1-34)", "Forteo", "Forsteo"], dose: "20 mcg s.c. OD (max 24 months cumulative)", brands: [] },
+            { name: "Abaloparatide", synonyms: ["Tymlos"], dose: "80 mcg s.c. OD (max 24 months)", brands: [] },
+            { name: "Romosozumab", synonyms: ["Evenity"], dose: "210 mg s.c. monthly x12 months (dual anabolic-antiresorptive; sclerostin inhibitor)", brands: [] }
+          ]
+        },
+        {
+          name: "Antiresorptives — RANK-L Inhibitors",
+          drugs: [
+            { name: "Denosumab", synonyms: ["Prolia (osteoporosis)", "Xgeva (oncology)"], dose: "60 mg s.c. every 6 months (osteoporosis); 120 mg every 4 weeks (bone metastases)", brands: [] }
+          ]
+        },
+        {
+          name: "SERMs (Bone)",
+          drugs: [
+            { name: "Raloxifene", synonyms: ["Evista"], dose: "60 mg OD oral", brands: [] },
+            { name: "Bazedoxifene", synonyms: ["Viviant"], dose: "20 mg OD oral", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "4f",
+      name: "GLP-1 Receptor Agonists (Full Classification)",
+      synonyms: ["GLP-1 RAs", "Incretin Mimetics", "GLP-1 Agonists"],
+      description: "GLP-1 receptor agonists mimic the incretin hormone GLP-1, stimulating glucose-dependent insulin secretion, suppressing glucagon, slowing gastric emptying, and reducing appetite centrally. Short-acting agents (exenatide, lixisenatide) primarily reduce postprandial glucose; long-acting agents (liraglutide, semaglutide, dulaglutide) reduce fasting glucose and have demonstrated cardiovascular benefit. Tirzepatide, a GIP/GLP-1 dual agonist, achieves superior glycaemic and weight reduction compared to GLP-1 mono-agonists.",
+      subgroups: [
+        {
+          name: "Short-acting GLP-1 RAs",
+          drugs: [
+            { name: "Exenatide", synonyms: ["Byetta"], dose: "5–10 mcg s.c. BD (inject within 1 hr before morning and evening meals)", brands: [] },
+            { name: "Lixisenatide", synonyms: ["Lyxumia", "Adlyxin"], dose: "10–20 mcg s.c. OD", brands: [] }
+          ]
+        },
+        {
+          name: "Long-acting GLP-1 RAs",
+          drugs: [
+            { name: "Liraglutide", synonyms: ["Victoza (T2DM)", "Saxenda (obesity)"], dose: "0.6–1.8 mg s.c. OD (T2DM); up to 3 mg OD (obesity)", brands: [] },
+            { name: "Semaglutide", synonyms: ["Ozempic (s.c.)", "Rybelsus (oral)", "Wegovy (obesity)"], dose: "0.25–1 mg s.c. weekly (T2DM); 2.4 mg s.c. weekly (obesity); 7–14 mg OD oral (T2DM)", brands: [] },
+            { name: "Dulaglutide", synonyms: ["Trulicity"], dose: "0.75–4.5 mg s.c. weekly", brands: [] },
+            { name: "Albiglutide", synonyms: ["Tanzeum"], dose: "30–50 mg s.c. weekly (withdrawn 2018)", brands: [] },
+            { name: "Exenatide extended-release", synonyms: ["Bydureon", "Bydureon BCise"], dose: "2 mg s.c. weekly", brands: [] }
+          ]
+        },
+        {
+          name: "GLP-1/GIP Dual Agonists",
+          drugs: [
+            { name: "Tirzepatide", synonyms: ["Mounjaro (T2DM)", "Zepbound (obesity)"], dose: "2.5 mg s.c. weekly x4 weeks, titrate to 5–15 mg weekly", brands: [] }
+          ]
+        },
+        {
+          name: "GLP-1/GIP/Glucagon Triple Agonists",
+          drugs: [
+            { name: "Retatrutide", synonyms: [], dose: "(Investigational — Phase 3)", brands: [] },
+            { name: "Survodutide", synonyms: [], dose: "(Investigational)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "4g",
+      name: "Newer Antidiabetic Drug Classes",
+      synonyms: ["Novel Antidiabetics", "Next-Generation Diabetes Drugs"],
+      description: "Newer antidiabetic agents include amylin analogues (pramlintide), which complement insulin by suppressing glucagon and slowing gastric emptying; dopamine agonist bromocriptine, which modulates hypothalamic circadian metabolic rhythms; bile acid sequestrant colesevelam with a modest glucose-lowering effect; and dorzagliatin, a glucokinase activator approved in China that restores first-phase insulin secretion.",
+      subgroups: [
+        {
+          name: "Dual GIP/GLP-1 and SGLT-2 Combinations",
+          drugs: [
+            { name: "Tirzepatide + empagliflozin", synonyms: ["Investigational combination"], dose: "", brands: [] }
+          ]
+        },
+        {
+          name: "Selective Liver-Targeted Glucokinase Activators",
+          drugs: [
+            { name: "Dorzagliatin", synonyms: [], dose: "75 mg BD oral (China NMPA-approved)", brands: [] }
+          ]
+        },
+        {
+          name: "Amylin Analogues",
+          drugs: [
+            { name: "Pramlintide", synonyms: ["Symlin"], dose: "15–120 mcg s.c. with meals (T1DM/T2DM adjunct to insulin)", brands: [] }
+          ]
+        },
+        {
+          name: "Dopamine Agonists (Antidiabetic Use)",
+          drugs: [
+            { name: "Bromocriptine mesylate", synonyms: ["Cycloset"], dose: "0.8 mg OD oral within 2 hr of waking (FDA-approved for T2DM)", brands: [] }
+          ]
+        },
+        {
+          name: "Bile Acid Sequestrants (Antidiabetic)",
+          drugs: [
+            { name: "Colesevelam", synonyms: ["Welchol"], dose: "3750 mg/day oral in 1–2 doses with meals (T2DM)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "4h",
+      name: "Drugs for Obesity",
+      synonyms: ["Anti-obesity Drugs", "Weight Loss Medications", "Bariatric Pharmacotherapy"],
+      description: "Anti-obesity pharmacotherapy addresses multiple pathways of energy homeostasis. Centrally acting agents include phentermine (sympathomimetic appetite suppressant) and combinations targeting GABA, dopamine, and opioid pathways (phentermine/topiramate; naltrexone/bupropion). Orlistat inhibits pancreatic lipase peripherally. GLP-1 receptor agonists at higher doses (semaglutide 2.4 mg, liraglutide 3 mg) produce clinically meaningful weight loss by reducing appetite and food intake through hypothalamic and brainstem pathways; tirzepatide extends this effect through combined GLP-1 and GIP receptor activation.",
+      subgroups: [
+        {
+          name: "Centrally Acting Anti-obesity Drugs",
+          drugs: [
+            { name: "Phentermine", synonyms: ["Adipex-P", "Ionamin"], dose: "15–37.5 mg OD oral (short-term)", brands: [] },
+            { name: "Phentermine/topiramate ER", synonyms: ["Qsymia"], dose: "3.75/23 mg OD x14 days, titrate to 7.5/46 mg OD; max 15/92 mg OD", brands: [] },
+            { name: "Naltrexone/bupropion ER", synonyms: ["Contrave", "Mysimba"], dose: "8/90 mg OD titrated to 32/360 mg/day (2 tablets BD)", brands: [] },
+            { name: "Lorcaserin", synonyms: ["Belviq"], dose: "10 mg BD oral (withdrawn 2020 due to cancer risk)", brands: [] }
+          ]
+        },
+        {
+          name: "Peripheral Anti-obesity Drugs",
+          drugs: [
+            { name: "Orlistat", synonyms: ["Xenical", "Alli"], dose: "120 mg TDS with fat-containing meals (60 mg OTC)", brands: [] },
+            { name: "Cetilistat", synonyms: ["Oblean"], dose: "120 mg TDS with meals (Japan-approved lipase inhibitor)", brands: [] }
+          ]
+        },
+        {
+          name: "GLP-1 RAs for Obesity",
+          drugs: [
+            { name: "Semaglutide 2.4 mg", synonyms: ["Wegovy"], dose: "0.25 mg s.c. weekly titrated over 16 weeks to 2.4 mg weekly", brands: [] },
+            { name: "Liraglutide 3 mg", synonyms: ["Saxenda"], dose: "0.6 mg s.c. OD titrated weekly to 3 mg OD", brands: [] },
+            { name: "Tirzepatide 5–15 mg", synonyms: ["Zepbound"], dose: "2.5 mg s.c. weekly, titrated every 4 weeks to 5–15 mg weekly", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+const GI_EXPANSION = {
+  id: 10,
+  additionalSubclasses: [
+    {
+      id: "10d",
+      name: "Drugs for Inflammatory Bowel Disease (IBD)",
+      synonyms: ["IBD Drugs", "Crohn's Disease Drugs", "Ulcerative Colitis Drugs"],
+      description: "Inflammatory bowel disease pharmacotherapy is stratified by disease location, severity, and phenotype. 5-aminosalicylates form the backbone of mild-moderate ulcerative colitis therapy; corticosteroids (including targeted-release budesonide) induce remission; immunomodulators (azathioprine, methotrexate) maintain it. Biologic agents — anti-TNF antibodies, anti-integrin vedolizumab, anti-IL-12/23 ustekinumab, anti-IL-23 risankizumab — and small-molecule JAK inhibitors and S1P modulators are used in moderate-to-severe disease.",
+      subgroups: [
+        {
+          name: "5-Aminosalicylates (5-ASA)",
+          drugs: [
+            { name: "Mesalazine", synonyms: ["Mesalamine", "5-ASA", "Asacol", "Pentasa", "Lialda"], dose: "2.4–4.8 g/day oral in divided doses; 1–4 g/day rectal (enema/suppository)", brands: [] },
+            { name: "Sulfasalazine", synonyms: ["Salazopyrin"], dose: "2–4 g/day oral in divided doses (active UC)", brands: [] },
+            { name: "Olsalazine", synonyms: ["Dipentum"], dose: "1 g/day oral in divided doses", brands: [] },
+            { name: "Balsalazide", synonyms: ["Colazal", "Colazide"], dose: "6.75 g/day oral in 3 divided doses", brands: [] }
+          ]
+        },
+        {
+          name: "Corticosteroids for IBD",
+          drugs: [
+            { name: "Budesonide (controlled ileal release)", synonyms: ["Entocort", "Budenofalk"], dose: "9 mg OD oral x8 weeks (induction), then 6 mg OD (maintenance) — ileal Crohn's", brands: [] },
+            { name: "Budesonide MMX", synonyms: ["Uceris"], dose: "9 mg OD oral x8 weeks (UC)", brands: [] },
+            { name: "Beclomethasone dipropionate oral", synonyms: ["Clipper", "Betapred"], dose: "5 mg OD oral x4 weeks (mild-moderate UC; EMA)", brands: [] }
+          ]
+        },
+        {
+          name: "Biologics for IBD (anti-TNF)",
+          drugs: [
+            { name: "Infliximab", synonyms: ["Remicade"], dose: "5 mg/kg i.v. at 0, 2, 6 weeks; then every 8 weeks (Crohn's/UC)", brands: [] },
+            { name: "Adalimumab", synonyms: ["Humira"], dose: "160 mg s.c. (day 1), 80 mg (day 15), then 40 mg every 2 weeks (Crohn's)", brands: [] },
+            { name: "Golimumab", synonyms: ["Simponi"], dose: "200 mg s.c. (day 1), 100 mg (day 15), then 50 mg monthly (UC)", brands: [] },
+            { name: "Certolizumab pegol", synonyms: ["Cimzia"], dose: "400 mg s.c. at 0, 2, 4 weeks; then every 4 weeks (Crohn's)", brands: [] }
+          ]
+        },
+        {
+          name: "Biologics for IBD (anti-integrin, anti-IL)",
+          drugs: [
+            { name: "Vedolizumab", synonyms: ["Entyvio"], dose: "300 mg i.v. at 0, 2, 6 weeks; then every 8 weeks (UC/Crohn's)", brands: [] },
+            { name: "Ustekinumab", synonyms: ["Stelara"], dose: "Single weight-based i.v. induction (260–520 mg); then 90 mg s.c. every 8 weeks", brands: [] },
+            { name: "Risankizumab", synonyms: ["Skyrizi"], dose: "600 mg i.v. at 0, 4, 8 weeks; then 360 mg s.c. every 8 weeks (Crohn's)", brands: [] },
+            { name: "Mirikizumab", synonyms: ["Omvoh"], dose: "300 mg i.v. every 4 weeks x3; then 200 mg s.c. every 4 weeks (UC)", brands: [] },
+            { name: "Guselkumab", synonyms: ["Tremfya"], dose: "200 mg s.c. at 0, 4 weeks; then 100 mg s.c. every 8 weeks (Crohn's; Japan)", brands: [] }
+          ]
+        },
+        {
+          name: "Small Molecule Drugs for IBD",
+          drugs: [
+            { name: "Tofacitinib", synonyms: ["Xeljanz"], dose: "10 mg BD x8 weeks induction, then 5–10 mg BD maintenance (UC)", brands: [] },
+            { name: "Upadacitinib", synonyms: ["Rinvoq"], dose: "45 mg OD x12 weeks (UC induction); 15–30 mg OD maintenance", brands: [] },
+            { name: "Filgotinib", synonyms: ["Jyseleca"], dose: "200 mg OD oral (UC; EMA)", brands: [] },
+            { name: "Ozanimod", synonyms: ["Zeposia"], dose: "0.92 mg OD oral (UC)", brands: [] },
+            { name: "Etrasimod", synonyms: ["Velsipity"], dose: "2 mg OD oral (UC; S1P receptor modulator)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "10e",
+      name: "Drugs for Nausea/Vomiting (Expanded)",
+      synonyms: ["Extended Antiemetic Classification"],
+      description: "Chemotherapy-induced nausea and vomiting (CINV) prophylaxis is stratified by the emetogenic potential of the chemotherapy regimen. Neurokinin-1 receptor antagonists (aprepitant, fosaprepitant, netupitant, rolapitant) block substance P signalling centrally and are combined with 5-HT3 antagonists and dexamethasone in antiemetic prophylaxis protocols. Cannabinoids (dronabinol, nabilone) remain alternative options for refractory CINV.",
+      subgroups: [
+        {
+          name: "NK1 Receptor Antagonists (CINV)",
+          drugs: [
+            { name: "Aprepitant", synonyms: ["Emend"], dose: "125 mg oral day 1, 80 mg days 2–3 (CINV prophylaxis)", brands: [] },
+            { name: "Fosaprepitant", synonyms: ["Ivemend"], dose: "150 mg i.v. single dose (day 1 CINV prophylaxis)", brands: [] },
+            { name: "Netupitant/palonosetron", synonyms: ["Akynzeo", "Nepa"], dose: "300 mg/0.5 mg oral single dose before chemotherapy", brands: [] },
+            { name: "Fosnetupitant/palonosetron", synonyms: ["Akynzeo i.v."], dose: "235 mg/0.25 mg i.v. single dose", brands: [] },
+            { name: "Rolapitant", synonyms: ["Varubi", "Varuby"], dose: "180 mg oral single dose 1–2 hr before chemotherapy", brands: [] }
+          ]
+        },
+        {
+          name: "Cannabinoids (Antiemetic)",
+          drugs: [
+            { name: "Dronabinol", synonyms: ["Marinol", "Delta-9-THC"], dose: "5–15 mg/m² oral 1–3 hr before chemotherapy (CINV); 2.5 mg BD (appetite)", brands: [] },
+            { name: "Nabilone", synonyms: ["Cesamet"], dose: "1–2 mg BD oral (CINV)", brands: [] }
+          ]
+        },
+        {
+          name: "Newer Antiemetics",
+          drugs: [
+            { name: "Amisulpride (antiemetic low-dose)", synonyms: ["Barhemsys"], dose: "5 mg i.v. (PONV prophylaxis); 10 mg i.v. (PONV treatment)", brands: [] },
+            { name: "Scopolamine transdermal", synonyms: ["Transderm Scop"], dose: "1.5 mg patch every 3 days (motion sickness/PONV)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "10f",
+      name: "Drugs for Liver Diseases",
+      synonyms: ["Hepatic Drugs", "Drugs for Cirrhosis", "Anti-NASH Drugs"],
+      description: "Hepatic pharmacotherapy is expanding rapidly. Resmetirom, a thyroid hormone receptor-β agonist, is the first FDA-approved pharmacotherapy for metabolic dysfunction-associated steatohepatitis (MASH/NASH). Farnesoid X receptor agonists (obeticholic acid) and PPAR agonists (elafibranor, seladelpar) address primary biliary cholangitis. Rifaximin and lactulose form the mainstay of hepatic encephalopathy management; terlipressin targets hepatorenal syndrome and variceal haemorrhage.",
+      subgroups: [
+        {
+          name: "Drugs for NAFLD/NASH (MAFLD/MASH)",
+          drugs: [
+            { name: "Resmetirom", synonyms: ["Rezdiffra"], dose: "80–100 mg OD oral (thyroid hormone receptor-β agonist; first FDA-approved for NASH/MASH 2024)", brands: [] },
+            { name: "Lanifibranor", synonyms: [], dose: "800–1200 mg OD oral (pan-PPAR agonist; under review EMA)", brands: [] },
+            { name: "Semaglutide (NASH)", synonyms: [], dose: "2.4 mg s.c. weekly (investigational for NASH)", brands: [] }
+          ]
+        },
+        {
+          name: "Drugs for Cholestatic Liver Disease / PBC",
+          drugs: [
+            { name: "Ursodeoxycholic acid", synonyms: ["UDCA", "Ursodiol", "Actigall"], dose: "13–15 mg/kg/day oral in 2–3 divided doses (PBC/gallstones)", brands: [] },
+            { name: "Obeticholic acid", synonyms: ["Ocaliva"], dose: "5–10 mg OD oral (FXR agonist; PBC inadequate response to UDCA)", brands: [] },
+            { name: "Elafibranor", synonyms: ["Iqirvo"], dose: "80 mg OD oral (PPARα/δ agonist; PBC second-line, EMA 2024)", brands: [] },
+            { name: "Seladelpar", synonyms: ["Livdelzi"], dose: "10 mg OD oral (PPARδ agonist; PBC second-line, FDA 2024)", brands: [] },
+            { name: "Bezafibrate", synonyms: [], dose: "400 mg OD oral (PBC — off-label widely used in Japan/Europe)", brands: [] }
+          ]
+        },
+        {
+          name: "Drugs for Hepatic Encephalopathy",
+          drugs: [
+            { name: "Lactulose", synonyms: ["Duphalac"], dose: "30–60 mL 2–4 times daily oral or 300 mL/500 mL enema (adjust for 2–3 soft stools/day)", brands: [] },
+            { name: "Rifaximin", synonyms: ["Xifaxan", "Targaxan"], dose: "550 mg BD oral (secondary prophylaxis of hepatic encephalopathy)", brands: [] },
+            { name: "L-ornithine L-aspartate", synonyms: ["LOLA", "Hepa-Merz"], dose: "9 g TDS oral (granules); 20–40 g/day i.v. infusion", brands: [] }
+          ]
+        },
+        {
+          name: "Drugs for Ascites / Portal Hypertension",
+          drugs: [
+            { name: "Terlipressin", synonyms: ["Glypressin", "Terlivaz"], dose: "0.5–2 mg i.v. every 4–6 hr (hepatorenal syndrome/variceal bleeding)", brands: [] },
+            { name: "Midodrine", synonyms: ["ProAmatine"], dose: "7.5–12.5 mg TDS oral (refractory ascites adjunct)", brands: [] },
+            { name: "Carvedilol", synonyms: ["Carvil", "Carloc", "Coreg"], dose: "6.25–12.5 mg BD oral (portal hypertension/variceal prevention)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+const RESPIRATORY_EXPANSION = {
+  id: 3,
+  additionalSubclasses: [
+    {
+      id: "3c",
+      name: "Drugs for Idiopathic Pulmonary Fibrosis (IPF) and Interstitial Lung Disease",
+      synonyms: ["Anti-fibrotic Drugs", "IPF Treatments"],
+      description: "Antifibrotic agents approved for idiopathic pulmonary fibrosis and related progressive fibrotic interstitial lung diseases reduce the rate of forced vital capacity decline through distinct mechanisms — nintedanib inhibits multiple tyrosine kinases involved in fibroblast signalling; pirfenidone modulates TGF-β pathways and exerts antifibrotic, anti-inflammatory, and antioxidant effects.",
+      subgroups: [
+        {
+          name: "Antifibrotic Agents",
+          drugs: [
+            { name: "Nintedanib", synonyms: ["Ofev"], dose: "150 mg BD oral with food (IPF/SSc-ILD/PF-ILD); 100 mg BD if tolerability issues", brands: [] },
+            { name: "Pirfenidone", synonyms: ["Esbriet", "Pirfenex"], dose: "267 mg TDS x7 days, 534 mg TDS x7 days, then 801 mg TDS oral (maintenance)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "3d",
+      name: "Drugs for Cystic Fibrosis (CFTR Modulators)",
+      synonyms: ["CFTR Modulators", "Cystic Fibrosis Drugs", "Ivacaftor-Based Therapies"],
+      description: "CFTR modulators are precision medicines targeting the underlying molecular defect in cystic fibrosis. Potentiators (ivacaftor) increase channel gating probability; correctors (lumacaftor, tezacaftor, elexacaftor) improve protein folding and trafficking to the cell surface. Triple-combination therapy with elexacaftor/tezacaftor/ivacaftor restores substantial CFTR function in patients with at least one F508del allele.",
+      subgroups: [
+        {
+          name: "CFTR Potentiators",
+          drugs: [
+            { name: "Ivacaftor", synonyms: ["Kalydeco", "VX-770"], dose: "150 mg BD oral (G551D and other gating mutations)", brands: [] }
+          ]
+        },
+        {
+          name: "CFTR Corrector + Potentiator Combinations",
+          drugs: [
+            { name: "Lumacaftor/ivacaftor", synonyms: ["Orkambi"], dose: "400/250 mg BD oral (F508del homozygous)", brands: [] },
+            { name: "Tezacaftor/ivacaftor", synonyms: ["Symdeko", "Symkevi"], dose: "100/150 mg AM + 150 mg ivacaftor PM oral (F508del homo/certain hetero)", brands: [] },
+            { name: "Elexacaftor/tezacaftor/ivacaftor", synonyms: ["ETI", "Kaftrio", "Trikafta"], dose: "200/100/150 mg AM + 150 mg ivacaftor PM oral (any F508del allele; triple combo)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "3e",
+      name: "Drugs for Severe Asthma (Biologics)",
+      synonyms: ["Biologic Asthma Drugs", "Anti-IL Asthma Therapies"],
+      description: "Biologic agents for severe asthma target specific type 2 inflammatory pathways. Anti-IL-5 antibodies (mepolizumab, benralizumab, reslizumab) deplete or block eosinophils; anti-IgE antibody (omalizumab) reduces mast cell and basophil activation; anti-IL-4Rα dupilumab blocks both IL-4 and IL-13 signalling; anti-TSLP tezepelumab acts upstream to suppress multiple inflammatory cascades.",
+      subgroups: [
+        {
+          name: "Anti-IL-5 Biologics",
+          drugs: [
+            { name: "Mepolizumab", synonyms: ["Nucala"], dose: "100 mg s.c. every 4 weeks (severe eosinophilic asthma)", brands: [] },
+            { name: "Reslizumab", synonyms: ["Cinqair"], dose: "3 mg/kg i.v. every 4 weeks", brands: [] },
+            { name: "Benralizumab", synonyms: ["Fasenra"], dose: "30 mg s.c. every 4 weeks x3, then every 8 weeks", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-IgE",
+          drugs: [
+            { name: "Omalizumab", synonyms: ["Xolair"], dose: "75–375 mg s.c. every 2–4 weeks (weight/IgE-based dosing)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-IL-4Rα",
+          drugs: [
+            { name: "Dupilumab", synonyms: ["Dupixent"], dose: "400 mg s.c. loading, then 200 mg every 2 weeks (asthma)", brands: [] }
+          ]
+        },
+        {
+          name: "Anti-TSLP",
+          drugs: [
+            { name: "Tezepelumab", synonyms: ["Tezspire"], dose: "210 mg s.c. every 4 weeks (severe uncontrolled asthma; pan-eosinophilic and non-eosinophilic)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "3f",
+      name: "Drugs for Chronic Cough and Airway Neuronal Hypersensitivity",
+      synonyms: ["Antitussives (Novel)", "P2X3 Antagonists", "Refractory Chronic Cough Drugs"],
+      description: "Refractory and unexplained chronic cough is now recognised as a distinct hypersensitivity disorder of airway sensory nerves. Gefapixant, a selective P2X3 receptor antagonist, reduces cough hypersensitivity by blocking ATP-mediated activation of vagal afferents in the airway epithelium.",
+      subgroups: [
+        {
+          name: "P2X3 Antagonists",
+          drugs: [
+            { name: "Gefapixant", synonyms: ["Lyfnua", "Lyfeultra"], dose: "45 mg BD oral (refractory/unexplained chronic cough; EMA 2023)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+const RENAL_EXPANSION = {
+  id: 8,
+  additionalSubclasses: [
+    {
+      id: "8c",
+      name: "Drugs for Chronic Kidney Disease (CKD)",
+      synonyms: ["Nephroprotective Drugs", "CKD Drugs"],
+      description: "Chronic kidney disease management has been transformed by agents with demonstrated nephroprotective effects in outcomes trials. Finerenone, a non-steroidal selective mineralocorticoid receptor antagonist, reduces kidney and cardiovascular events in CKD with type 2 diabetes. SGLT-2 inhibitors reduce intraglomerular pressure and proteinuria independently of glycaemic effects. HIF-prolyl hydroxylase inhibitors stimulate erythropoietin production for renal anaemia.",
+      subgroups: [
+        {
+          name: "Mineralocorticoid Receptor Antagonists (non-steroidal)",
+          drugs: [
+            { name: "Finerenone", synonyms: ["Kerendia"], dose: "10–20 mg OD oral (CKD with T2DM; non-steroidal MRA)", brands: [] }
+          ]
+        },
+        {
+          name: "SGLT-2 Inhibitors (CKD Indication)",
+          drugs: [
+            { name: "Dapagliflozin", synonyms: ["Forxiga", "Farxiga"], dose: "10 mg OD oral (CKD eGFR ≥25 mL/min)", brands: [] },
+            { name: "Empagliflozin", synonyms: ["Jardiance"], dose: "10 mg OD oral (CKD)", brands: [] }
+          ]
+        },
+        {
+          name: "HIF-PH Inhibitors (Anaemia of CKD)",
+          drugs: [
+            { name: "Roxadustat", synonyms: ["Evrenzo"], dose: "20–120 mg TDS oral (HIF-PHI; EMA/PMDA/NMPA approved)", brands: [] },
+            { name: "Daprodustat", synonyms: ["Jesduvroq"], dose: "4–24 mg OD oral (FDA/Japan approved)", brands: [] },
+            { name: "Vadadustat", synonyms: ["Vafseo"], dose: "150–600 mg OD oral (EMA approved)", brands: [] },
+            { name: "Molidustat", synonyms: ["Masarone"], dose: "25–75 mg OD oral (Japan/EMA approved)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "8d",
+      name: "Drugs for Hyperphosphataemia (CKD)",
+      synonyms: ["Phosphate Binders", "Hyperphosphataemia Treatment"],
+      description: "Hyperphosphataemia in advanced CKD contributes to secondary hyperparathyroidism, vascular calcification, and cardiovascular mortality. Phosphate binders taken with meals reduce intestinal phosphate absorption. They are classified as calcium-based (calcium carbonate, calcium acetate), non-calcium polymeric (sevelamer), lanthanum-based, or iron-based (sucroferric oxyhydroxide, ferric citrate).",
+      subgroups: [
+        {
+          name: "Phosphate Binders",
+          drugs: [
+            { name: "Sevelamer carbonate", synonyms: ["Renvela"], dose: "800–1600 mg TDS with meals oral", brands: [] },
+            { name: "Sevelamer hydrochloride", synonyms: ["Renagel"], dose: "800–1600 mg TDS with meals oral", brands: [] },
+            { name: "Lanthanum carbonate", synonyms: ["Fosrenol"], dose: "750–1500 mg/day in divided doses with meals (chewable)", brands: [] },
+            { name: "Calcium carbonate", synonyms: [], dose: "1–2 g elemental calcium with meals oral", brands: [] },
+            { name: "Calcium acetate", synonyms: ["PhosLo", "Phosex"], dose: "667 mg TDS with meals", brands: [] },
+            { name: "Sucroferric oxyhydroxide", synonyms: ["Velphoro"], dose: "500 mg TDS with meals (chewable; iron-based)", brands: [] },
+            { name: "Ferric citrate", synonyms: ["Auryxia", "Riona"], dose: "420 mg TDS with meals (iron-based; also treats iron-deficiency anaemia in CKD)", brands: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "8e",
+      name: "Drugs for Overactive Bladder and Urological Conditions (Extended)",
+      synonyms: ["Extended Urology Drugs", "β3-Adrenoceptor Agonists"],
+      description: "Overactive bladder management encompasses both antimuscarinic agents (covered under autonomic pharmacology) and β3-adrenoceptor agonists — mirabegron and vibegron — which relax detrusor smooth muscle without anticholinergic adverse effects, offering a better tolerability profile particularly in elderly patients. 5α-reductase inhibitors (finasteride, dutasteride) address the androgen-driven stromal component of benign prostatic hyperplasia. PDE-5 inhibitors have dual approval for erectile dysfunction and lower urinary tract symptoms.",
+      subgroups: [
+        {
+          name: "β3-Adrenoceptor Agonists (OAB)",
+          drugs: [
+            { name: "Mirabegron", synonyms: ["Betmiga", "Myrbetriq"], dose: "25–50 mg OD oral", brands: [] },
+            { name: "Vibegron", synonyms: ["Vibegron", "Gemtesa"], dose: "75 mg OD oral", brands: [] }
+          ]
+        },
+        {
+          name: "Drugs for Nocturia",
+          drugs: [
+            { name: "Desmopressin low-dose", synonyms: ["Noctiva", "Nocdurna"], dose: "25–50 mcg sublingual OD before bedtime (nocturia in adults)", brands: [] }
+          ]
+        },
+        {
+          name: "5α-Reductase Inhibitors (BPH)",
+          drugs: [
+            { name: "Finasteride", synonyms: ["Proscar", "Propecia"], dose: "5 mg OD oral (BPH); 1 mg OD (androgenetic alopecia)", brands: [] },
+            { name: "Dutasteride", synonyms: ["Avodart"], dose: "0.5 mg OD oral", brands: [] },
+            { name: "Dutasteride/tamsulosin", synonyms: ["Duodart", "Jalyn"], dose: "0.5/0.4 mg OD oral (BPH combination)", brands: [] }
+          ]
+        },
+        {
+          name: "Drugs for Erectile Dysfunction (PDE-5 Inhibitors)",
+          drugs: [
+            { name: "Sildenafil", synonyms: ["Viagra"], dose: "25–100 mg oral 30–60 min before sexual activity PRN", brands: [] },
+            { name: "Tadalafil", synonyms: ["Cialis"], dose: "5 mg OD oral (daily use); 10–20 mg PRN", brands: [] },
+            { name: "Vardenafil", synonyms: ["Levitra"], dose: "10 mg oral PRN (5–20 mg range)", brands: [] },
+            { name: "Avanafil", synonyms: ["Stendra", "Spedra"], dose: "100–200 mg oral 15–30 min before activity PRN", brands: [] },
+            { name: "Udenafil", synonyms: ["Zydena"], dose: "100–200 mg OD or PRN oral (South Korea/approval)", brands: [] }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+// Build search index
+const SEARCH_INDEX = [];
+
+// Helper to index a subclass
+function indexSubclass(chapter, subclass) {
+  if (!subclass.subgroups) return;
+  subclass.subgroups.forEach(subgroup => {
+    if (!subgroup.drugs) return;
+    subgroup.drugs.forEach(drug => {
+      if (!drug.name) return;
+      SEARCH_INDEX.push({
+        chapterId: chapter.id,
+        chapterTitle: chapter.title,
+        subclassId: subclass.id,
+        subclassName: subclass.name,
+        subgroupName: subgroup.name,
+        drugName: drug.name,
+        synonyms: drug.synonyms || [],
+        dose: drug.dose || "",
+        brands: drug.brands || [],
+        allSearchTerms: [
+          drug.name.toLowerCase(),
+          ...(drug.synonyms || []).map(s => s.toLowerCase()),
+          ...(drug.brands || []).map(b => b.toLowerCase()),
+          subclass.name.toLowerCase(),
+          ...(subclass.synonyms || []).map(s => s.toLowerCase()),
+          chapter.title.toLowerCase()
+        ]
+      });
+    });
+  });
+}
+
+// Index base DRUG_DATA
+DRUG_DATA.forEach(chapter => {
+  chapter.subclasses.forEach(subclass => {
+    indexSubclass(chapter, subclass);
+  });
+});
+
+// Index CVS_EXPANSION
+if (typeof CVS_EXPANSION !== 'undefined' && CVS_EXPANSION.additionalSubclasses) {
+  const parentChapter = DRUG_DATA.find(c => c.id === CVS_EXPANSION.id) || { id: CVS_EXPANSION.id, title: "" };
+  CVS_EXPANSION.additionalSubclasses.forEach(subclass => {
+    indexSubclass(parentChapter, subclass);
+  });
+}
+
+// Index CNS_EXPANSION
+if (typeof CNS_EXPANSION !== 'undefined' && CNS_EXPANSION.additionalSubclasses) {
+  const parentChapter = DRUG_DATA.find(c => c.id === CNS_EXPANSION.id) || { id: CNS_EXPANSION.id, title: "" };
+  CNS_EXPANSION.additionalSubclasses.forEach(subclass => {
+    indexSubclass(parentChapter, subclass);
+  });
+}
+
+// Index BLOOD_EXPANSION
+if (typeof BLOOD_EXPANSION !== 'undefined' && BLOOD_EXPANSION.additionalSubclasses) {
+  const parentChapter = DRUG_DATA.find(c => c.id === BLOOD_EXPANSION.id) || { id: BLOOD_EXPANSION.id, title: "" };
+  BLOOD_EXPANSION.additionalSubclasses.forEach(subclass => {
+    indexSubclass(parentChapter, subclass);
+  });
+}
+
+// Index ANTIBACTERIAL_EXPANSION
+if (typeof ANTIBACTERIAL_EXPANSION !== 'undefined' && ANTIBACTERIAL_EXPANSION.additionalSubclasses) {
+  const parentChapter = DRUG_DATA.find(c => c.id === ANTIBACTERIAL_EXPANSION.id) || { id: ANTIBACTERIAL_EXPANSION.id, title: "" };
+  ANTIBACTERIAL_EXPANSION.additionalSubclasses.forEach(subclass => {
+    indexSubclass(parentChapter, subclass);
+  });
+}
+
+// Index ENDOCRINE_EXPANSION
+if (typeof ENDOCRINE_EXPANSION !== 'undefined' && ENDOCRINE_EXPANSION.additionalSubclasses) {
+  const parentChapter = DRUG_DATA.find(c => c.id === ENDOCRINE_EXPANSION.id) || { id: ENDOCRINE_EXPANSION.id, title: "" };
+  ENDOCRINE_EXPANSION.additionalSubclasses.forEach(subclass => {
+    indexSubclass(parentChapter, subclass);
+  });
+}
+
+// Index GI_EXPANSION
+if (typeof GI_EXPANSION !== 'undefined' && GI_EXPANSION.additionalSubclasses) {
+  const parentChapter = DRUG_DATA.find(c => c.id === GI_EXPANSION.id) || { id: GI_EXPANSION.id, title: "" };
+  GI_EXPANSION.additionalSubclasses.forEach(subclass => {
+    indexSubclass(parentChapter, subclass);
+  });
+}
+
+// Index RESPIRATORY_EXPANSION
+if (typeof RESPIRATORY_EXPANSION !== 'undefined' && RESPIRATORY_EXPANSION.additionalSubclasses) {
+  const parentChapter = DRUG_DATA.find(c => c.id === RESPIRATORY_EXPANSION.id) || { id: RESPIRATORY_EXPANSION.id, title: "" };
+  RESPIRATORY_EXPANSION.additionalSubclasses.forEach(subclass => {
+    indexSubclass(parentChapter, subclass);
+  });
+}
+
+// Index RENAL_EXPANSION
+if (typeof RENAL_EXPANSION !== 'undefined' && RENAL_EXPANSION.additionalSubclasses) {
+  const parentChapter = DRUG_DATA.find(c => c.id === RENAL_EXPANSION.id) || { id: RENAL_EXPANSION.id, title: "" };
+  RENAL_EXPANSION.additionalSubclasses.forEach(subclass => {
+    indexSubclass(parentChapter, subclass);
+  });
+}
+
